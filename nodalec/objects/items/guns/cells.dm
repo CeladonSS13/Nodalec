@@ -19,9 +19,9 @@
 			. += mutable_appearance(guncell_path, "[cell_size_prefix]-[charge_light_type]-o4")
 		if(45 to 74)
 			. += mutable_appearance(guncell_path, "[cell_size_prefix]-[charge_light_type]-o3")
-		if(15 to 44)
+		if(21 to 44)
 			. += mutable_appearance(guncell_path, "[cell_size_prefix]-[charge_light_type]-o2")
-		if(1 to 14)
+		if(1 to 20)
 			. += mutable_appearance(guncell_path, "[cell_size_prefix]-[charge_light_type]-o1")
 
 /obj/item/stock_parts/power_store/cell/gun/empty
@@ -59,6 +59,7 @@
 /obj/item/stock_parts/power_store/cell/gun/solgov
 	name = "SolGov power cell"
 	icon_state = "g-sg-cell"
+	charge_light_type = null
 
 /obj/item/stock_parts/power_store/cell/gun/large
 	name = "extra-large weapon power cell"
@@ -67,6 +68,7 @@
 	custom_materials = list(/datum/material/glass=1000)
 	chargerate = 5000
 	w_class = WEIGHT_CLASS_NORMAL
+	charge_light_type = "bggun"
 
 /obj/item/stock_parts/power_store/cell/gun/large/empty/Initialize()
 	. = ..()
@@ -79,6 +81,7 @@
 	icon_state = "kalix-cell"
 	maxcharge = 12750 // 15 shots at 850 energy per
 	chargerate = 1750
+	charge_light_type = "kalix"
 
 /obj/item/stock_parts/power_store/cell/gun/pgf
 	name = "Etherbor EWC-6m"
@@ -86,3 +89,4 @@
 	icon_state = "pgf-cell"
 	maxcharge = 20000 // 20 shots at 1000 energy per
 	chargerate = 2000
+	charge_light_type = "pgf"
