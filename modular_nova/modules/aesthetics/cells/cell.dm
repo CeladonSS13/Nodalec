@@ -32,18 +32,18 @@
 /obj/item/stock_parts/power_store/cell/lead
 	charging_icon = "lead_in"
 
-/obj/item/stock_parts/power_store/cell/update_overlays()
-	. = ..()
-	if(grown_battery)
-		. += mutable_appearance('icons/obj/machines/cell_charger.dmi', "grown_wires")
-	if((charge < 0.01) || !charge_light_type)
-		return
-	var/icon_link
-	if(!grown_battery)
-		icon_link = 'modular_nova/modules/aesthetics/cells/cell.dmi'
-	else
-		icon_link = 'icons/obj/machines/cell_charger.dmi'
-	. += mutable_appearance(icon_link, "cell-[charge_light_type]-o[(percent() >= 99.5) ? 2 : 1]")
+//obj/item/stock_parts/power_store/cell/update_overlays()
+//	. = ..()
+//	if(grown_battery)
+//		. += mutable_appearance('icons/obj/machines/cell_charger.dmi', "grown_wires")
+//	if((charge < 0.01) || !charge_light_type)
+//		return
+//	var/icon_link
+//	if(!grown_battery)
+//		icon_link = 'modular_nova/modules/aesthetics/cells/cell.dmi'
+//	else
+//		icon_link = 'icons/obj/machines/cell_charger.dmi'
+//	. += mutable_appearance(icon_link, "cell-[charge_light_type]-o[(percent() >= 99.5) ? 2 : 1]")
 
 /obj/machinery/cell_charger
 	icon = 'modular_nova/modules/aesthetics/cells/cell.dmi'
