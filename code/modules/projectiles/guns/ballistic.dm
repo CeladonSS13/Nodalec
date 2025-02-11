@@ -9,14 +9,6 @@
 	drop_sound = 'sound/items/handling/gun/gun_drop.ogg'
 	sound_vary = TRUE
 
-	///sound when inserting magazine
-	var/load_sound = 'sound/items/weapons/gun/general/magazine_insert_full.ogg'
-	///sound when inserting an empty magazine
-	var/load_empty_sound = 'sound/items/weapons/gun/general/magazine_insert_empty.ogg'
-	///volume of loading sound
-	var/load_sound_volume = 40
-	///whether loading sound should vary
-	var/load_sound_vary = TRUE
 	///sound of racking
 	var/rack_sound = 'sound/items/weapons/gun/general/bolt_rack.ogg'
 	///volume of racking
@@ -84,8 +76,6 @@
 	var/obj/item/ammo_box/magazine/magazine
 	///whether the gun ejects the chambered casing
 	var/casing_ejector = TRUE
-	///Whether the gun has an internal magazine or a detatchable one. Overridden by BOLT_TYPE_NO_BOLT.
-	var/internal_magazine = FALSE
 	///Phrasing of the bolt in examine and notification messages; ex: bolt, slide, etc.
 	var/bolt_wording = "bolt"
 	///Phrasing of the magazine in examine and notification messages; ex: magazine, box, etx
@@ -96,8 +86,6 @@
 	var/rack_delay = 5
 	///time of the most recent rack, used for cooldown purposes
 	var/recent_rack = 0
-	///Whether the gun can be tacloaded by slapping a fresh magazine directly on it
-	var/tac_reloads = TRUE //Snowflake mechanic no more.
 	///Whether we need to hold the gun in our off-hand to load it. FALSE means we can load it literally anywhere. Important for weapons like bows.
 	var/must_hold_to_load = FALSE
 	///Whether the gun can be sawn off by sawing tools

@@ -57,6 +57,28 @@
 	/// Lower values are better, higher values are worse.
 	var/projectile_speed_multiplier = 1
 
+	// Makes the gun show it's manufacturer
+	var/manufacturer = null
+
+	///Whether the gun has an internal magazine or a detatchable one. Overridden by BOLT_TYPE_NO_BOLT.
+	var/internal_magazine = FALSE
+
+	///sound when inserting magazine
+	var/load_sound = 'sound/items/weapons/gun/general/magazine_insert_full.ogg'
+	///sound when inserting an empty magazine
+	var/load_empty_sound = 'sound/items/weapons/gun/general/magazine_insert_empty.ogg'
+	///volume of loading sound
+	var/load_sound_volume = 40
+	///whether loading sound should vary
+	var/load_sound_vary = TRUE
+
+	//Used by energy based guns
+	var/obj/item/stock_parts/power_store/cell/gun/cell
+
+	var/tac_reloads = TRUE
+	///If we have the 'snowflake mechanic,' how long should it take to reload?
+	var/tactical_reload_delay = 1 SECONDS
+
 	var/spread = 0 //Spread induced by the gun itself.
 	var/randomspread = 1 //Set to 0 for shotguns. This is used for weapons that don't fire all their bullets at once.
 
@@ -82,9 +104,8 @@
 		pin.gun_insert(new_gun = src)
 
 	add_seclight_point()
-	// NOVA EDIT ADDITION BEGIN - GUN SAFETIES AND MANUFACTURER EXAMINE
+	// NOVA EDIT ADDITION BEGIN - GUN SAFETIES
 	give_gun_safeties()
-	give_manufacturer_examine()
 	// NOVA EDIT ADDITION END
 	add_bayonet_point()
 
@@ -169,6 +190,9 @@
 			. += span_warning("It appears heavily damaged.")
 		if(0 to 25)
 			. += span_boldwarning("It's falling apart!")
+
+	if(manufacturer)
+		. += "<span class='notice'>It has <b>[manufacturer]</b> engraved on it.</span>"
 
 //called after the gun has successfully fired its chambered ammo.
 /obj/item/gun/proc/process_chamber(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)

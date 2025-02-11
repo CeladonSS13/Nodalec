@@ -7,9 +7,9 @@
 	drop_sound = 'sound/items/handling/gun/gun_drop.ogg'
 	sound_vary = TRUE
 
-	/// What type of power cell this uses
-	var/obj/item/stock_parts/power_store/cell
-	var/cell_type = /obj/item/stock_parts/power_store/cell
+	var/cell_type = /obj/item/stock_parts/power_store/cell/gun
+	//used by balloon messages
+	var/cell_wording = "cell"
 	///if the weapon has custom icons for individual ammo types it can switch between. ie disabler beams, taser, laser/lethals, ect.
 	var/modifystate = FALSE
 	var/list/ammo_type = list(/obj/item/ammo_casing/energy)
@@ -98,6 +98,57 @@
 	update_appearance()
 	RegisterSignal(src, COMSIG_ITEM_RECHARGED, PROC_REF(instant_recharge))
 	AddElement(/datum/element/update_icon_updates_onmob)
+
+/obj/item/gun/energy/attack_hand(mob/user)
+	if(!internal_magazine && loc == user && user.is_holding(src) && cell && tac_reloads)
+		eject_cell(user)
+		return
+	return ..()
+
+/obj/item/gun/energy/attackby(obj/item/A, mob/user, params)
+	if(..())
+		return FALSE
+
+	if (!internal_magazine && istype(A, /obj/item/stock_parts/power_store/cell/gun))
+		var/obj/item/stock_parts/power_store/cell/gun/C = A
+		if (!cell)
+			insert_cell(user, C)
+		else
+			if (tac_reloads)
+				eject_cell(user, C)
+
+/obj/item/gun/energy/proc/insert_cell(mob/user, obj/item/stock_parts/power_store/cell/gun/C, display_message = TRUE)
+	if(!istype(C, cell_type))
+		balloon_alert(user, "[C.name] doesn't fit!")
+		return FALSE
+	if(user.transferItemToLoc(C, src))
+		cell = C
+		if (display_message)
+			balloon_alert(user, "[cell_wording] loaded")
+		else
+			playsound(src, load_empty_sound, load_sound_volume, load_sound_vary)
+		update_appearance()
+		return TRUE
+	else
+		to_chat(user, span_warning("You cannot seem to get [src] out of your hands!"))
+		return FALSE
+
+/obj/item/gun/energy/proc/eject_cell(mob/user, display_message = TRUE, obj/item/stock_parts/power_store/cell/gun/tac_load = null)
+	playsound(src, load_sound, load_sound_volume, load_sound_vary)
+	cell.forceMove(user.put_in_active_hand())
+	var/obj/item/stock_parts/power_store/cell/gun/old_cell = cell
+	if (tac_load)
+		if (insert_cell(user, tac_load, FALSE))
+			balloon_alert(user, "[cell_wording] swapped")
+		else
+			to_chat(user, span_warning("You dropped the old [cell_wording], but the new one doesn't fit. How embarassing."))
+			cell = null
+	else
+		cell = null
+	old_cell.update_appearance()
+	if (display_message)
+		balloon_alert(user, "[cell_wording] unloaded")
+	update_appearance()
 
 /obj/item/gun/energy/add_weapon_description()
 	AddElement(/datum/element/weapon_description, attached_proc = PROC_REF(add_notes_energy))
@@ -251,30 +302,36 @@
 
 /obj/item/gun/energy/update_overlays()
 	. = ..()
-	// NOVA EDIT START
-	if(!automatic_charge_overlays || !cell)
+	if(!automatic_charge_overlays || QDELETED(src))
 		return
-	// NOVA EDIT END
-
+	// Every time I see code this "flexible", a kitten fucking dies //it got worse
+	//todo: refactor this a bit to allow showing of charge on a gun's cell
 	var/overlay_icon_state = "[icon_state]_charge"
-	if(modifystate)
-		var/obj/item/ammo_casing/energy/shot = ammo_type[select]
-		if(single_shot_type_overlay)
-			. += "[icon_state]_[initial(shot.select_name)]"
-		overlay_icon_state += "_[initial(shot.select_name)]"
-
+	var/obj/item/ammo_casing/energy/shot = ammo_type[modifystate ? select : 1]
 	var/ratio = get_charge_ratio()
-	if(ratio == 0 && display_empty)
+	if(cell)
+		. += "[icon_state]_cell"
+		if(ratio == 0)
+			. += "[icon_state]_cellempty"
+	if(ratio == 0)
+		if(modifystate)
+			. += "[icon_state]_[shot.select_name]"
 		. += "[icon_state]_empty"
-		return
-	if(shaded_charge)
-		. += "[icon_state]_charge[ratio]"
-		return
-	var/mutable_appearance/charge_overlay = mutable_appearance(icon, overlay_icon_state)
-	for(var/i = ratio, i >= 1, i--)
-		charge_overlay.pixel_x = ammo_x_offset * (i - 1)
-		charge_overlay.pixel_y = ammo_y_offset * (i - 1)
-		. += new /mutable_appearance(charge_overlay)
+	else
+		if(!shaded_charge)
+			if(modifystate)
+				. += "[icon_state]_[shot.select_name]"
+				overlay_icon_state += "_[shot.select_name]"
+			var/mutable_appearance/charge_overlay = mutable_appearance(icon, overlay_icon_state)
+			for(var/i = ratio, i >= 1, i--)
+				charge_overlay.pixel_x = ammo_x_offset * (i - 1)
+				charge_overlay.pixel_y = ammo_y_offset * (i - 1)
+				. += new /mutable_appearance(charge_overlay)
+		else
+			if(modifystate)
+				. += "[icon_state]_charge[ratio]_[shot.select_name]" //:drooling_face:
+			else
+				. += "[icon_state]_charge[ratio]"
 
 
 ///Used by update_icon_state() and update_overlays()
