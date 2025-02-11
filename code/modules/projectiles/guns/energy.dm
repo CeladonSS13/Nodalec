@@ -148,6 +148,7 @@
 	old_cell.update_appearance()
 	if (display_message)
 		balloon_alert(user, "[cell_wording] unloaded")
+		user.put_in_hands(old_cell)
 	update_appearance()
 
 /obj/item/gun/energy/add_weapon_description()
