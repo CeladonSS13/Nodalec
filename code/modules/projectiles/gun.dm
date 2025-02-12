@@ -72,6 +72,19 @@
 	///whether loading sound should vary
 	var/load_sound_vary = TRUE
 
+	//true if the gun is wielded via twohanded component, shouldnt affect anything else
+	var/wielded = FALSE
+	//true if the gun is wielded after delay, should affects accuracy
+	var/wielded_fully = FALSE
+	///Slowdown for wielding
+	var/wield_slowdown = 0.1
+	///slowdown for aiming whilst wielding
+	var/aimed_wield_slowdown = 0.1
+	///How long between wielding and firing in tenths of seconds
+	var/wield_delay	= 0.4 SECONDS
+	///Storing value for above
+	var/wield_time = 0
+
 	//Used by energy based guns
 	var/obj/item/stock_parts/power_store/cell/gun/cell
 
@@ -102,6 +115,9 @@
 	if(ispath(pin))
 		pin = new pin
 		pin.gun_insert(new_gun = src)
+
+	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
+	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
 
 	add_seclight_point()
 	// NOVA EDIT ADDITION BEGIN - GUN SAFETIES
@@ -147,6 +163,39 @@
 		update_appearance()
 	if(gone == suppressed)
 		clear_suppressor()
+
+/obj/item/gun/proc/on_wield(obj/item/source, mob/user)
+	wielded = TRUE
+	INVOKE_ASYNC(src, PROC_REF(do_wield), user)
+
+/obj/item/gun/proc/do_wield(mob/user)
+	user.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/gun, multiplicative_slowdown = wield_slowdown)
+	wield_time = world.time + wield_delay
+	if(wield_time > 0)
+		if(do_after(
+			user,
+			wield_delay,
+			user,
+			FALSE,
+			TRUE,
+			CALLBACK(src, PROC_REF(is_wielded)),
+			timed_action_flags = IGNORE_USER_LOC_CHANGE
+			)
+			)
+			wielded_fully = TRUE
+			return TRUE
+	else
+		wielded_fully = TRUE
+		return TRUE
+
+/// triggered on unwield of two handed item
+/obj/item/gun/proc/on_unwield(obj/item/source, mob/user)
+	wielded = FALSE
+	wielded_fully = FALSE
+	user.remove_movespeed_modifier(/datum/movespeed_modifier/gun)
+
+/obj/item/gun/proc/is_wielded()
+	return wielded
 
 ///Clears var and updates icon. In the case of ballistic weapons, also updates the gun's weight.
 /obj/item/gun/proc/clear_suppressor()

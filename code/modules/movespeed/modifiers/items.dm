@@ -20,6 +20,10 @@
 /datum/movespeed_modifier/sphere
 	multiplicative_slowdown = -0.5
 
+/datum/movespeed_modifier/gun
+	multiplicative_slowdown = 1
+	variable = TRUE
+
 /datum/movespeed_modifier/hook_jawed
 	multiplicative_slowdown = 4
 
