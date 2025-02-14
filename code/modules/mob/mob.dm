@@ -745,6 +745,25 @@
 
 	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(execute_mode)))
 
+/mob/verb/do_unique_action()
+	set name = "Do Unique Action"
+	set category = "Object"
+	set src = usr
+
+	if(ismecha(loc))
+		return
+
+	if(incapacitated)
+		return
+
+	var/obj/item/I = get_active_held_item()
+	if(I)
+		if(I.pre_unique_action(src))
+			update_held_items()
+			return
+		I.unique_action(src)
+		update_held_items()
+
 ///proc version to finish /mob/verb/mode() execution. used in case the proc needs to be queued for the tick after its first called
 /mob/proc/execute_mode()
 	if(ismecha(loc))

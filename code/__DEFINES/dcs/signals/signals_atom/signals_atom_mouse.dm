@@ -20,6 +20,9 @@
 	#define COMPONENT_CANCEL_CLICK_ALT_SECONDARY (1<<0)
 ///from base of atom/CtrlShiftClick(/mob)
 #define COMSIG_CLICK_CTRL_SHIFT "ctrl_shift_click"
+//used for unique action
+#define COMSIG_CLICK_UNIQUE_ACTION "unique_action"
+	#define OVERIDE_UNIQUE_ACTION 1
 ///from base of atom/MouseDrop(): (/atom/over, /mob/user)
 #define COMSIG_MOUSEDROP_ONTO "mousedrop_onto"
 	#define COMPONENT_CANCEL_MOUSEDROP_ONTO (1<<0)

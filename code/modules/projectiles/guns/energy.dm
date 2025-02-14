@@ -7,6 +7,12 @@
 	drop_sound = 'sound/items/handling/gun/gun_drop.ogg'
 	sound_vary = TRUE
 
+	gun_firemodes = list(FIREMODE_SEMIAUTO)
+	default_firemode = FIREMODE_SEMIAUTO
+
+	fire_select_icon_state_prefix = "laser_"
+
+
 	var/cell_type = /obj/item/stock_parts/power_store/cell/gun
 	//used by balloon messages
 	var/cell_wording = "cell"
@@ -225,7 +231,7 @@
 			recharge_newshot(TRUE)
 		update_appearance()
 
-/obj/item/gun/energy/attack_self(mob/living/user as mob)
+/obj/item/gun/energy/unique_action(mob/living/user as mob)
 	if(ammo_type.len > 1 && can_select)
 		select_fire(user)
 	return ..()

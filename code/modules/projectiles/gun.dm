@@ -38,9 +38,6 @@
 	trigger_guard = TRIGGER_GUARD_NORMAL //trigger guard on the weapon, hulks can't fire them with their big meaty fingers
 	var/sawn_desc = null //description change if weapon is sawn-off
 	var/sawn_off = FALSE
-	var/burst_size = 1 //how large a burst is
-	var/fire_delay = 0 //rate of fire for burst firing and semi auto
-	var/firing_burst = 0 //Prevent the weapon from firing again while already firing
 	var/semicd = 0 //cooldown handler
 	var/weapon_weight = WEAPON_LIGHT
 	var/dual_wield_spread = 24 //additional spread when dual wielding
@@ -58,7 +55,7 @@
 	var/projectile_speed_multiplier = 1
 
 	// Makes the gun show it's manufacturer
-	var/manufacturer = null
+	var/manufacturer = MANUFACTURER_NONE
 
 	///Whether the gun has an internal magazine or a detatchable one. Overridden by BOLT_TYPE_NO_BOLT.
 	var/internal_magazine = FALSE
@@ -84,6 +81,42 @@
 	var/wield_delay	= 0.4 SECONDS
 	///Storing value for above
 	var/wield_time = 0
+
+	///Does this gun have a saftey and thus can toggle it?
+	var/has_safety = TRUE
+	///If the saftey on? If so, we can't fire the weapon
+	var/safety = FALSE
+	///The wording of safety. Useful for guns that have a non-standard safety system, like a revolver
+	var/safety_wording = "safety"
+	///multiplier for this gun's misfire chances. Closer to 0 is better.
+	var/safety_multiplier = 1
+
+	/// after initializing, we set the firemode to this
+	var/default_firemode = FIREMODE_SEMIAUTO
+	///Firemode index, due to code shit this is the currently selected firemode
+	var/firemode_index
+	/// Our firemodes, subtract and add to this list as needed. NOTE that the autofire component is given on init when FIREMODE_FULLAUTO is here.
+	var/list/gun_firemodes = list(FIREMODE_SEMIAUTO, FIREMODE_BURST, FIREMODE_FULLAUTO, FIREMODE_OTHER, FIREMODE_OTHER_TWO)
+	/// A acoc list that determines the names of firemodes. Use if you wanna be weird and set the name of say, FIREMODE_OTHER to "Underbarrel grenade launcher" for example.
+	var/list/gun_firenames = list(FIREMODE_SEMIAUTO = "single", FIREMODE_BURST = "burst fire", FIREMODE_FULLAUTO = "full auto", FIREMODE_OTHER = "misc. fire", FIREMODE_OTHER_TWO = "very misc. fire", FIREMODE_UNDERBARREL = "underbarrel weapon")
+	///BASICALLY: the little button you select firing modes from? this is jsut the prefix of the icon state of that. For example, if we set it as "laser", the fire select will use "laser_single" and so on.
+	var/fire_select_icon_state_prefix = ""
+	///If true, we put "safety_" before fire_select_icon_state_prefix's prefix. ex. "safety_laser_single"
+	var/adjust_fire_select_icon_state_on_safety = FALSE
+
+	///Are we firing a burst? If so, dont fire again until burst is done
+	var/currently_firing_burst = FALSE
+	///This prevents gun from firing until the coodown is done, affected by lag
+	var/current_cooldown = 0
+
+	/// how many shots per burst, Ex: most machine pistols, M90, some ARs are 3rnd burst, while others like the GAR and laser minigun are 2 round burst.
+	var/burst_size = 3
+	///The rate of fire when firing in a burst. Not the delay between bursts
+	var/burst_delay = 0.15 SECONDS
+	///The rate of fire when firing full auto and semi auto, and between bursts; for bursts its fire delay + burst_delay after every burst
+	var/fire_delay = 0.2 SECONDS
+	//Prevent the weapon from firing again while already firing
+	var/firing_burst = 0
 
 	//Used by energy based guns
 	var/obj/item/stock_parts/power_store/cell/gun/cell
@@ -119,10 +152,8 @@
 	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
 	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
 
+	build_firemodes()
 	add_seclight_point()
-	// NOVA EDIT ADDITION BEGIN - GUN SAFETIES
-	give_gun_safeties()
-	// NOVA EDIT ADDITION END
 	add_bayonet_point()
 
 /obj/item/gun/Destroy()
@@ -240,6 +271,9 @@
 		if(0 to 25)
 			. += span_boldwarning("It's falling apart!")
 
+	if(has_safety)
+		. += "The safety is [safety ? "<span class='green'>ON</span>" : "<span class='red'>OFF</span>"]. Ctrl-Click to toggle the safety."
+
 	if(manufacturer)
 		. += "<span class='notice'>It has <b>[manufacturer]</b> engraved on it.</span>"
 
@@ -254,7 +288,48 @@
 //check if there's enough ammo/energy/whatever to shoot one time
 //i.e if clicking would make it shoot
 /obj/item/gun/proc/can_shoot()
+	SIGNAL_HANDLER
+
+	if(safety)
+		return COMPONENT_CANCEL_GUN_FIRE
 	return TRUE
+
+/obj/item/gun/item_ctrl_click(mob/user)
+	. = ..()
+	if(!has_safety)
+		return
+	// only checks for first level storage e.g pockets, hands, suit storage, belts, nothing in containers
+	if(!in_contents_of(user))
+		return
+
+	if(isliving(user) && in_range(src, user))
+		toggle_safety(user)
+
+/obj/item/gun/proc/toggle_safety(mob/user, silent=FALSE)
+	safety = !safety
+
+	if(!silent)
+		playsound(user, 'sound/items/weapons/gun/general/selector.ogg', 100, TRUE)
+		user.visible_message(
+			span_notice("[user] turns the [safety_wording] on [src] [safety ? "<span class='green'>ON</span>" : "<span class='red'>OFF</span>"]."),
+			span_notice("You turn the [safety_wording] on [src] [safety ? "<span class='green'>ON</span>" : "<span class='red'>OFF</span>"]."),
+		)
+
+	update_appearance()
+
+/obj/item/gun/update_overlays()
+	. = ..()
+	if(ismob(loc) && has_safety)
+		var/mutable_appearance/safety_overlay
+		safety_overlay = mutable_appearance('nodalec/icons/obj/guns/safety.dmi')
+		if(safety)
+			safety_overlay.icon_state = "[safety_wording]-on"
+		else
+			safety_overlay.icon_state = "[safety_wording]-off"
+		. += safety_overlay
+
+#define BRAINS_BLOWN_THROW_RANGE 2
+#define BRAINS_BLOWN_THROW_SPEED 1
 
 /obj/item/gun/proc/tk_firing(mob/living/user)
 	return !user.contains(src)
@@ -480,6 +555,74 @@
 /obj/item/gun/proc/recharge_newshot()
 	return
 
+/obj/item/gun/proc/pre_fire(atom/target, mob/living/user,  message = TRUE, flag, params = null, zone_override = "", bonus_spread = 0, dual_wielded_gun = FALSE)
+	add_fingerprint(user)
+
+	// If we have a cooldown, don't do anything, obviously
+	if(current_cooldown)
+		return
+
+	//We check if the user can even use the gun, if not, we assume the user isn't alive(turrets) so we go ahead.
+	if(istype(user))
+		var/mob/living/living_user = user
+		if(!can_trigger_gun(living_user))
+			return
+
+	//If targetting the mouth, we do suicide instead.
+	if(flag)
+		if(user.zone_selected == BODY_ZONE_PRECISE_MOUTH)
+			handle_suicide(user, target, params)
+			return
+
+	//Just because we can pull the trigger doesn't mean it can fire. Mostly for safties.
+	if(!can_shoot())
+		shoot_with_empty_chamber(user)
+		return
+
+	//we then check our weapon weight vs if we are being wielded...
+	if(weapon_weight == WEAPON_VERY_HEAVY && (!wielded_fully))
+		to_chat(user, "<span class='warning'>You need a fully secure grip to fire [src]!</span>")
+		return
+
+	if(weapon_weight == WEAPON_HEAVY && (!wielded))
+		to_chat(user, "<span class='warning'>You need a more secure grip to fire [src]!</span>")
+		return
+	//If we have the pacifist trait and a chambered round, don't fire. Honestly, pacifism quirk is pretty stupid, and as such we check again in process_fire() anyways
+	if(chambered)
+		if(HAS_TRAIT(user, TRAIT_PACIFISM)) // If the user has the pacifist trait, then they won't be able to fire [src] if the round chambered inside of [src] is lethal.
+			if(chambered.harmful) // Is the bullet chambered harmful?
+				to_chat(user, "<span class='warning'>[src] is lethally chambered! You don't want to risk harming anyone...</span>")
+				return
+
+	//Dual wielding handling. Not the biggest fan of this, but it's here. Dual berettas not included
+	var/loop_counter = 0
+	if(ishuman(user) && !dual_wielded_gun)
+		var/mob/living/carbon/human/our_cowboy = user
+		for(var/obj/item/gun/found_gun in our_cowboy.held_items)
+			if(found_gun == src || found_gun.weapon_weight >= WEAPON_MEDIUM)
+				continue
+			else if(found_gun.can_trigger_gun(user))
+				bonus_spread += dual_wield_spread
+				loop_counter++
+				addtimer(CALLBACK(found_gun, TYPE_PROC_REF(/obj/item/gun, pre_fire), target, user, TRUE, params, null, bonus_spread), loop_counter)
+
+	//get current firemode
+	var/current_firemode = gun_firemodes[firemode_index]
+	//FIREMODE_OTHER and its sister directs you to another proc for special handling
+	if(current_firemode == FIREMODE_OTHER)
+		return process_other(target, user, message, flag, params, zone_override, bonus_spread)
+	if(current_firemode == FIREMODE_OTHER_TWO)
+		return process_other_two(target, user, message, flag, params, zone_override, bonus_spread)
+
+	//if all of that succeded, we finally get to process firing
+	return process_fire(target, user, TRUE, params, null, bonus_spread)
+
+/obj/item/gun/proc/process_other(atom/target, mob/living/user, message = TRUE, flag, params = null, zone_override = "", bonus_spread = 0)
+	return //use this for 'underbarrels!!
+
+/obj/item/gun/proc/process_other_two(atom/target, mob/living/user, message = TRUE, flag, params = null, zone_override = "", bonus_spread = 0)
+	return //reserved in case another fire mode is needed, if you need special behavior, put it here then call process_fire, or call process_fire and have the special behavior there
+
 /obj/item/gun/proc/process_burst(mob/living/user, atom/target, message = TRUE, params=null, zone_override = "", random_spread = 0, burst_spread_mult = 0, iteration = 0)
 	if(!user || !firing_burst)
 		firing_burst = FALSE
@@ -520,7 +663,7 @@
 	return TRUE
 
 ///returns true if the gun successfully fires
-/obj/item/gun/proc/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+/obj/item/gun/proc/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0, burst_firing = FALSE, spread_override = 0, iteration = 0)
 	var/base_bonus_spread = 0
 	if(user)
 		var/list/bonus_spread_values = list(base_bonus_spread, bonus_spread)
@@ -578,6 +721,68 @@
 	SSblackbox.record_feedback("tally", "gun_fired", 1, type)
 
 	return TRUE
+
+/obj/item/gun/proc/reset_current_cooldown()
+	current_cooldown = FALSE
+
+/obj/item/gun/proc/build_firemodes()
+	if(FIREMODE_FULLAUTO in gun_firemodes)
+		if(!GetComponent(/datum/component/automatic_fire))
+			AddComponent(/datum/component/automatic_fire, fire_delay)
+		SEND_SIGNAL(src, COMSIG_GUN_DISABLE_AUTOFIRE)
+	for(var/datum/action/item_action/toggle_firemode/old_firemode in actions)
+		old_firemode.Destroy()
+	var/datum/action/item_action/our_action
+
+	if(gun_firemodes.len > 1)
+		our_action = new /datum/action/item_action/toggle_firemode(src)
+
+	for(var/i=1, i <= gun_firemodes.len+1, i++)
+		if(default_firemode == gun_firemodes[i])
+			firemode_index = i
+			if(gun_firemodes[i] == FIREMODE_FULLAUTO)
+				SEND_SIGNAL(src, COMSIG_GUN_ENABLE_AUTOFIRE)
+			if(our_action)
+				our_action.apply_button_overlay()
+			return
+
+	firemode_index = 1
+	CRASH("default_firemode isn't in the gun_firemodes list of [src.type]!! Defaulting to 1!!")
+
+/obj/item/gun/ui_action_click(mob/user, actiontype)
+	if(istype(actiontype, /datum/action/item_action/toggle_firemode))
+		fire_select(user)
+	else
+		..()
+
+/obj/item/gun/proc/fire_select(mob/living/carbon/human/user)
+
+	//gun_firemodes = list(FIREMODE_SEMIAUTO, FIREMODE_BURST, FIREMODE_FULLAUTO, FIREMODE_OTHER)
+
+	firemode_index++
+	if(firemode_index > gun_firemodes.len)
+		firemode_index = 1 //reset to the first index if it's over the limit. Byond arrays start at 1 instead of 0, hence why its set to 1.
+
+	var/current_firemode = gun_firemodes[firemode_index]
+	if(current_firemode == FIREMODE_FULLAUTO)
+		SEND_SIGNAL(src, COMSIG_GUN_ENABLE_AUTOFIRE)
+	else
+		SEND_SIGNAL(src, COMSIG_GUN_DISABLE_AUTOFIRE)
+//wawa
+	to_chat(user, "<span class='notice'>Switched to [gun_firenames[current_firemode]].</span>")
+	playsound(user, 'sound/items/weapons/gun/general/selector.ogg', 100, TRUE)
+	update_appearance()
+	for(var/datum/action/current_action as anything in actions)
+		current_action.apply_button_overlay()
+
+/datum/action/item_action/toggle_firemode/apply_button_overlay(status_only = FALSE, force = FALSE)
+	var/obj/item/gun/our_gun = target
+
+	var/current_firemode = our_gun.gun_firemodes[our_gun.firemode_index]
+	//tldr; if we have adjust_fire_select_icon_state_on_safety as true, we append "safety_" to the prefix, otherwise nothing.
+	var/safety_prefix = "[our_gun.adjust_fire_select_icon_state_on_safety ? "[our_gun.safety ? "safety_" : ""]" : ""]"
+	button_icon_state = "[safety_prefix][our_gun.fire_select_icon_state_prefix][current_firemode]"
+	return ..()
 
 /obj/item/gun/proc/reset_semicd()
 	semicd = FALSE

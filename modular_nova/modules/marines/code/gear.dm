@@ -69,9 +69,6 @@
 	can_suppress = FALSE
 	accepted_magazine_type = /obj/item/ammo_box/magazine/internal/shot/as2/ubsg
 
-/obj/item/gun/ballistic/shotgun/automatic/as2/ubsg/give_gun_safeties()
-	return
-
 /obj/item/ammo_box/magazine/internal/shot/as2/ubsg
 	max_ammo = 3
 	ammo_type = /obj/item/ammo_casing/shotgun/buckshot

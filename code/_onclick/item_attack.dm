@@ -83,6 +83,15 @@
 	if(SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_SELF_SECONDARY, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
 
+///Intended for interactions with guns, like racking
+/obj/item/proc/unique_action(mob/living/user)
+
+///Called before unique action, if any other associated items should do a unique action or override it.
+/obj/item/proc/pre_unique_action(mob/living/user)
+	if(SEND_SIGNAL(src,COMSIG_CLICK_UNIQUE_ACTION,user) & OVERIDE_UNIQUE_ACTION)
+		return TRUE
+	return FALSE //return true if the proc should end here
+
 /**
  * Called on the item before it hits something
  *

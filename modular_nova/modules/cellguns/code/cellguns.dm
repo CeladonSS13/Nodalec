@@ -11,9 +11,6 @@
 
 	automatic_charge_overlays = FALSE //This is needed because Cell based guns use their own custom overlay system.
 
-/obj/item/gun/energy/cell_loaded/give_gun_safeties()
-	return
-
 /obj/item/gun/energy/cell_loaded/examine(mob/user)
 	. = ..()
 	if(maxcells)

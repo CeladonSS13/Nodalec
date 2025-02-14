@@ -53,8 +53,6 @@
 	. = ..()
 	chambered = new /obj/item/ammo_casing/syringegun/dart(src)
 
-/obj/item/gun/syringe/smartdart/give_gun_safeties()
-	return
 
 /obj/item/gun/syringe/smartdart/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(istype(tool, /obj/item/reagent_containers/syringe/smartdart))

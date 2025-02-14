@@ -21,7 +21,7 @@
 	C.toggle_throw_mode()
 	return TRUE
 
-/datum/keybinding/carbon/hold_throw_mode
+/*/datum/keybinding/carbon/hold_throw_mode
 	hotkey_keys = list("Space")
 	name = "hold_throw_mode"
 	full_name = "Hold throw mode"
@@ -42,6 +42,7 @@
 		return
 	var/mob/living/carbon/carbon_user = user.mob
 	carbon_user.throw_mode_off(THROW_MODE_HOLD)
+*/
 /datum/keybinding/carbon/give
 	hotkey_keys = list("G")
 	name = "Give_Item"

@@ -9,6 +9,8 @@
 	drop_sound = 'sound/items/handling/gun/gun_drop.ogg'
 	sound_vary = TRUE
 
+	fire_select_icon_state_prefix = "laser_"
+
 	///sound of racking
 	var/rack_sound = 'sound/items/weapons/gun/general/bolt_rack.ogg'
 	///volume of racking
@@ -530,7 +532,7 @@
 		return
 	return ..()
 
-/obj/item/gun/ballistic/attack_self(mob/living/user)
+/obj/item/gun/ballistic/unique_action(mob/living/user)
 	if(!internal_magazine && magazine)
 		if(!magazine.ammo_count())
 			eject_magazine(user)
@@ -598,9 +600,6 @@
 	if(magazine)
 		rounds.Add(magazine.ammo_list())
 	return rounds
-
-#define BRAINS_BLOWN_THROW_RANGE 3
-#define BRAINS_BLOWN_THROW_SPEED 1
 
 /obj/item/gun/ballistic/suicide_act(mob/living/user)
 	var/obj/item/organ/brain/B = user.get_organ_slot(ORGAN_SLOT_BRAIN)
@@ -744,7 +743,7 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 		return
 	switch(bolt_type)
 		if(BOLT_TYPE_NO_BOLT) //emptying the revolver cylinder
-			attack_self()
+			unique_action()
 			return
 		if(BOLT_TYPE_OPEN) //emptying the chamber of an automatic weapon, because rack() doesn't do this to it
 			handle_chamber(chamber_next_round = FALSE)
