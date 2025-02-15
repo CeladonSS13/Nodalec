@@ -191,14 +191,12 @@ GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
 #define EMBED_CHANCE_SPEED_BONUS 10
 
 //Gun weapon weight
-/// Allows you to dual wield this gun and your offhand gun
+/// Default normal ol' gun. Akimboable, one handed.
 #define WEAPON_LIGHT 1
-/// Does not allow you to dual wield with this gun and your offhand gun
+/// Can't be used akimbo, but only needs one hand to fire
 #define WEAPON_MEDIUM 2
-/// You must wield the gun to fire this gun
+/// Can't be used akimbo, and needs two hands to fire
 #define WEAPON_HEAVY 3
-/// You must FULLY wield (wait the full wield delay) the gun to fire this gun
-#define WEAPON_VERY_HEAVY 4
 
 //Gun trigger guards
 #define TRIGGER_GUARD_ALLOW_ALL -1
@@ -374,34 +372,6 @@ GLOBAL_LIST_INIT(leg_zones, list(BODY_ZONE_R_LEG, BODY_ZONE_L_LEG))
 /// Calculates the amount of burn force when applying this much energy to a mob via electrocution from an energy source.
 #define ELECTROCUTE_DAMAGE(energy) (energy >= 1 KILO JOULES ? clamp(20 + round(energy / JOULES_PER_DAMAGE), 20, 195) + rand(-5,5) : 0)
 
-//slowdown defines
-#define NO_SLOWDOWN 0.0
-#define LIGHT_PISTOL_SLOWDOWN 0.05
-#define PISTOL_SLOWDOWN 0.1
-#define REVOLVER_SLOWDOWN 0.15
-#define HEAVY_REVOLVER_SLOWDOWN 0.2
-#define PDW_SLOWDOWN 0.25
-#define SMG_SLOWDOWN 0.3
-#define SHOTGUN_SLOWDOWN 0.4
-#define HEAVY_SHOTGUN_SLOWDOWN 0.45
-#define LIGHT_RIFLE_SLOWDOWN 0.45
-#define RIFLE_SLOWDOWN 0.55
-#define HEAVY_RIFLE_SLOWDOWN 0.6
-#define DMR_SLOWDOWN 0.6
-#define SAW_SLOWDOWN 0.7
-#define SNIPER_SLOWDOWN 0.9
-#define HMG_SLOWDOWN 1
-#define AMR_SLOWDOWN 1
-
-
-//laser slowdown
-#define LASER_PISTOL_SLOWDOWN 0.05
-#define LASER_SMG_SLOWDOWN 0.2
-#define LASER_RIFLE_SLOWDOWN 0.35
-#define HEAVY_LASER_RIFLE_SLOWDOWN 0.45
-#define LASER_SNIPER_SLOWDOWN 0.6
-
-
 //gun manufacturers
 #define MANUFACTURER_NONE null
 #define MANUFACTURER_SHARPLITE "the Sharplite Defense logo"
@@ -421,10 +391,3 @@ GLOBAL_LIST_INIT(leg_zones, list(BODY_ZONE_R_LEG, BODY_ZONE_L_LEG))
 #define MANUFACTURER_PGF "the Etherbor Industries emblem"
 #define MANUFACTURER_IMPORT "Lanchester Import Co."
 #define MANUFACTURER_SERENE "the Serene Outdoors logo"
-
-#define FIREMODE_SEMIAUTO "single"
-#define FIREMODE_BURST "burst"
-#define FIREMODE_FULLAUTO "auto"
-#define FIREMODE_OTHER "other"
-#define FIREMODE_OTHER_TWO "other2"
-#define FIREMODE_UNDERBARREL "underbarrel"

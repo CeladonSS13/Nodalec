@@ -9,8 +9,6 @@
 	drop_sound = 'sound/items/handling/gun/gun_drop.ogg'
 	sound_vary = TRUE
 
-	fire_select_icon_state_prefix = "laser_"
-
 	///sound of racking
 	var/rack_sound = 'sound/items/weapons/gun/general/bolt_rack.ogg'
 	///volume of racking
