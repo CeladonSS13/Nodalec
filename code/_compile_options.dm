@@ -166,7 +166,7 @@
 		#warn You can do this by running tgui-build.cmd from the bin directory.
 	#endif
 #else
-	#if !defined(CBT) && defined(SPACEMAN_DMM)		// NODALEC_SET_TURN_OFF !
+	#if !defined(CBT) && !defined(SPACEMAN_DMM)
 		#warn Building with Dream Maker is no longer supported and will result in errors.
 		#warn In order to build, run BUILD.cmd in the root directory.
 		#warn Consider switching to VSCode editor instead, where you can press Ctrl+Shift+B to build.
