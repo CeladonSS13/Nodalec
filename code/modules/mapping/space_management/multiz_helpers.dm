@@ -1,11 +1,10 @@
 /proc/get_step_multiz(ref, dir)
-	var/turf/us = get_turf(ref)
 	if(dir & UP)
 		dir &= ~UP
-		return get_step(GET_TURF_ABOVE(us), dir)
+		return get_step(SSmapping.get_turf_above(get_turf(ref)), dir)
 	if(dir & DOWN)
 		dir &= ~DOWN
-		return get_step(GET_TURF_BELOW(us), dir)
+		return get_step(SSmapping.get_turf_below(get_turf(ref)), dir)
 	return get_step(ref, dir)
 
 /proc/get_dir_multiz(turf/us, turf/them)
@@ -44,3 +43,11 @@
 		us = next
 		next = GET_TURF_ABOVE(us)
 	return us
+
+// [NODALEC-ADD]
+/datum/controller/subsystem/mapping/get_turf_above(turf/T)
+	return SSovermap.calculate_turf_above(T)
+
+/datum/controller/subsystem/mapping/get_turf_below(turf/T)
+	return SSovermap.calculate_turf_below(T)
+// [/NODALEC-ADD]

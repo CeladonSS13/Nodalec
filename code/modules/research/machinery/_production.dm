@@ -107,8 +107,9 @@
 
 /// Updates the list of designs this fabricator can print.
 /obj/machinery/rnd/production/proc/update_designs()
-	PROTECTED_PROC(TRUE)
-
+// [NODALEC-EDIT]
+//	PROTECTED_PROC(TRUE)
+// [/NODALEC-EDIT]
 	var/previous_design_count = cached_designs.len
 
 	cached_designs.Cut()

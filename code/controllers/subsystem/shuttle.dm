@@ -127,11 +127,6 @@ SUBSYSTEM_DEF(shuttle)
 	/// The existing shuttle associated with the selected shuttle map_template.
 	var/obj/docking_port/mobile/existing_shuttle
 
-	/// The shuttle map_template of the shuttle we want to preview.
-	var/datum/map_template/shuttle/preview_template
-	/// The docking port associated to the preview_template that's currently being previewed.
-	var/obj/docking_port/mobile/preview_shuttle
-
 	/// The turf reservation for the current previewed shuttle.
 	var/datum/turf_reservation/preview_reservation
 
@@ -780,9 +775,6 @@ SUBSYSTEM_DEF(shuttle)
 
 	existing_shuttle = SSshuttle.existing_shuttle
 
-	preview_shuttle = SSshuttle.preview_shuttle
-	preview_template = SSshuttle.preview_template
-
 	preview_reservation = SSshuttle.preview_reservation
 
 /datum/controller/subsystem/shuttle/proc/is_in_shuttle_bounds(atom/A)
@@ -859,139 +851,95 @@ SUBSYSTEM_DEF(shuttle)
 	QDEL_LIST(remove_images)
 
 /**
- * Loads a shuttle template and sends it to a given destination port, optionally replacing the existing shuttle
+ * Загружает корабль из шаблона в выбранный порт, если порт не указан - стыкуем шаттл
+ *	к сгенерированному транзитному порту
  *
- * Arguments:
- * * loading_template - The shuttle template to load
- * * destination_port - The station docking port to send the shuttle to once loaded
- * * replace - Whether to replace the shuttle or create a new one
+ * Аргументы:
+ * * loading_template - шаблон шаттла для загрузки
+ * * destination_port - порт к которому необходимо пристыковать шаттл после загрузки
 */
-/datum/controller/subsystem/shuttle/proc/action_load(datum/map_template/shuttle/loading_template, obj/docking_port/stationary/destination_port, replace = FALSE)
-	// Check for an existing preview
-	if(preview_shuttle && (loading_template != preview_template))
-		preview_shuttle.jumpToNullSpace()
-		preview_shuttle = null
-		preview_template = null
-		QDEL_NULL(preview_reservation)
+/datum/controller/subsystem/shuttle/proc/action_load(datum/map_template/shuttle/loading_template, obj/docking_port/stationary/destination_port)
+	var/obj/docking_port/mobile/new_shuttle = load_template(loading_template)
+	if (!destination_port)
+		WARNING("Не был указан порт для стыковки, стыкуем корабль к сгенерированному транзитному порту")
+	else
+		if(!new_shuttle.check_dock(destination_port))
+			qdel(new_shuttle, TRUE)
+			CRASH("Шаттл не может быть пристыкован к указанному порту, прекращаем загрузку...")
 
-	if(!preview_shuttle)
-		load_template(loading_template)
-		preview_template = loading_template
+		new_shuttle.initiate_docking(destination_port)
+	return new_shuttle
 
-	// get the existing shuttle information, if any
-	var/timer = 0
-	var/mode = SHUTTLE_IDLE
-	var/obj/docking_port/stationary/dest_dock
-
-	if(istype(destination_port))
-		dest_dock = destination_port
-	else if(existing_shuttle && replace)
-		timer = existing_shuttle.timer
-		mode = existing_shuttle.mode
-		dest_dock = existing_shuttle.get_docked()
-
-	if(!dest_dock)
-		dest_dock = generate_transit_dock(preview_shuttle)
-
-	if(!dest_dock)
-		CRASH("No dock found for preview shuttle ([preview_template.name]), aborting.")
-
-	var/result = preview_shuttle.canDock(dest_dock)
-	// truthy value means that it cannot dock for some reason
-	// but we can ignore the someone else docked error because we'll
-	// be moving into their place shortly
-	if((result != SHUTTLE_CAN_DOCK) && (result != SHUTTLE_SOMEONE_ELSE_DOCKED))
-		CRASH("Template shuttle [preview_shuttle] cannot dock at [dest_dock] ([result]).")
-
-	if(existing_shuttle && replace)
-		existing_shuttle.jumpToNullSpace()
-
-	preview_shuttle.register(replace)
-	var/list/force_memory = preview_shuttle.movement_force
-	preview_shuttle.movement_force = list("KNOCKDOWN" = 0, "THROW" = 0)
-	preview_shuttle.mode = SHUTTLE_PREARRIVAL//No idle shuttle moving. Transit dock get removed if shuttle moves too long.
-	preview_shuttle.initiate_docking(dest_dock)
-	preview_shuttle.movement_force = force_memory
-
-	. = preview_shuttle
-
-	// Shuttle state involves a mode and a timer based on world.time, so
-	// plugging the existing shuttles old values in works fine.
-	preview_shuttle.timer = timer
-	preview_shuttle.mode = mode
-
-	preview_shuttle.postregister(replace)
-
-	// TODO indicate to the user that success happened, rather than just
-	// blanking the modification tab
-	preview_shuttle = null
-	preview_template = null
-	existing_shuttle = null
-	selected = null
-	QDEL_NULL(preview_reservation)
 
 /**
- * Loads a shuttle template into the transit Z level, usually referred to elsewhere in the code as a shuttle preview.
- * Does not register the shuttle so it can't be used yet, that's handled in action_load()
+ * Загружает шаттл из приложенного шаблона
  *
- * Arguments:
- * * loading_template - The shuttle template to load
+ * Аргументы:
+ * * template - шаблон шаттла для загрузки
  */
-/datum/controller/subsystem/shuttle/proc/load_template(datum/map_template/shuttle/loading_template)
+/datum/controller/subsystem/shuttle/proc/load_template(datum/map_template/shuttle/template)
 	. = FALSE
-	// Load shuttle template to a fresh block reservation.
-	preview_reservation = SSmapping.request_turf_block_reservation(
-		loading_template.width,
-		loading_template.height,
-		1,
-		reservation_type = /datum/turf_reservation/transit,
+	var/datum/map_zone/loading_mapzone = SSmapping.create_map_zone("Shuttle Loading Zone")
+	var/datum/virtual_level/loading_zone = SSmapping.create_virtual_level(
+		"[template.name] Loading Level", list(ZTRAIT_RESERVED = TRUE), loading_mapzone, template.width, template.height, ALLOCATION_FREE
 	)
-	if(!preview_reservation)
+
+	if(!loading_zone)
 		CRASH("failed to reserve an area for shuttle template loading")
-	var/turf/bottom_left = preview_reservation.bottom_left_turfs[1]
-	loading_template.load(bottom_left, centered = FALSE, register = FALSE)
+	loading_zone.fill_in(turf_type = /turf/open/space/transit/south)
 
-	var/affected = loading_template.get_affected_turfs(bottom_left, centered=FALSE)
+	var/turf/bottom_left = locate(loading_zone.low_x, loading_zone.low_y, loading_zone.z_value)
+	if(!template.load(bottom_left, centered = FALSE, register = FALSE))
+		return
 
+	var/affected = template.get_affected_turfs(bottom_left, centered=FALSE)
+	var/obj/docking_port/mobile/new_shuttle
 	var/found = 0
-	// Search the turfs for docking ports
-	// - We need to find the mobile docking port because that is the heart of
-	//   the shuttle.
-	// - We need to check that no additional ports have slipped in from the
-	//   template, because that causes unintended behaviour.
+	// Обыскиваем turf'ы на наличие стыковочных портов
+	// - Необходимо найти порт, потому что это центр шаттла
+	// - Необходимо проверить что не затесались лишние порты в шаблон,
+	//   ибо это вызывает непредсказуемое поведение
 	for(var/affected_turfs in affected)
 		for(var/obj/docking_port/port in affected_turfs)
 			if(istype(port, /obj/docking_port/mobile))
 				found++
 				if(found > 1)
 					qdel(port, force=TRUE)
-					log_mapping("Shuttle Template [loading_template.mappath] has multiple mobile docking ports.")
+					log_mapping("Shuttle Template [template.mappath] has multiple mobile docking ports.")
 				else
-					preview_shuttle = port
+					new_shuttle = port
 			if(istype(port, /obj/docking_port/stationary))
-				log_mapping("Shuttle Template [loading_template.mappath] has a stationary docking port.")
-	if(!found)
-		var/msg = "load_template(): Shuttle Template [loading_template.mappath] has no mobile docking port. Aborting import."
+				log_mapping("Shuttle Template [template.mappath] has a stationary docking port.")
+	if(!new_shuttle)
+		var/msg = "load_template(): Shuttle Template [template.mappath] has no mobile docking port. Aborting import."
 		for(var/affected_turfs in affected)
 			var/turf/T0 = affected_turfs
 			T0.empty()
 
 		message_admins(msg)
 		WARNING(msg)
-		return
-	//Everything fine
-	loading_template.post_load(preview_shuttle)
-	return TRUE
 
-/**
- * Removes the preview_shuttle from the transit Z-level
- */
-/datum/controller/subsystem/shuttle/proc/unload_preview()
-	if(preview_shuttle)
-		preview_shuttle.jumpToNullSpace()
-	preview_shuttle = null
-	if(preview_reservation)
-		QDEL_NULL(preview_reservation)
+	var/obj/docking_port/mobile/transit_dock = generate_transit_dock(new_shuttle)
+
+	if(!transit_dock)
+		qdel(src, TRUE)
+		CRASH("Не смогли пристыковать/создать транзитный порт для стыковки шаблона шаттла \"([template.name])\", отменяем загрузку...")
+
+	if(!new_shuttle.check_dock(transit_dock))
+		qdel(src, TRUE)
+		CRASH("Шаблон шаттла \"[new_shuttle]\" не может пристыковаться к \"[transit_dock]\".")
+
+	new_shuttle.initiate_docking(transit_dock)
+
+	var/area/fill_area = GLOB.areas_by_type[/area/space]
+	loading_zone.fill_in(turf_type = /turf/open/space/transit/south, area_override = fill_area ? fill_area : /area/space)
+	QDEL_NULL(loading_zone)
+
+	// Всё прошло хорошо
+	template.post_load(new_shuttle)
+	new_shuttle.register()
+
+	return new_shuttle
 
 /datum/controller/subsystem/shuttle/ui_state(mob/user)
 	return GLOB.admin_state
@@ -1121,18 +1069,6 @@ SUBSYSTEM_DEF(shuttle)
 					message_admins("[key_name_admin(usr)] loaded [mdp] with the shuttle manipulator.")
 					log_admin("[key_name(usr)] loaded [mdp] with the shuttle manipulator.</span>")
 					SSblackbox.record_feedback("text", "shuttle_manipulator", 1, "[mdp.name]")
-				shuttle_loading = FALSE
-
-		if("preview")
-			//if(preview_shuttle && (loading_template != preview_template))
-			if(S && !shuttle_loading)
-				. = TRUE
-				shuttle_loading = TRUE
-				unload_preview()
-				load_template(S)
-				if(preview_shuttle)
-					preview_template = S
-					user.forceMove(get_turf(preview_shuttle))
 				shuttle_loading = FALSE
 
 		if("replace")

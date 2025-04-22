@@ -24,15 +24,10 @@
 	var/delta_width = 0
 	for(var/id in ids)
 		var/datum/map_template/shuttle/our_template = SSmapping.shuttle_templates[id]
-		// We do a standard load here so any errors will properly runtimes
-		var/obj/docking_port/mobile/ship = SSshuttle.action_load(our_template, port)
-		if(ship)
-			ship.jumpToNullSpace()
-			ship = null
 		// Yes this is very hacky, but we need to both allow loading a template that's too big to be an error state
 		// And actually get the sizing information from every shuttle
 		SSshuttle.load_template(our_template)
-		var/obj/docking_port/mobile/theoretical_ship = SSshuttle.preview_shuttle
+		var/obj/docking_port/mobile/theoretical_ship = SSshuttle.action_load(our_template, port)
 		if(theoretical_ship)
 			height = max(theoretical_ship.height, height)
 			width = max(theoretical_ship.width, width)
