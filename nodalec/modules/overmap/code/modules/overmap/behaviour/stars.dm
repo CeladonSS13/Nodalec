@@ -1,8 +1,8 @@
 /datum/overmap/star
-	var/name = "Star"
-	var/desc = "A star."
+	name = "Star"
+	desc = "A star."
 	var/icon = 'nodalec/modules/overmap/icons/effects/overmap.dmi'
-	var/icon_state = "star1"
+	icon_state = "star1"
 
 	var/colours_to_pick = 1
 	var/colours_and_descs = list(

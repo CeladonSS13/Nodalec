@@ -42,6 +42,7 @@
 	/// Can coupons target this pack? If so, how rarely?
 	var/discountable = SUPPLY_PACK_NOT_DISCOUNTABLE
 
+
 /datum/supply_pack/New()
 	id = type
 
