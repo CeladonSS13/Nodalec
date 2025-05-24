@@ -24,6 +24,8 @@ SUBSYSTEM_DEF(overmap)
 	var/list/turf/radius_tiles = list()
 	/// List of all events
 	var/list/events = list()
+		///List of spawned outposts. The default spawn location is the first index.
+	var/list/outposts
 
 	var/size = OVERMAP_SIZE
 
