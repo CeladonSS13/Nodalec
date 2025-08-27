@@ -1,6 +1,5 @@
 ///Map generation defines
 #define BIOME_LOWEST_HUMIDITY "lowest_humidity"
-#define BIOME_MEDIUM_HUMIDITY "medium_humidity"
 #define BIOME_HIGHEST_HUMIDITY "highest_humidity"
 
 #define BIOME_COLDEST "coldest"

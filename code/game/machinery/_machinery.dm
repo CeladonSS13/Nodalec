@@ -581,7 +581,7 @@
 
 ///Called when we want to change the value of the `is_operational` variable. Boolean.
 /obj/machinery/proc/set_is_operational(new_value)
-	SHOULD_NOT_OVERRIDE(TRUE)
+	// SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(new_value == is_operational)
 		return

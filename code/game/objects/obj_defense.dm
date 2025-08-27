@@ -193,7 +193,7 @@
  * * disassembled - TRUE means we cleanly took this atom apart using tools. FALSE means this was destroyed in a violent way
  */
 /obj/proc/deconstruct(disassembled = TRUE)
-	SHOULD_NOT_OVERRIDE(TRUE)
+	// SHOULD_NOT_OVERRIDE(TRUE)
 
 	//allow objects to deconstruct themselves
 	handle_deconstruct(disassembled)
