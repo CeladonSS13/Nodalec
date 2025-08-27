@@ -77,11 +77,11 @@
 		return
 
 	if(inserted_gun.internal_magazine)
-		var/obj/item/ammo_box/magazine/internal/mag = inserted_gun.mag_type
+		var/obj/item/ammo_box/magazine/internal/mag = inserted_gun.accepted_magazine_type
 		ammo_type = initial(mag.ammo_type)
 		total_ammo = rand(3,10)
 	else
-		ammo_type = inserted_gun.mag_type
+		ammo_type = inserted_gun.accepted_magazine_type
 		total_ammo = pick(1,2)
 	if(do_after(user, 40, target = src))
 		while(total_ammo != 0)
@@ -92,7 +92,7 @@
 		desc = "An ammunition printer covered in rust. It's out of juice!"
 		used = TRUE
 
-/obj/structure/ammo_printer/AltClick(mob/user)
+/obj/structure/ammo_printer/click_alt(mob/user)
 	if(inserted_gun)
 		inserted_gun.forceMove(src.loc)
 		inserted_gun = null

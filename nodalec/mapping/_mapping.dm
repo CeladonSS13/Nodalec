@@ -104,6 +104,25 @@
 /datum/controller/subsystem/mapping/get_station_center()
 	return SSovermap.overmap_centre || locate(OVERMAP_LEFT_SIDE_COORD, OVERMAP_NORTH_SIDE_COORD, OVERMAP_Z_LEVEL)
 
+/// Attempt to get the turf below the provided one according to Z traits
+/datum/controller/subsystem/mapping/proc/get_turf_below(turf/T)
+	if (!T || !length(multiz_levels))
+		return
+	var/offset = multiz_levels[T.z]["[DOWN]"]
+	if (!offset)
+		return
+	return locate(T.x, T.y, T.z - offset)
+
+/// Attempt to get the turf above the provided one according to Z traits
+/datum/controller/subsystem/mapping/proc/get_turf_above(turf/T)
+	if (!T || !length(multiz_levels))
+		return
+
+	var/offset = multiz_levels[T.z]["[UP]"]
+	if (!offset)
+		return
+	return locate(T.x, T.y, T.z + offset)
+
 /datum/controller/subsystem/mapping/get_turf_above(turf/T)
 	return SSovermap.calculate_turf_above(T)
 

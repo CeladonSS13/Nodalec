@@ -1,3 +1,3 @@
 /obj/machinery/rnd/production/Initialize(mapload)
-	charges_tax = FALSE
+	// charges_tax = FALSE
 	return ..()
