@@ -166,10 +166,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/cryopod, 32)
 	var/quiet = FALSE
 	/// Has the occupant been tucked in?
 	var/tucked = FALSE
-	/// If this cryopod should despawn the occupant to the ghost cafe
-	var/despawn_to_ghostcafe
-	/// The timerid of the cryo countdown, so we can stop it if the mob leaves the pod.
-	var/timerid
+	// Корабль которому принадлежит
+	var/obj/docking_port/mobile/voidcrew/linked_ship
 
 /obj/machinery/cryopod/quiet
 	quiet = TRUE
@@ -189,6 +187,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/cryopod, 32)
 /obj/machinery/cryopod/Destroy()
 	GLOB.valid_cryopods -= src
 	control_computer_weakref = null
+	linked_ship?.spawn_points -= src
+	linked_ship = null
 	return ..()
 
 /obj/machinery/cryopod/proc/find_control_computer(urgent = FALSE)
@@ -585,6 +585,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/cryopod/prison, 18)
 	. = ..()
 	// Flick the pod for a second when user enters
 	flick("prisonpod-open", src)
+
+/obj/machinery/cryopod/connect_to_shuttle(mapload, obj/docking_port/mobile/voidcrew/port, obj/docking_port/stationary/dock)
+	. = ..()
+	linked_ship = port
+	linked_ship.spawn_points += src
 
 // Wake-up notifications
 
