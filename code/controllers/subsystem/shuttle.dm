@@ -1081,7 +1081,8 @@ SUBSYSTEM_DEF(shuttle)
 				. = TRUE
 				shuttle_loading = TRUE
 				// If successful, returns the mobile docking port
-				var/obj/docking_port/mobile/mdp = action_load(S, replace = TRUE)
+				// var/obj/docking_port/mobile/mdp = action_load(S, replace = TRUE)
+				var/obj/docking_port/mobile/mdp = action_load(S)
 				if(mdp)
 					user.forceMove(get_turf(mdp))
 					message_admins("[key_name_admin(usr)] load/replaced [mdp] with the shuttle manipulator.")

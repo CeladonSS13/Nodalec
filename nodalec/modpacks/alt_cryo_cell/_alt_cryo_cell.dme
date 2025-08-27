@@ -1,0 +1,8 @@
+#ifndef MODPACK_NODALEC_ALT_CRYO_CELL
+#define MODPACK_NODALEC_ALT_CRYO_CELL
+
+#include "_alt_cryo_cell.dm"
+
+#include "code\cryo_alt.dm"
+
+#endif

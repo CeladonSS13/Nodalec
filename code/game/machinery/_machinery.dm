@@ -185,7 +185,7 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/LateInitialize()
-	SHOULD_NOT_OVERRIDE(TRUE)
+	// SHOULD_NOT_OVERRIDE(TRUE) // отключено ANC
 	post_machine_initialize()
 
 /**

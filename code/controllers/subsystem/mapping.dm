@@ -12,7 +12,7 @@ SUBSYSTEM_DEF(mapping)
 	var/list/map_templates = list()
 
 	var/list/ruins_templates = list()
-
+	var/list/ruin_types_list = list()
 	///List of ruins, separated by their theme
 	var/list/themed_ruins = list()
 
@@ -21,6 +21,8 @@ SUBSYSTEM_DEF(mapping)
 	var/list/shuttle_templates = list()
 	var/list/shelter_templates = list()
 	var/list/holodeck_templates = list()
+
+	var/list/outpost_templates = list()
 
 	var/list/areas_in_z = list()
 	/// List of z level (as number) -> plane offset of that z level
@@ -349,26 +351,20 @@ Used by the AI doomsday and the self-destruct nuke.
 /datum/controller/subsystem/mapping/Recover()
 	flags |= SS_NO_INIT
 	initialized = SSmapping.initialized
-	map_templates = SSmapping.map_templates
-	ruins_templates = SSmapping.ruins_templates
 
-	for (var/theme in SSmapping.themed_ruins)
-		themed_ruins[theme] = SSmapping.themed_ruins[theme]
+	map_templates = SSmapping.map_templates
+
+	ruins_templates = SSmapping.ruins_templates
+	ruin_types_list = SSmapping.ruins_templates
+	ruin_types_list = SSmapping.ruin_types_list
 
 	shuttle_templates = SSmapping.shuttle_templates
 	shelter_templates = SSmapping.shelter_templates
-	unused_turfs = SSmapping.unused_turfs
-	turf_reservations = SSmapping.turf_reservations
-	used_turfs = SSmapping.used_turfs
 	holodeck_templates = SSmapping.holodeck_templates
-	areas_in_z = SSmapping.areas_in_z
 
-	current_map = SSmapping.current_map
-	clearing_reserved_turfs = SSmapping.clearing_reserved_turfs
+	outpost_templates = SSmapping.outpost_templates
 
 	z_list = SSmapping.z_list
-	multiz_levels = SSmapping.multiz_levels
-	loaded_lazy_templates = SSmapping.loaded_lazy_templates
 
 #define INIT_ANNOUNCE(X) to_chat(world, span_boldannounce("[X]"), MESSAGE_TYPE_DEBUG); log_world(X)
 /datum/controller/subsystem/mapping/proc/LoadGroup(list/errorList, name, path, files, list/traits, list/default_traits, silent = FALSE, height_autosetup = TRUE)
@@ -518,6 +514,7 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 	preloadShuttleTemplates()
 	preloadShelterTemplates()
 	preloadHolodeckTemplates()
+	preloadOutpostTemplates()
 
 /datum/controller/subsystem/mapping/proc/preloadRuinTemplates()
 	// Still supporting bans by filename
@@ -613,6 +610,12 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 	if(!away_level)
 		message_admins("Loading [away_name] failed!")
 		return
+
+/datum/controller/subsystem/mapping/proc/preloadOutpostTemplates()
+	for(var/datum/map_template/outpost/outpost_type as anything in subtypesof(/datum/map_template/outpost))
+		var/datum/map_template/outpost/outpost_template = new outpost_type()
+		outpost_templates[outpost_template.type] = outpost_template
+		map_templates[outpost_template.name] = outpost_template
 
 /// Adds a new reservation z level. A bit of space that can be handed out on request
 /// Of note, reservations default to transit turfs, to make their most common use, shuttles, faster

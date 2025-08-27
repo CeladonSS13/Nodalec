@@ -42,6 +42,12 @@
 	/// Can coupons target this pack? If so, how rarely?
 	var/discountable = SUPPLY_PACK_NOT_DISCOUNTABLE
 
+	var/datum/faction/faction
+	//what's the discount for buyers in our faction.
+	var/faction_discount = 15
+	//are we locked to one faction and its subgroups
+	var/faction_locked = FALSE
+
 /datum/supply_pack/New()
 	id = type
 
