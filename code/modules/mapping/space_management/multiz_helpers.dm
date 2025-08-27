@@ -44,8 +44,10 @@
 		next = GET_TURF_ABOVE(us)
 	return us
 
+// [NODALEC-ADD]
 /datum/controller/subsystem/mapping/get_turf_above(turf/T)
 	return SSovermap.calculate_turf_above(T)
 
 /datum/controller/subsystem/mapping/get_turf_below(turf/T)
 	return SSovermap.calculate_turf_below(T)
+// [/NODALEC-ADD]
