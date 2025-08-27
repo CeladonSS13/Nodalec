@@ -183,9 +183,9 @@
 	flora_spawn_chance = 30
 	mob_spawn_chance = 5
 	mob_spawn_list = list(
-		/mob/living/simple_animal/hostile/blob/blobbernaut/independent/wasteland = 1,
+		/mob/living/basic/blob_minion/blobbernaut = 1,
 		/mob/living/simple_animal/hostile/asteroid/basilisk/watcher/magmawing/wasteland = 4,
-		/mob/living/simple_animal/hostile/asteroid/goldgrub = 3,
+		/mob/living/basic/mining/goldgrub = 3,
 		/mob/living/simple_animal/hostile/asteroid/hivelord/legion/wasteland = 3,
 		/obj/structure/spawner/ice_moon/demonic_portal/blobspore = 1,
 		/obj/structure/spawner/ice_moon/demonic_portal/hivebot = 1

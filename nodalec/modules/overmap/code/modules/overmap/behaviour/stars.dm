@@ -1,7 +1,7 @@
 /datum/overmap/star
 	var/name = "Star"
 	var/desc = "A star."
-	var/icon = 'voidcrew/modules/overmap/icons/effects/overmap.dmi'
+	var/icon = 'nodalec/modules/overmap/icons/effects/overmap.dmi'
 	var/icon_state = "star1"
 
 	var/colours_to_pick = 1
@@ -26,7 +26,7 @@
 	var/pixel_w
 
 /datum/overmap/star/medium
-	icon = 'voidcrew/modules/overmap/icons/effects/overmap_large.dmi'
+	icon = 'nodalec/modules/overmap/icons/effects/overmap_large.dmi'
 	icon_state = "star2"
 
 	bound_height = 64
@@ -43,7 +43,7 @@
 	)
 
 /datum/overmap/star/big
-	icon = 'voidcrew/modules/overmap/icons/effects/overmap_larger.dmi'
+	icon = 'nodalec/modules/overmap/icons/effects/overmap_larger.dmi'
 	icon_state = "star3"
 
 	bound_height = 96

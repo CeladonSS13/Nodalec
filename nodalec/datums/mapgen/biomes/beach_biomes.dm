@@ -57,7 +57,7 @@
 		/obj/structure/fluff/beach_umbrella = 20,
 		/obj/structure/fluff/beach_umbrella/engine = 18,
 		/obj/item/storage/cans/sixbeer = 2,
-		/obj/item/clothing/mask/cigarette/rollie/cannabis = 2,
+		/obj/item/cigarette/rollie/cannabis = 2,
 		/obj/item/clothing/under/shorts/purple = 4,
 		/obj/item/clothing/under/shorts/red = 4
 	)
@@ -133,8 +133,8 @@
 		/obj/structure/spawner/cave/beach = 20,
 		/obj/structure/fermenting_barrel = 10,
 		/obj/vehicle/ridden/lavaboat/dragon = 1,
-		/obj/vehicle/ridden/atv/beach = 1,
-		/obj/machinery/jukebox/disco/beach = 1,
+		/obj/vehicle/ridden/atv = 1,
+		/obj/machinery/jukebox/disco = 1,
 		///obj/effect/spawner/bundle/costume/mafia/white = 1,
 		///obj/machinery/vending/boozeomat/all_access/beach = 1
 	)
@@ -162,5 +162,5 @@
 	mob_spawn_list = list(
 		/mob/living/simple_animal/butterfly = 1,
 		/mob/living/simple_animal/slime/pet = 1,
-		/mob/living/simple_animal/hostile/lightgeist = 1
+		/mob/living/basic/lightgeist = 1
 	)

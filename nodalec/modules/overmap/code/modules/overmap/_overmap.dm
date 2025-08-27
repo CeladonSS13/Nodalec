@@ -1,7 +1,7 @@
 /obj/structure/overmap
 	name = "overmap object"
 	desc = "An unknown celestial object."
-	icon = 'voidcrew/modules/overmap/icons/effects/overmap.dmi'
+	icon = 'nodalec/modules/overmap/icons/effects/overmap.dmi'
 	icon_state = "object"
 
 	/// Check that someone already act with this.
