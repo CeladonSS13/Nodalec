@@ -12,6 +12,13 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	///used for guaranteeing there is only one oranges_ear per turf when assigned, speeds up view() iteration
 	var/mob/oranges_ear/assigned_oranges_ear
 
+	// [NODALEC-ADD]
+	/// ID of the virtual level we're in
+	var/virtual_z = 0
+	/// Translation of the virtual z to a virtual level
+	var/static/list/virtual_z_translation
+	// [/NODALEC-ADD]
+
 	/// Turf bitflags, see code/__DEFINES/flags.dm
 	var/turf_flags = NONE
 
@@ -154,6 +161,11 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	assemble_baseturfs()
 
 	levelupdate()
+
+	// [NODALEC-ADD]
+	if(!virtual_z_translation)
+		virtual_z_translation = SSmapping.virtual_z_translation
+	// [/NODALEC-ADD]
 
 	SETUP_SMOOTHING()
 

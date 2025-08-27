@@ -1,5 +1,9 @@
 #define BP_MAX_ROOM_SIZE 300
 
+/obj/item/areaeditor
+	var/fluffnotice = "Nobody's gonna read this stuff!"
+	var/in_use = FALSE
+
 /obj/item/areaeditor/shuttle
 	name = "shuttle expansion permit"
 	desc = "A set of paperwork which is used to expand flyable shuttles."
@@ -43,7 +47,7 @@
 		in_use = TRUE
 		create_shuttle_area(usr)
 		in_use = FALSE
-	updateUsrDialog()
+	// updateUsrDialog()
 
 // Virtually a copy of create_area() with specialized behaviour
 /obj/item/areaeditor/shuttle/proc/create_shuttle_area(mob/creator)

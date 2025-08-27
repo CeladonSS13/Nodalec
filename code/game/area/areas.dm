@@ -83,6 +83,10 @@
 	/// The default gravity for the area
 	var/default_gravity = ZERO_GRAVITY
 
+	// [NODALEC-ADD]
+	var/has_gravity = FALSE
+	// [/NODALEC-ADD]
+
 	var/parallax_movedir = 0
 
 	var/ambience_index = AMBIENCE_GENERIC
