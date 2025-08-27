@@ -223,6 +223,7 @@ export const DmTarget = new Juke.Target({
     'interface/**',
     'sound/**',
     'modular_nova/**', ///NOVA EDIT ADDITION - Making the CBT work
+	  'nodalec/**', ///NODALECT EDIT ADDITION
     `${DME_NAME}.dme`,
     NamedVersionFile,
   ],
