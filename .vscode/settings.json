@@ -1,9 +1,17 @@
 {
+	"files.eol": "\n",
+	"editor.autoIndent": "keep",
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+	"editor.wrappingIndent": "indent",
+	"editor.renderWhitespace": "all",
+	"editor.trimAutoWhitespace": true,
+	"editor.tabSize": 4,
 	"eslint.nodePath": "./tgui/.yarn/sdks",
 	"eslint.workingDirectories": ["./tgui"],
-	"prettier.prettierPath": "./tgui/.yarn/sdks/prettier/index.cjs",
+	"prettier.prettierPath": "./tgui/.yarn/sdks/prettier/index.js",
 	"typescript.tsdk": "./tgui/.yarn/sdks/typescript/lib",
-  	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"typescript.enablePromptUseWorkspaceTsdk": true,
 	"search.exclude": {
 		"**/.yarn": true,
 		"**/.pnp.*": true
@@ -11,20 +19,52 @@
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": "explicit"
 	},
-	"files.eol": "\n",
 	"files.insertFinalNewline": true,
-	"files.trimTrailingWhitespace": true,
-	"editor.insertSpaces": false,
-	"git.branchProtection": ["master"],
 	"gitlens.advanced.blame.customArguments": ["-w"],
 	"tgstationTestExplorer.project.resultsType": "json",
-	"[javascript][typescript][typescriptreact][javascriptreact][html][scss][css][json][jsonc][markdown][yaml]": {
+	"[python]": {
+		"gitlens.codeLens.symbolScopes": ["!Module"],
+		"editor.wordBasedSuggestions": "off",
+		"editor.insertSpaces": true,
+		"editor.tabSize": 4
+	},
+	"[yaml]": {
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2,
+		"editor.autoIndent": "advanced",
+		"gitlens.codeLens.scopes": ["document"]
+	},
+	"[json]": {
+		"editor.quickSuggestions": {
+			"strings": true
+		},
+		"editor.suggest.insertMode": "replace",
+		"gitlens.codeLens.scopes": ["document"]
+	},
+	"[javascript]": {
 		"editor.rulers": [80],
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.formatOnSave": true
 	},
-	"workbench.editorAssociations": {
-		"*.dmi": "dmiEditor.dmiEditor"
+	"[javascriptreact]": {
+		"editor.rulers": [80],
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
 	},
-	"Lua.diagnostics.enable": false
+	"[typescript]": {
+		"editor.rulers": [80],
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[typescriptreact]": {
+		"editor.rulers": [80],
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[scss]": {
+		"editor.rulers": [80],
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"editor.guides.indentation": true
 }
