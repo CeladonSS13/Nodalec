@@ -1,6 +1,7 @@
 // /datum/controller/subsystem/shuttle	// NODALEC_SET_TURN_OFF - влияет на всю эко систему билда
 // 	var/endvote_passed = FALSE
 
+
 // /datum/controller/subsystem/shuttle/proc/autoEnd()
 // 	if(EMERGENCY_IDLE_OR_RECALLED)
 // 		SSshuttle.emergency.request(silent = TRUE)

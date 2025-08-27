@@ -50,6 +50,7 @@
 #define RENDER_PLANE_TURF_LIGHTING 12
 
 #define EMISSIVE_PLANE 13
+#define EMISSIVE_LAYER 13
 /// This plane masks out lighting to create an "emissive" effect, ie for glowing lights in otherwise dark areas.
 #define RENDER_PLANE_EMISSIVE 14
 #define EMISSIVE_RENDER_TARGET "*RENDER_PLANE_EMISSIVE"

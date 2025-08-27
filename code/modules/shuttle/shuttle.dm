@@ -34,6 +34,12 @@
 	///are we registered in SSshuttles?
 	var/registered = FALSE
 
+	//The shuttle docked here/dock we're parked at.
+	var/obj/docking_port/docked
+
+	// the connected cargo spawner, if applicable
+	var/obj/hangar_crate_spawner/crate_spawner = null
+
 ///register to SSshuttles
 /obj/docking_port/proc/register()
 	if(registered)

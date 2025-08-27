@@ -44,6 +44,12 @@
 	/// Is this supply pack considered unpredictable for the purposes of testing unit testing? Examples include the stock market, or miner supply crates. If true, exempts from unit testing
 	var/test_ignored = FALSE
 
+	var/datum/faction/faction
+	//what's the discount for buyers in our faction.
+	var/faction_discount = 15
+	//are we locked to one faction and its subgroups
+	var/faction_locked = FALSE
+
 /datum/supply_pack/New()
 	id = type
 

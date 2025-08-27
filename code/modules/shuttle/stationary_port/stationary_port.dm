@@ -12,6 +12,7 @@
 	var/json_key
 	///If true, the shuttle can always dock at this docking port, despite its area checks, or if something is already docked
 	var/override_can_dock_checks = FALSE
+	var/datum/docking_ticket/current_docking_ticket
 
 /obj/docking_port/stationary/get_save_vars()
 	return ..() + NAMEOF(src, roundstart_template)
