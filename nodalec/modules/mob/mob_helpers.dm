@@ -1,3 +1,7 @@
+/mob/proc/common_trait_examine()
+	if(HAS_TRAIT(src,TRAIT_HUSK))
+		. += span_warning("This body has been reduced to a grotesque husk.")
+
 /mob/common_trait_examine()
 	. = ..()
 	if(HAS_TRAIT(src, TRAIT_DISSECTED))

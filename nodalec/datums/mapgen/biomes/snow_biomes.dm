@@ -70,8 +70,8 @@
 	)
 	feature_spawn_chance = 10
 	feature_spawn_list = list(
-		/obj/item/a_gift = 50,
-		/obj/item/a_gift/anything = 1,
+		// /obj/item/a_gift = 50,
+		// /obj/item/a_gift/anything = 1,
 		/obj/item/clothing/head/costume/santa = 1,
 		/obj/item/storage/backpack/santabag = 1
 	)
