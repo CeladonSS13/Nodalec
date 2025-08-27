@@ -241,7 +241,7 @@
 /obj/structure/overmap/ship/proc/calculate_thrust()
 	return sqrt((x_thrust ** 2) + (y_thrust ** 2))
 
-/obj/structure/overmap/ship/newtonian_move(direction, instant, start_delay)
+/obj/structure/overmap/ship/newtonian_move(direction, instant, start_delay, drift_force = 0, controlled_cap = null)
 	return // we don't want ships to endlessly drift in space
 
 /**

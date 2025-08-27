@@ -2,6 +2,6 @@
 /datum/controller/subsystem/minor_mapping/trigger_migration()
 	return
 
-/datum/controller/subsystem/minor_mapping/place_satchels()
+/datum/controller/subsystem/minor_mapping/place_satchels(satchel_amount)
 	return
 
