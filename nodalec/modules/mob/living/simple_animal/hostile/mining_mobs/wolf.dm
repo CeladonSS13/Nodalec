@@ -44,11 +44,12 @@
 /obj/item/crusher_trophy/fang/effect_desc()
 	return "waveform collapse to build up a small stack of bleeding, causing a burst of damage if applied repeatedly."
 
-/obj/item/crusher_trophy/fang/on_mark_detonation(mob/living/M, mob/living/user)
-	if(istype(M) && (M.mob_biotypes & MOB_ORGANIC))
-		var/datum/status_effect/stacking/saw_bleed/bloodletting/B = M.has_status_effect(/datum/status_effect/stacking/saw_bleed/bloodletting)
+/obj/item/crusher_trophy/fang/on_mark_detonation(mob/living/target, mob/living/user)
+	. = ..()
+	if(istype(target) && (target.mob_biotypes & MOB_ORGANIC))
+		var/datum/status_effect/stacking/saw_bleed/bloodletting/B = target.has_status_effect(/datum/status_effect/stacking/saw_bleed/bloodletting)
 		if(!B)
-			M.apply_status_effect(/datum/status_effect/stacking/saw_bleed/bloodletting, bleed_stacks_per_hit)
+			target.apply_status_effect(/datum/status_effect/stacking/saw_bleed/bloodletting, bleed_stacks_per_hit)
 		else
 			B.add_stacks(bleed_stacks_per_hit)
 
