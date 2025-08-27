@@ -1,45 +1,57 @@
-<!-- Write **BELOW** The Headers and **ABOVE** The comments else it may not be viewable. -->
-<!-- You can view Contributing.MD for a detailed description of the pull request process. -->
+<!-- Пишите **НИЖЕ** заголовков и **ВЫШЕ** комментариев, иначе ваш текст может не отобразиться. -->
+<!-- В Contributing.MD вы можете найти некоторые рекомендации к оформлению пулл-реквеста. -->
 
-## About The Pull Request
+## Описание / Что этот PR делает
 
-<!-- Describe The Pull Request. Please be sure every change is documented or this can delay review and even discourage maintainers from merging your PR! -->
 
-## How This Contributes To The Nova Sector Roleplay Experience
 
-<!-- Please add a short description of why you think these changes would benefit the game and the roleplay atmosphere of the server. If you can't justify it in words, it might not be worth adding. -->
+<!-- Вкратце опишите изменения, которые вносите. Документировать каждую деталь не требуется, просто укажите основные изменения. -->
+<!-- Опишите **все** изменения, так как противное может сказаться на рассмотрении этого PR'а! -->
+<!-- Если вы исправляете Issue, добавьте "Fixes #xxxx" (где xxxx - номер Issue) где-нибудь в описании PR'а. Это автоматически закроет Issue после принятия PR'а. -->
 
-## Proof of Testing
+## Причина создания ПР / Почему это хорошо для игры
 
-<!-- Include any screenshots/videos/debugging steps of the code functioning successfully, between the </summary> and </details> code blocks. -->
-<!-- To our mappers and spriters: Posting screenshots of content INSIDE EDITORS (aseprite, PDN, SDMM, ect) is NOT valid proof of testing. Please make sure that you COMPILE the game and provide PROOF you tested your edits. -->
+
+
+<!-- Опишите, почему, по вашему, следует добавить эти изменения в игру. -->
+<!-- Здесь можно оставить ссылку на сообщение в #предложения, чтобы подтвердить, что предложение обсуждалось внутри Discord-сообщества. -->
+<!-- Если это вне предложений было сделано, то укажите, почему это изменение положительно влияет на игру. -->
+<!-- В случае исправления бага, укажите ссылку на канал в #bugs-code, #bugs-maps, #bugs-sprite или issue в репозитории. В ином случае, опишите баг и шаги для его воспроизведения. -->
+<!-- Пример ссылки в Discord-сообщество: https://canary.discord.com/channels/1100198143456465067/1231354486522515456/1231354486522515456 -->
+
+## Демонстрация изменений / Тестирование
+
+
+
+<!-- В случае наличия изменений, влияющих на игровую часть, опишите их здесь. Здесь необходимо описать шаги, которые предпринимались для тестирования изменения. Этот пункт обязателен, без него Pull request будет рассматриваться дольше. В случае их отсутствия, этот пункт можно удалить -->
 
 <details>
-<summary>Screenshots/Videos</summary>
-  
+<summary>Скриншоты/Видео с изменениями</summary>
+
+  <!-- Если вы не меняли карту или спрайты, можете опустить эту секцию. Если хотите, можете вставить видео. -->
 </details>
 
-## Changelog
-
-<!-- If your PR modifies aspects of the game that can be concretely observed by players or admins you should add a changelog. If your change does NOT meet this description, remove this section. Be sure to properly mark your PRs to prevent unnecessary GBP loss. You can read up on GBP and its effects on PRs in the tgstation guides for contributors. Please note that maintainers freely reserve the right to remove and add tags should they deem it appropriate. You can attempt to finagle the system all you want, but it's best to shoot for clear communication right off the bat. -->
+## Список изменений
 
 :cl:
-add: Added new mechanics or gameplay changes
-add: Added more things
-del: Removed old things
-qol: made something easier to use
-balance: rebalanced something
-fix: fixed a few things
-sound: added/modified/removed audio or sound effects
-image: added/modified/removed some icons or images
-map: added/modified/removed map content
-spellcheck: fixed a few typos
-code: changed some code
-refactor: refactored some code
-config: changed some config setting
-admin: messed with admin stuff
-server: something server ops should know
+add: Что-то добавил
+del: Что-то удалил
+tweak: Поменял что-то по мелочи
+fix: Что-то починил
+wip: Какие-либо наработки в процессе
+soundadd: Добавил новый звук
+sounddel: Удалил старый звук
+imageadd: Добавил новую картинку
+imagedel: Удалил старую картинку
+spellcheck: Исправил опечатку
+experiment: Добавил экспериментальную функцию
 /:cl:
 
-<!-- Both :cl:'s are required for the changelog to work! You can put your name to the right of the first :cl: if you want to overwrite your GitHub username as author ingame. -->
-<!-- You can use multiple of the same prefix (they're only used for the icon ingame) and delete the unneeded ones. Despite some of the tags, changelogs should generally represent how a player might be affected by the changes rather than a summary of the PR's contents. -->
+<!-- Оба :cl:'а должны быть на месте, что-бы чейнджлог работал! Вы можете написать свой ник справа от первого :cl:, если хотите. Иначе будет использован ваш ник на ГитХабе. -->
+<!-- Вы можете использовать несколько записей с одинаковым префиксом (Они используются только для иконки в игре) и удалить ненужные. Помните, что чейнджлог должен быть понятен обычным игроком. -->
+<!-- Если чейнджлог не влияет на игроков(например, это рефактор), вы можете исключить всю секцию. -->
+
+## Подтверждение о готовности PR
+- [ ] Я, полностью подтверждаю что мой PR протестирован и закончен полностью в соответствии с ТЗ из предложения. Мне не нужна помощь для его завершения. Я принимаю полностью на себя ответственность за возникновение багов и недоработок и обязуюсь их исправить в случае появления.
+
+<!-- Если вы готовы, то ставьте крестик на уже готовой форме, чтобы согласиться и подтвердить готовность свою. -->
