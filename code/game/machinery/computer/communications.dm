@@ -290,9 +290,8 @@ GLOBAL_VAR_INIT(cops_arrived, FALSE)
 			SSshuttle.shuttle_purchased = SHUTTLEPURCHASE_PURCHASED
 			for(var/datum/round_event_control/shuttle_insurance/insurance_event in SSevents.control)
 				insurance_event.weight *= 20
-			SSshuttle.unload_preview()
 			SSshuttle.existing_shuttle = SSshuttle.emergency
-			SSshuttle.action_load(shuttle, replace = TRUE)
+			SSshuttle.action_load(shuttle)
 			bank_account.adjust_money(-shuttle.credit_cost)
 
 			var/purchaser_name = (obj_flags & EMAGGED) ? scramble_message_replace_chars("AUTHENTICATION FAILURE: CVE-2018-17107", 60) : user.real_name
