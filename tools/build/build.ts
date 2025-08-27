@@ -176,8 +176,8 @@ export const DmTarget = new Juke.Target({
     'icons/**',
     'interface/**',
     'sound/**',
-    'tgui/public/tgui.html',
-    "modular_nova/**", ///NOVA EDIT ADDITION - Making the CBT work
+    'modular_nova/**', ///NOVA EDIT ADDITION - Making the CBT work
+	  'nodalec/**', ///NODALECT EDIT ADDITION
     `${DME_NAME}.dme`,
     NamedVersionFile,
   ],
