@@ -1,0 +1,3011 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"ac" = (
+/turf/closed/indestructible/rock,
+/area/hangar)
+"ad" = (
+/obj/machinery/light/floor,
+/turf/open/floor/plating{
+	light_color = "#1B1D2E";
+	light_range = 2;
+	planetary_atmos = 1
+	},
+/area/hangar)
+"al" = (
+/obj/effect/decal/fakelattice,
+/obj/effect/decal/cleanable/dirt{
+	color = "#808080"
+	},
+/turf/open/floor/plating{
+	light_color = "#1B1D2E";
+	light_range = 2;
+	planetary_atmos = 1
+	},
+/area/hangar)
+"am" = (
+/turf/closed/indestructible/reinforced,
+/area/hangar)
+"ao" = (
+/obj/machinery/door/poddoor/ert,
+/area/hangar)
+"ap" = (
+/turf/open/floor/iron/dark,
+/area/hangar)
+"av" = (
+/obj/effect/turf_decal/siding/white,
+/turf/open/floor/iron/dark/side,
+/area/hangar)
+"ay" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 5
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/dark/side{
+	dir = 4
+	},
+/area/hangar)
+"az" = (
+/turf/open/floor/plating{
+	light_color = "#1B1D2E";
+	light_range = 2
+	},
+/area/hangar)
+"aB" = (
+/obj/machinery/light/floor,
+/turf/open/floor/iron/dark,
+/area/hangar)
+"aC" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 1
+	},
+/obj/structure/railing{
+	dir = 1
+	},
+/turf/open/floor/iron/dark/side{
+	dir = 1
+	},
+/area/hangar)
+"aJ" = (
+/turf/open/floor/plating{
+	light_color = "#1B1D2E";
+	light_range = 2;
+	planetary_atmos = 1
+	},
+/area/hangar)
+"aL" = (
+/obj/structure/chair{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/white,
+/obj/effect/turf_decal/siding/white{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"aM" = (
+/turf/open/misc/asteroid/snow/breathable/lit,
+/area/hangar)
+"aN" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron/dark/smooth_large,
+/area/hangar)
+"aO" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 1
+	},
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron/dark/side{
+	dir = 1
+	},
+/area/hangar)
+"aP" = (
+/obj/effect/turf_decal/siding/white/corner{
+	dir = 8
+	},
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/railing/corner{
+	dir = 8;
+	layer = 4.1
+	},
+/turf/open/floor/iron/dark/side,
+/area/hangar)
+"aT" = (
+/obj/effect/turf_decal/siding/white,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron/dark/side,
+/area/hangar)
+"aY" = (
+/obj/effect/decal/fakelattice,
+/turf/open/floor/plating{
+	light_color = "#1B1D2E";
+	light_range = 2;
+	planetary_atmos = 1
+	},
+/area/hangar)
+"aZ" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 4
+	},
+/obj/structure/railing{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"bA" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 8
+	},
+/obj/structure/railing{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"bI" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 10
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/dark/side{
+	dir = 8
+	},
+/area/hangar)
+"cf" = (
+/obj/effect/decal/fakelattice,
+/obj/effect/decal/cleanable/greenglow{
+	color = "#808080"
+	},
+/obj/effect/decal/cleanable/dirt{
+	color = "#808080"
+	},
+/obj/effect/decal/cleanable/dirt{
+	color = "#808080"
+	},
+/turf/open/floor/plating{
+	light_color = "#1B1D2E";
+	light_range = 2;
+	planetary_atmos = 1
+	},
+/area/hangar)
+"cB" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 1
+	},
+/turf/open/floor/iron/dark,
+/area/hangar)
+"cD" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 4
+	},
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron,
+/area/hangar)
+"cI" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron/dark,
+/area/hangar)
+"dM" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 1
+	},
+/obj/structure/railing{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"fb" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 6
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/dark/side{
+	dir = 4
+	},
+/area/hangar)
+"gy" = (
+/obj/effect/turf_decal/siding/white,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/railing{
+	layer = 4.1
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"hv" = (
+/obj/machinery/light/floor,
+/turf/open/floor/iron,
+/area/hangar)
+"hw" = (
+/obj/machinery/vending/coffee,
+/obj/effect/decal/cleanable/wrapping,
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron,
+/area/hangar)
+"hG" = (
+/obj/effect/decal/fakelattice,
+/obj/machinery/light/small/directional/east,
+/obj/effect/decal/cleanable/dirt{
+	color = "#808080"
+	},
+/turf/open/floor/plating{
+	light_color = "#1B1D2E";
+	light_range = 2;
+	planetary_atmos = 1
+	},
+/area/hangar)
+"ic" = (
+/obj/effect/decal/fakelattice,
+/obj/effect/decal/cleanable/dirt{
+	color = "#808080"
+	},
+/obj/effect/decal/cleanable/glass{
+	dir = 8;
+	color = "#808080"
+	},
+/turf/open/floor/plating{
+	light_color = "#1B1D2E";
+	light_range = 2;
+	planetary_atmos = 1
+	},
+/area/hangar)
+"im" = (
+/obj/structure/flora/grass/both,
+/obj/structure/flora/grass/both,
+/turf/open/misc/asteroid/snow/breathable/lit,
+/area/hangar)
+"me" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 4
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/dark/side{
+	dir = 4
+	},
+/area/hangar)
+"nr" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 1
+	},
+/turf/open/floor/iron/dark/side{
+	dir = 1
+	},
+/area/hangar)
+"nK" = (
+/obj/effect/turf_decal/siding/white,
+/obj/structure/railing{
+	layer = 4.1
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"oi" = (
+/obj/machinery/light/floor,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron,
+/area/hangar)
+"oE" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 1
+	},
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/railing{
+	dir = 1
+	},
+/obj/machinery/light/small/directional/east{
+	pixel_y = -8
+	},
+/turf/open/floor/iron/dark/side{
+	dir = 1
+	},
+/area/hangar)
+"pr" = (
+/obj/structure/chair{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/white,
+/obj/effect/turf_decal/siding/white{
+	dir = 1
+	},
+/obj/machinery/light/small/directional/east{
+	pixel_y = -8
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron,
+/area/hangar)
+"rQ" = (
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron/dark,
+/area/hangar)
+"rY" = (
+/obj/effect/decal/fakelattice,
+/obj/effect/decal/cleanable/glass{
+	dir = 8;
+	color = "#808080"
+	},
+/turf/open/floor/plating{
+	light_color = "#1B1D2E";
+	light_range = 2;
+	planetary_atmos = 1
+	},
+/area/hangar)
+"sV" = (
+/obj/structure/closet/crate/bin,
+/obj/machinery/light/small/directional/east{
+	pixel_y = 8
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron,
+/area/hangar)
+"ui" = (
+/obj/effect/turf_decal/siding/white/corner{
+	dir = 4
+	},
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/railing/corner{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"uC" = (
+/obj/effect/turf_decal/siding/white,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/railing{
+	layer = 4.1
+	},
+/turf/open/floor/iron/dark/side,
+/area/hangar)
+"xB" = (
+/turf/open/floor/iron/dark/smooth_large,
+/area/hangar)
+"xI" = (
+/obj/effect/decal/fakelattice{
+	layer = 2.010
+	},
+/turf/open/floor/plating/elevatorshaft,
+/area/hangar)
+"yB" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 10
+	},
+/obj/structure/railing{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"Aj" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 9
+	},
+/obj/structure/railing{
+	dir = 9
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"Dh" = (
+/obj/effect/decal/fakelattice,
+/obj/effect/decal/cleanable/dirt{
+	color = "#808080"
+	},
+/obj/effect/decal/cleanable/dirt{
+	color = "#808080"
+	},
+/turf/open/floor/plating{
+	light_color = "#1B1D2E";
+	light_range = 2;
+	planetary_atmos = 1
+	},
+/area/hangar)
+"ES" = (
+/obj/effect/turf_decal/siding/white/corner{
+	dir = 1
+	},
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron/dark/side{
+	dir = 8
+	},
+/area/hangar)
+"Fi" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 1
+	},
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/railing{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"FM" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 10
+	},
+/obj/structure/railing{
+	layer = 4.1;
+	dir = 10
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"FS" = (
+/obj/machinery/light/floor,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron/dark,
+/area/hangar)
+"GH" = (
+/obj/effect/turf_decal/siding/white/corner,
+/obj/structure/railing/corner{
+	layer = 4.1
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"GK" = (
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron/dark/smooth_large,
+/area/hangar)
+"GX" = (
+/obj/structure/flora/tree/pine,
+/turf/open/misc/asteroid/snow/breathable/lit,
+/area/hangar)
+"Iz" = (
+/obj/effect/turf_decal/siding/white/corner,
+/obj/structure/railing/corner,
+/obj/machinery/light/small/directional/east{
+	pixel_y = -8
+	},
+/turf/open/floor/iron/dark/side,
+/area/hangar)
+"IA" = (
+/obj/effect/decal/fakelattice,
+/obj/effect/decal/cleanable/dirt{
+	color = "#808080"
+	},
+/obj/machinery/light/small/directional/east,
+/turf/open/floor/plating{
+	light_color = "#1B1D2E";
+	light_range = 2;
+	planetary_atmos = 1
+	},
+/area/hangar)
+"IG" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron/dark,
+/area/hangar)
+"JU" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 8
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/dark/side{
+	dir = 8
+	},
+/area/hangar)
+"Ku" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 9
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/dark/side{
+	dir = 8
+	},
+/area/hangar)
+"KC" = (
+/obj/effect/decal/fakelattice,
+/obj/effect/decal/cleanable/oil,
+/turf/open/floor/plating{
+	light_color = "#1B1D2E";
+	light_range = 2;
+	planetary_atmos = 1
+	},
+/area/hangar)
+"Lo" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"MI" = (
+/obj/structure/flora/grass/both,
+/turf/open/misc/asteroid/snow/breathable/lit,
+/area/hangar)
+"MK" = (
+/obj/effect/turf_decal/siding/white,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron,
+/area/hangar)
+"MN" = (
+/obj/structure/flora/grass/green,
+/turf/open/misc/asteroid/snow/breathable/lit,
+/area/hangar)
+"MR" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 1
+	},
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/railing{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"NO" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron/dark,
+/area/hangar)
+"Qb" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 8
+	},
+/turf/open/floor/iron/dark/side{
+	dir = 8
+	},
+/area/hangar)
+"Qu" = (
+/obj/structure/flora/tree/dead,
+/turf/open/misc/asteroid/snow/breathable/lit,
+/area/hangar)
+"SW" = (
+/obj/effect/turf_decal/siding/white/corner{
+	dir = 8
+	},
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron/dark/side{
+	dir = 8
+	},
+/area/hangar)
+"Te" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 10
+	},
+/obj/structure/rack,
+/obj/item/clothing/suit/hooded/wintercoat,
+/obj/item/clothing/suit/hooded/wintercoat,
+/obj/item/clothing/suit/hooded/wintercoat{
+	pixel_y = 3
+	},
+/obj/item/clothing/suit/hooded/wintercoat{
+	pixel_y = 3
+	},
+/obj/item/clothing/suit/hooded/wintercoat{
+	pixel_y = 6
+	},
+/obj/item/clothing/suit/hooded/wintercoat{
+	pixel_y = 6
+	},
+/obj/structure/railing{
+	layer = 4.1;
+	dir = 10
+	},
+/turf/open/misc/asteroid/snow/breathable/lit,
+/area/hangar)
+"TA" = (
+/obj/structure/flora/rock/pile/icy,
+/turf/open/misc/asteroid/snow/breathable/lit,
+/area/hangar)
+"TF" = (
+/obj/effect/turf_decal/siding/white,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/railing{
+	layer = 4.1
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"TQ" = (
+/obj/effect/turf_decal/siding/white,
+/obj/structure/railing{
+	layer = 4.1
+	},
+/turf/open/misc/asteroid/snow/breathable/lit,
+/area/hangar)
+"TR" = (
+/obj/machinery/door/airlock{
+	dir = 4
+	},
+/obj/machinery/door/firedoor/border_only{
+	dir = 4
+	},
+/obj/machinery/door/firedoor/border_only{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"Ul" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 4
+	},
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/railing{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"UV" = (
+/obj/structure/flora/rock/pile/icy,
+/turf/closed/indestructible/rock,
+/area/hangar)
+"Vk" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"Ww" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 5
+	},
+/obj/structure/railing{
+	dir = 5
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"XC" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 6
+	},
+/obj/structure/rack,
+/obj/item/clothing/suit/hooded/wintercoat,
+/obj/item/clothing/suit/hooded/wintercoat,
+/obj/item/clothing/suit/hooded/wintercoat{
+	pixel_y = 3
+	},
+/obj/item/clothing/suit/hooded/wintercoat{
+	pixel_y = 3
+	},
+/obj/item/clothing/suit/hooded/wintercoat{
+	pixel_y = 6
+	},
+/obj/item/clothing/suit/hooded/wintercoat{
+	pixel_y = 6
+	},
+/obj/structure/railing{
+	layer = 4.1;
+	dir = 6
+	},
+/turf/open/misc/asteroid/snow/breathable/lit,
+/area/hangar)
+"YN" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 9
+	},
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/railing{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"YU" = (
+/obj/effect/turf_decal/siding/white{
+	dir = 6
+	},
+/obj/structure/railing{
+	layer = 4.1;
+	dir = 6
+	},
+/turf/open/floor/iron,
+/area/hangar)
+"Ze" = (
+/turf/open/floor/iron/dark/side,
+/area/hangar)
+"Zi" = (
+/obj/machinery/door/airlock{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/hangar)
+
+(1,1,1) = {"
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+"}
+(2,1,1) = {"
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+"}
+(3,1,1) = {"
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+aM
+aM
+aM
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+"}
+(4,1,1) = {"
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+MI
+aM
+aM
+aM
+ac
+ac
+aM
+aM
+aM
+aM
+aM
+aM
+ac
+ac
+ac
+aM
+aM
+aM
+aM
+TA
+aM
+aM
+aM
+aM
+aM
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+"}
+(5,1,1) = {"
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+aM
+aM
+aM
+aM
+MI
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+MI
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+"}
+(6,1,1) = {"
+ac
+ac
+ac
+ac
+aM
+aM
+aM
+aM
+aM
+MN
+aM
+aM
+aM
+MI
+aM
+aM
+aM
+MI
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+MN
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+ac
+ac
+ac
+ac
+ac
+"}
+(7,1,1) = {"
+ac
+ac
+ac
+ac
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+MN
+aM
+aM
+aM
+MI
+aM
+aM
+TA
+aM
+MI
+aM
+MI
+aM
+aM
+aM
+GX
+aM
+ac
+ac
+ac
+ac
+ac
+"}
+(8,1,1) = {"
+ac
+ac
+ac
+ac
+aM
+aM
+GX
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+TA
+ac
+ac
+ac
+ac
+ac
+"}
+(9,1,1) = {"
+ac
+ac
+ac
+aM
+MI
+aM
+aM
+aM
+aM
+aM
+aM
+MI
+aM
+aM
+MN
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+MI
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+ac
+ac
+ac
+"}
+(10,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+aM
+aM
+MN
+aM
+aM
+aM
+aM
+aM
+TA
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+MI
+aM
+MN
+aM
+aM
+aM
+aM
+Qu
+aM
+aM
+MI
+aM
+aM
+aM
+GX
+aM
+ac
+ac
+ac
+"}
+(11,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+GX
+aM
+Qu
+aM
+aM
+aM
+aM
+MN
+aM
+aM
+aM
+MI
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+MI
+aM
+aM
+aM
+MI
+aM
+aM
+aM
+aM
+MI
+aM
+aM
+ac
+ac
+ac
+"}
+(12,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+aM
+aM
+aM
+aM
+MI
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+MI
+aM
+ac
+ac
+ac
+"}
+(13,1,1) = {"
+ac
+ac
+ac
+aM
+MI
+aM
+aM
+Aj
+bA
+yB
+GK
+GK
+xB
+xB
+xB
+GK
+GK
+GK
+GK
+GK
+GK
+GK
+aN
+GK
+GK
+GK
+GK
+xB
+xB
+GK
+YN
+bA
+FM
+aM
+aM
+aM
+aM
+ac
+ac
+ac
+"}
+(14,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+aM
+aM
+MR
+hv
+ap
+xB
+xB
+xB
+GK
+GK
+GK
+GK
+GK
+aN
+GK
+xB
+xB
+xB
+xB
+xB
+GK
+GK
+GK
+GK
+GK
+cB
+oi
+nK
+aM
+aM
+GX
+aM
+ac
+ac
+ac
+"}
+(15,1,1) = {"
+ac
+ac
+ac
+ac
+aM
+aM
+aM
+dM
+rQ
+av
+aJ
+aJ
+ad
+aJ
+aJ
+aJ
+aJ
+ad
+aJ
+aJ
+aJ
+aJ
+ad
+aJ
+aJ
+aJ
+aJ
+ad
+aJ
+aJ
+nr
+rQ
+nK
+aM
+aM
+MN
+UV
+ac
+ac
+ac
+"}
+(16,1,1) = {"
+ac
+ac
+ac
+ac
+aM
+MN
+aM
+dM
+rQ
+av
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+nr
+ap
+nK
+aM
+aM
+GX
+ac
+ac
+ac
+ac
+"}
+(17,1,1) = {"
+ac
+ac
+ac
+ac
+aM
+aM
+MI
+Fi
+ap
+av
+ad
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+ad
+nr
+rQ
+nK
+aM
+aM
+aM
+ac
+ac
+ac
+ac
+"}
+(18,1,1) = {"
+ac
+ac
+ac
+ac
+aM
+GX
+aM
+Lo
+ap
+av
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+nr
+rQ
+MK
+MI
+aM
+aM
+ac
+ac
+ac
+ac
+"}
+(19,1,1) = {"
+ac
+ac
+ac
+ac
+aM
+aM
+aM
+Fi
+rQ
+av
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aO
+rQ
+nK
+aM
+aM
+MI
+ac
+ac
+ac
+ac
+"}
+(20,1,1) = {"
+ac
+ac
+ac
+ac
+aM
+aM
+GX
+dM
+NO
+av
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+nr
+rQ
+nK
+aM
+GX
+aM
+ac
+ac
+ac
+ac
+"}
+(21,1,1) = {"
+ac
+ac
+ac
+ac
+MI
+aM
+aM
+dM
+IG
+av
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+nr
+NO
+nK
+aM
+aM
+aM
+ac
+ac
+ac
+ac
+"}
+(22,1,1) = {"
+ac
+ac
+ac
+ac
+aM
+MN
+aM
+dM
+cI
+av
+ad
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+ad
+nr
+NO
+nK
+MI
+aM
+aM
+aM
+ac
+ac
+ac
+"}
+(23,1,1) = {"
+ac
+ac
+ac
+ac
+aM
+GX
+MN
+dM
+NO
+aT
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+nr
+NO
+nK
+aM
+GX
+aM
+aM
+ac
+ac
+ac
+"}
+(24,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+aM
+aM
+dM
+NO
+aT
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+nr
+NO
+gy
+aM
+aM
+aM
+ac
+ac
+ac
+ac
+"}
+(25,1,1) = {"
+ac
+ac
+ac
+TA
+aM
+MI
+aM
+Fi
+rQ
+aT
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+nr
+rQ
+TF
+aM
+MI
+aM
+ac
+ac
+ac
+ac
+"}
+(26,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+aM
+MI
+dM
+rQ
+av
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+nr
+NO
+TF
+aM
+aM
+aM
+ac
+ac
+ac
+ac
+"}
+(27,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+aM
+aM
+dM
+rQ
+av
+ad
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+ad
+aO
+ap
+nK
+MN
+aM
+aM
+ac
+ac
+ac
+ac
+"}
+(28,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+aM
+GX
+dM
+ap
+av
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aO
+rQ
+nK
+aM
+aM
+aM
+aM
+ac
+ac
+ac
+"}
+(29,1,1) = {"
+ac
+ac
+ac
+aM
+MI
+aM
+aM
+dM
+ap
+av
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aO
+rQ
+nK
+MI
+aM
+aM
+aM
+ac
+ac
+ac
+"}
+(30,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+aM
+aM
+dM
+ap
+av
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+nr
+rQ
+nK
+GX
+aM
+aM
+aM
+ac
+ac
+ac
+"}
+(31,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+MI
+aM
+dM
+ap
+av
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+nr
+NO
+nK
+aM
+aM
+aM
+ac
+ac
+ac
+ac
+"}
+(32,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+GX
+aM
+dM
+rQ
+aT
+ad
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+ad
+nr
+NO
+nK
+aM
+MI
+aM
+ac
+ac
+ac
+ac
+"}
+(33,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+MN
+aM
+Fi
+rQ
+aT
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+aJ
+nr
+rQ
+nK
+aM
+GX
+aM
+ac
+ac
+ac
+ac
+"}
+(34,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+aM
+GX
+Fi
+ap
+aT
+aJ
+aJ
+ad
+aJ
+aJ
+aJ
+aJ
+ad
+aJ
+aJ
+aJ
+aJ
+ad
+aJ
+aJ
+aJ
+aJ
+ad
+aJ
+aJ
+nr
+ap
+nK
+aM
+aM
+aM
+ac
+ac
+ac
+ac
+"}
+(35,1,1) = {"
+ac
+ac
+ac
+MI
+aM
+aM
+aM
+dM
+ap
+SW
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+ES
+ap
+nK
+MI
+TA
+aM
+ac
+ac
+ac
+ac
+"}
+(36,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+MI
+aM
+dM
+aB
+ap
+NO
+rQ
+rQ
+rQ
+ap
+NO
+NO
+rQ
+rQ
+rQ
+FS
+ap
+rQ
+ap
+ap
+ap
+NO
+NO
+rQ
+ap
+ap
+FS
+gy
+aM
+aM
+aM
+ac
+ac
+ac
+ac
+"}
+(37,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+GX
+aM
+Ww
+aZ
+aZ
+aZ
+Vk
+aZ
+aZ
+aZ
+aZ
+aZ
+Ul
+Ul
+ui
+NO
+GH
+Vk
+aZ
+aZ
+aZ
+aZ
+aZ
+cD
+Ul
+Ul
+Ul
+YU
+MN
+aM
+aM
+aM
+ac
+ac
+ac
+"}
+(38,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+MN
+aM
+aM
+MI
+aC
+rQ
+uC
+aM
+aM
+aM
+MI
+aM
+aM
+aM
+MN
+aM
+aM
+aM
+GX
+aM
+aM
+ac
+ac
+ac
+ac
+"}
+(39,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+MI
+aM
+MN
+aM
+aM
+aM
+aM
+GX
+MI
+aM
+aM
+aM
+GX
+aM
+aC
+rQ
+aP
+Te
+MI
+aM
+aM
+aM
+MI
+aM
+GX
+aM
+aM
+MI
+aM
+aM
+aM
+ac
+ac
+ac
+ac
+"}
+(40,1,1) = {"
+ac
+ac
+ac
+aM
+GX
+aM
+aM
+Qu
+aM
+MI
+aM
+MN
+aM
+aM
+aM
+MI
+aM
+aM
+aM
+aC
+NO
+Ze
+TQ
+aM
+aM
+GX
+aM
+MI
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+ac
+ac
+ac
+ac
+"}
+(41,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+aM
+aM
+aM
+GX
+aM
+aM
+aM
+aM
+aM
+Qu
+aM
+aM
+MN
+aM
+oE
+rQ
+Iz
+XC
+aM
+aM
+MI
+aM
+aM
+aM
+MI
+aM
+MI
+aM
+aM
+GX
+aM
+ac
+ac
+ac
+ac
+"}
+(42,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+aM
+GX
+MI
+aM
+aM
+aM
+GX
+aM
+aM
+aM
+aM
+aM
+am
+am
+am
+TR
+am
+am
+am
+TA
+aM
+MI
+aM
+aM
+aM
+GX
+aM
+aM
+aM
+aM
+aM
+ac
+ac
+ac
+ac
+"}
+(43,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+aM
+aM
+aM
+aM
+MI
+aM
+aM
+MI
+aM
+aM
+aM
+aM
+am
+hw
+Ku
+JU
+bI
+aL
+am
+aM
+aM
+aM
+aM
+aM
+aM
+aM
+im
+aM
+aM
+aM
+aM
+ac
+ac
+ac
+ac
+"}
+(44,1,1) = {"
+ac
+ac
+ac
+aM
+aM
+aM
+aM
+TA
+aM
+aM
+MI
+aM
+aM
+aM
+aM
+aM
+aM
+am
+sV
+ay
+me
+fb
+pr
+am
+aM
+aM
+aM
+MI
+aM
+MI
+aM
+aM
+aM
+aM
+aM
+aM
+ac
+ac
+ac
+ac
+"}
+(45,1,1) = {"
+am
+am
+am
+am
+am
+am
+am
+am
+az
+az
+az
+az
+am
+am
+am
+am
+am
+am
+am
+Zi
+Zi
+Zi
+am
+am
+am
+am
+am
+az
+az
+az
+az
+am
+am
+am
+am
+am
+am
+am
+am
+am
+"}
+(46,1,1) = {"
+am
+aY
+aY
+aY
+ao
+aY
+Dh
+Dh
+al
+al
+cf
+al
+Dh
+al
+al
+aY
+al
+al
+ao
+xI
+xI
+xI
+ao
+aY
+Dh
+Dh
+al
+aY
+al
+al
+cf
+al
+Dh
+al
+al
+ao
+aY
+al
+Dh
+am
+"}
+(47,1,1) = {"
+am
+aY
+aY
+aY
+ao
+aY
+Dh
+Dh
+Dh
+al
+aY
+KC
+Dh
+al
+al
+aY
+ic
+al
+ao
+xI
+xI
+xI
+ao
+aY
+Dh
+Dh
+al
+aY
+ic
+al
+aY
+KC
+Dh
+al
+ic
+ao
+aY
+aY
+Dh
+am
+"}
+(48,1,1) = {"
+am
+aY
+aY
+aY
+ao
+aY
+aY
+aY
+hG
+aY
+aY
+al
+Dh
+Dh
+IA
+aY
+aY
+aY
+ao
+xI
+xI
+xI
+ao
+rY
+al
+Dh
+aY
+aY
+al
+Dh
+Dh
+IA
+Dh
+Dh
+aY
+ao
+aY
+al
+Dh
+am
+"}
+(49,1,1) = {"
+am
+am
+am
+am
+am
+ac
+ac
+ac
+am
+ac
+ac
+ac
+ac
+ac
+am
+ac
+ac
+ac
+am
+am
+am
+am
+am
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+am
+ac
+ac
+ac
+am
+am
+am
+am
+am
+"}
+(50,1,1) = {"
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+"}
+(51,1,1) = {"
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+"}
+(52,1,1) = {"
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+"}
+(53,1,1) = {"
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+"}
+(54,1,1) = {"
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+"}
+(55,1,1) = {"
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+ac
+"}

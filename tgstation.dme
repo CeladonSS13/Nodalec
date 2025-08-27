@@ -8867,6 +8867,7 @@
 #include "nodalec\_HELPERS\virtual_z_level.dm"
 #include "nodalec\_strings\star_names.dm"
 #include "nodalec\area\ship_areas.dm"
+#include "nodalec\area\outpost_areas.dm"
 #include "nodalec\datums\map_zones.dm"
 #include "nodalec\datums\mapgen\BeachGenerator.dm"
 #include "nodalec\datums\mapgen\LavaGenerator.dm"
