@@ -33,10 +33,10 @@
 /* This is all taken from parent */
 	// Still supporting bans by filename
 	var/list/banned = generateMapList("spaceruinblacklist.txt")
-	if(config.minetype == "lavaland")
+	if(current_map.minetype == "lavaland")
 		banned += generateMapList("lavaruinblacklist.txt")
-	else if(config.blacklist_file)
-		banned += generateMapList(config.blacklist_file)
+	else if(current_map.blacklist_file)
+		banned += generateMapList(current_map.blacklist_file)
 
 	for(var/item in sort_list(subtypesof(/datum/map_template/ruin), GLOBAL_PROC_REF(cmp_ruincost_priority)))
 		var/datum/map_template/ruin/ruin_type = item

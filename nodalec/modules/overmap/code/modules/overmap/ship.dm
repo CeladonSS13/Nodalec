@@ -275,7 +275,7 @@
 		"left pocket" = ITEM_SLOT_LPOCKET,
 		"right pocket" = ITEM_SLOT_RPOCKET
 	)
-
+	/datum/job
 	if(source_template.faction_prefix == NANOTRASEN_SHIP)
 		var/obj/item/gun_voucher/nt_voucher = new
 		crewmate.equip_in_one_of_slots(nt_voucher, slots)
@@ -317,7 +317,7 @@
 		if(must_be_same_z_level && crewmate.z != z)
 			continue
 		announce_targets += crewmate
-	priority_announce(message, title, sound || 'sound/ai/default/attention.ogg', null, "[name] Announcement", announce_targets)
+	priority_announce(message, title, sound || 'sound/announcer/announcement/attention.ogg', null, "[name] Announcement", announce_targets)
 
 /**
  * Mob death/revive
