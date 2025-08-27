@@ -1,12 +1,12 @@
 /// Check if we have an upcoming transfer vote, or we're already evacuating.
 /datum/controller/subsystem/events/checkEvent()
 	if(scheduled <= world.time)
-		if(SSautotransfer.can_fire == TRUE && ((SSautotransfer.targettime - REALTIMEOFDAY) <= 15 MINUTES + CONFIG_GET(number/vote_period)))
-			log_game("ICES: Event cancelled due to precondition check. Reason: Pending autotransfer vote.")
-			log_game("ICES: Info: AT [(SSautotransfer.targettime - REALTIMEOFDAY)] | VP [(15 MINUTES + CONFIG_GET(number/vote_period))]")
-			message_admins("ICES: Event cancelled due to precondition check. Reason: Pending autotransfer vote.")
-			reschedule()
-			return
+		// if(SSautotransfer.can_fire == TRUE && ((SSautotransfer.targettime - REALTIMEOFDAY) <= 15 MINUTES + CONFIG_GET(number/vote_period)))
+		// 	log_game("ICES: Event cancelled due to precondition check. Reason: Pending autotransfer vote.")
+		// 	log_game("ICES: Info: AT [(SSautotransfer.targettime - REALTIMEOFDAY)] | VP [(15 MINUTES + CONFIG_GET(number/vote_period))]")
+		// 	message_admins("ICES: Event cancelled due to precondition check. Reason: Pending autotransfer vote.")
+		// 	reschedule()
+		// 	return	// NODALEC_SET_TURN_OFF
 		if(world.time - SSticker.round_start_time >= CONFIG_GET(number/shuttle_refuel_delay) && SSshuttle.canEvac() != TRUE)
 			log_game("ICES: Event cancelled due to precondition check. Reason: [SSshuttle.canEvac() ? "shuttle refuelling" : "[SSshuttle.canEvac()]"]")
 			log_game("ICES: Info: RT [(world.time - SSticker.round_start_time)] | SD [CONFIG_GET(number/shuttle_refuel_delay)]")
