@@ -108,8 +108,8 @@
 	faction = list(FACTION_BEACH)
 	caveloot = list(
 		/obj/item/storage/bag/money/vault = 10,
-		// /obj/item/research_notes/loot/big = 8,
-		// /obj/item/research_notes/loot/genius = 4,
+		/obj/item/research_notes/loot/big = 8,
+		/obj/item/research_notes/loot/genius = 4,
 		/obj/item/grenade/clusterbuster/slime = 1,
 		/obj/item/grenade/chem_grenade/teargas/moustache = 4,
 		/obj/item/slimecross/burning/metal = 10,
