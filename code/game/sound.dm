@@ -64,8 +64,13 @@
 
 	. = list()//output everything that successfully heard the sound
 
+	// [NODALEC-EDIT]
+	// var/turf/above_turf = GET_TURF_ABOVE(turf_source)
+	// var/turf/below_turf = GET_TURF_BELOW(turf_source)
+
 	var/turf/above_turf = SSmapping.get_turf_above(turf_source)
 	var/turf/below_turf = SSmapping.get_turf_below(turf_source)
+	// [/NODALEC-EDIT]
 
 	var/audible_distance = CALCULATE_MAX_SOUND_AUDIBLE_DISTANCE(vol, maxdistance, falloff_distance, falloff_exponent)
 
