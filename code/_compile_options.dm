@@ -8,6 +8,11 @@
 #define USE_CUSTOM_ERROR_HANDLER
 #endif
 
+#if defined(OPENDREAM) && !defined(SPACEMAN_DMM) && !defined(CIBUILDING)
+// The code is being compiled for OpenDream, and not just for the CI linting.
+#define OPENDREAM_REAL
+#endif
+
 #ifdef TESTING
 #define DATUMVAR_DEBUGGING_MODE
 
@@ -106,6 +111,16 @@
 /// If this is uncommented, will profile mapload atom initializations
 // #define PROFILE_MAPLOAD_INIT_ATOM
 
+/// If uncommented, Dreamluau will be fully disabled.
+// #define DISABLE_DREAMLUAU
+
+// OpenDream currently doesn't support byondapi, so automatically disable it on OD,
+// unless CIBUILDING is defined - we still want to lint dreamluau-related code.
+// Get rid of this whenever it does have support.
+#ifdef OPENDREAM_REAL
+#define DISABLE_DREAMLUAU
+#endif
+
 /// If this is uncommented, force our verb processing into just the 2% of a tick
 /// We normally reserve for it
 /// NEVER run this on live, it's for simulating highpop only
@@ -126,7 +141,11 @@
 								// 2 for preloading absolutely everything;
 
 #ifdef LOWMEMORYMODE
+#ifndef ABSOLUTE_MINIMUM
 #define FORCE_MAP "runtimestation"
+#else
+#define FORCE_MAP "runtimestation_minimal"
+#endif
 #define FORCE_MAP_DIRECTORY "_maps"
 #endif
 

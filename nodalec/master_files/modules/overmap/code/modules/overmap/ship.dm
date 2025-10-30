@@ -249,7 +249,7 @@
   */
 /obj/structure/overmap/ship/proc/manifest_inject(mob/living/carbon/human/H, datum/job/human_job)
 	set waitfor = FALSE
-	if(H.mind && (H.mind.assigned_role != H.mind.special_role))
+	if(H.mind && (H.mind.assigned_role != H.mind.special_roles))
 		manifest[H.real_name] = human_job
 	register_crewmember(H)
 
@@ -271,7 +271,7 @@
 	crewmate.mind.assigned_role.paycheck_department = ship_team.name
 
 	var/list/slots = list (
-		"backpack" = ITEM_SLOT_BACKPACK,
+		"backpack" = ITEM_SLOT_BACK,
 		"left pocket" = ITEM_SLOT_LPOCKET,
 		"right pocket" = ITEM_SLOT_RPOCKET
 	)

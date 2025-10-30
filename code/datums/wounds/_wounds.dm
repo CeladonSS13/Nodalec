@@ -19,6 +19,8 @@
 /datum/wound
 	/// What it's named
 	var/name = "Wound"
+	/// Optional, what is the wound named when someone is checking themselves (IE, no scanner - just with their eyes and hands)
+	var/undiagnosed_name
 	/// The description shown on the scanners
 	var/desc = ""
 	/// The basic treatment suggested by health analyzers
@@ -175,27 +177,28 @@
  *
  *
  * Arguments:
- * * L: The bodypart we're wounding, we don't care about the person, we can get them through the limb
+ * * limb: The bodypart we're wounding, we don't care about the person, we can get them through the limb
  * * silent: Not actually necessary I don't think, was originally used for demoting wounds so they wouldn't make new messages, but I believe old_wound took over that, I may remove this shortly
  * * old_wound: If our new wound is a replacement for one of the same time (promotion or demotion), we can reference the old one just before it's removed to copy over necessary vars
  * * smited- If this is a smite, we don't care about this wound for stat tracking purposes (not yet implemented)
  * * attack_direction: For bloodsplatters, if relevant
  * * wound_source: The source of the wound, such as a weapon.
  */
-/datum/wound/proc/apply_wound(obj/item/bodypart/L, silent = FALSE, datum/wound/old_wound = null, smited = FALSE, attack_direction = null, wound_source = "Unknown", replacing = FALSE)
-
-	if (!can_be_applied_to(L, old_wound))
+/datum/wound/proc/apply_wound(obj/item/bodypart/limb, silent = FALSE, datum/wound/old_wound = null, smited = FALSE, attack_direction = null, wound_source = "Unknown", replacing = FALSE)
+	if (!limb.is_woundable() || !can_be_applied_to(limb, old_wound))
 		qdel(src)
 		return FALSE
 
-	if(isitem(wound_source))
-		var/obj/item/wound_item = wound_source
-		src.wound_source = wound_item.name
-	else
+	if(isatom(wound_source))
+		var/atom/wound_atom = wound_source
+		src.wound_source = wound_atom.name
+	else if(istext(wound_source))
 		src.wound_source = wound_source
+	else
+		src.wound_source = "Unknown"
 
-	set_victim(L.owner)
-	set_limb(L, replacing)
+	set_victim(limb.owner)
+	set_limb(limb, replacing)
 	LAZYADD(victim.all_wounds, src)
 	LAZYADD(limb.wounds, src)
 	update_descriptions()
@@ -222,7 +225,7 @@
 
 		victim.visible_message(msg, span_userdanger("Your [limb.plaintext_zone] [occur_text]!"), vision_distance = vis_dist)
 		if(sound_effect)
-			playsound(L.owner, sound_effect, sound_volume + (20 * severity), TRUE, falloff_exponent = SOUND_FALLOFF_EXPONENT + 2,  ignore_walls = FALSE, falloff_distance = 0)
+			playsound(limb.owner, sound_effect, sound_volume + (20 * severity), TRUE, falloff_exponent = SOUND_FALLOFF_EXPONENT + 2,  ignore_walls = FALSE, falloff_distance = 0)
 
 	wound_injury(old_wound, attack_direction = attack_direction)
 	if(!demoted)
@@ -231,13 +234,13 @@
 	return TRUE
 
 /// Returns TRUE if we can be applied to the limb.
-/datum/wound/proc/can_be_applied_to(obj/item/bodypart/L, datum/wound/old_wound)
+/datum/wound/proc/can_be_applied_to(obj/item/bodypart/limb, datum/wound/old_wound)
 	var/datum/wound_pregen_data/pregen_data = GLOB.all_wound_pregen_data[type]
 
 	// We assume we aren't being randomly applied - we have no reason to believe we are
 	// And, besides, if we were, you could just as easily check our pregen data rather than run this proc
 	// Generally speaking this proc is called in apply_wound, which is called when the caller is already confidant in its ability to be applied
-	return pregen_data.can_be_applied_to(L, old_wound = old_wound)
+	return pregen_data.can_be_applied_to(limb, old_wound = old_wound)
 
 /// Returns the zones we can be applied to.
 /datum/wound/proc/get_viable_zones()
@@ -586,7 +589,7 @@
  * Returns BLOOD_FLOW_STEADY if we're not bleeding or there's no change (like piercing), BLOOD_FLOW_DECREASING if we're clotting (non-critical slashes, gauzed, coagulant, etc), BLOOD_FLOW_INCREASING if we're opening up (crit slashes/heparin/nitrous oxide)
  */
 /datum/wound/proc/get_bleed_rate_of_change()
-	if(blood_flow && HAS_TRAIT(victim, TRAIT_BLOODY_MESS))
+	if(blood_flow && HAS_TRAIT(victim, TRAIT_BLOOD_FOUNTAIN))
 		return BLOOD_FLOW_INCREASING
 	return BLOOD_FLOW_STEADY
 
@@ -601,7 +604,7 @@
 /datum/wound/proc/get_examine_description(mob/user)
 	. = get_wound_description(user)
 	if(HAS_TRAIT(src, TRAIT_WOUND_SCANNED))
-		. += span_notice("\nThere is a holo-image next to the wound that seems to contain indications for treatment.")
+		. += span_notice("<br>There is a holo-image next to the wound that seems to contain indications for treatment.")
 
 	return .
 
@@ -617,6 +620,30 @@
 	desc = modify_desc_before_span(desc, user)
 
 	return get_desc_intensity(desc)
+
+/**
+ * Used when a mob is examining themselves / their limbs
+ *
+ * Reports what this wound looks like to them
+ *
+ * It should be formatted as an extension of the limb:
+ * Input is something like "Your chest is bruised.",
+ * you would add something like "It is bleeding."
+ *
+ * * self_aware - if TRUE, the examiner is more aware of themselves and thus may get more detailed information
+ *
+ * Return a string, to be concatenated with other organ / limb status strings. Include spans and punctuation.
+ */
+/datum/wound/proc/get_self_check_description(self_aware)
+	switch(severity)
+		if(WOUND_SEVERITY_TRIVIAL)
+			return span_danger("It's suffering [a_or_from] [LOWER_TEXT(get_topic_name(victim))].") // NOVA EDIT CHANGE - ORIGINAL: return span_danger("It's suffering [a_or_from] [LOWER_TEXT(undiagnosed_name || name)].")
+		if(WOUND_SEVERITY_MODERATE)
+			return span_warning("It's suffering [a_or_from] [LOWER_TEXT(get_topic_name(victim))].") // NOVA EDIT CHANGE - ORIGINAL: return span_warning("It's suffering [a_or_from] [LOWER_TEXT(undiagnosed_name || name)].")
+		if(WOUND_SEVERITY_SEVERE)
+			return span_boldwarning("It's suffering [a_or_from] [LOWER_TEXT(get_topic_name(victim))]!") // NOVA EDIT CHANGE - ORIGINAL: return span_boldwarning("It's suffering [a_or_from] [LOWER_TEXT(undiagnosed_name || name)]!")
+		if(WOUND_SEVERITY_CRITICAL)
+			return span_boldwarning("It's suffering [a_or_from] [LOWER_TEXT(get_topic_name(victim))]!!") // NOVA EDIT CHANGE - ORIGINAL: return span_boldwarning("It's suffering [a_or_from] [LOWER_TEXT(undiagnosed_name || name)]!!")
 
 /// A hook proc used to modify desc before it is spanned via [get_desc_intensity]. Useful for inserting spans yourself.
 /datum/wound/proc/modify_desc_before_span(desc, mob/user)
@@ -697,7 +724,7 @@
 	// fleshy burns will look for flesh then bone
 	// dislocations will look for flesh, then bone, then metal
 	var/file = default_scar_file
-	for (var/biotype as anything in pregen_data.scar_priorities)
+	for (var/biotype in pregen_data.scar_priorities)
 		if (scarred_limb.biological_state & text2num(biotype))
 			file = GLOB.biotypes_to_scar_file[biotype]
 			break
@@ -715,7 +742,7 @@
 
 	var/datum/wound_pregen_data/pregen_data = get_pregen_data()
 
-	if ((WOUND_BLUNT in pregen_data.required_wounding_types) && severity >= WOUND_SEVERITY_CRITICAL)
+	if (pregen_data.required_wounding_type == WOUND_BLUNT && severity >= WOUND_SEVERITY_CRITICAL)
 		return WOUND_CRITICAL_BLUNT_DISMEMBER_BONUS // we only require mangled bone (T2 blunt), but if there's a critical blunt, we'll add 15% more
 
 /// Returns our pregen data, which is practically guaranteed to exist, so this proc can safely be used raw.

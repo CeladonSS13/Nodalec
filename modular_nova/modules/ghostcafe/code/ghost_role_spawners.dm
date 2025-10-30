@@ -26,8 +26,7 @@
 	if(new_spawn.client)
 		new_spawn.custom_name = null
 		new_spawn.updatename(new_spawn.client)
-		new_spawn.transfer_brain_pref(new_spawn.client)
-		new_spawn.transfer_emote_pref(new_spawn.client)
+		new_spawn.transfer_silicon_prefs(new_spawn.client)
 		new_spawn.gender = NEUTER
 		var/area/A = get_area(src)
 		//new_spawn.AddElement(/datum/element/ghost_role_eligibility, free_ghosting = TRUE) SKYRAT PORT -- Needs to be completely rewritten
@@ -54,6 +53,7 @@
 	flavour_text = "You are off-duty and have decided to visit your favourite cafe. Enjoy yourself."
 	random_appearance = FALSE
 	loadout_enabled = TRUE
+	quirks_enabled = TRUE
 
 /obj/effect/mob_spawn/ghost_role/human/ghostcafe/special(mob/living/carbon/human/new_spawn)
 	. = ..()
@@ -66,9 +66,8 @@
 		ADD_TRAIT(new_spawn, TRAIT_FREE_GHOST, TRAIT_GHOSTROLE)
 		ADD_TRAIT(new_spawn, TRAIT_NOBREATH, TRAIT_GHOSTROLE)
 		to_chat(new_spawn,span_warning("<b>Ghosting is free!</b>"))
-		var/datum/action/toggle_dead_chat_mob/D = new(new_spawn)
-		SSquirks.AssignQuirks(new_spawn, new_spawn.client, TRUE, TRUE, null, FALSE, new_spawn)
-		D.Grant(new_spawn)
+		var/datum/action/toggle_dead_chat_mob/dchat_toggle_ability = new(new_spawn)
+		dchat_toggle_ability.Grant(new_spawn)
 
 /mob/living/proc/on_using_radio(atom/movable/talking_movable)
 	SIGNAL_HANDLER
@@ -78,12 +77,19 @@
 		return COMPONENT_CANNOT_USE_RADIO
 
 /datum/outfit/ghostcafe
-	name = "ID, jumpsuit and shoes"
+	name = "Cafe Visitor"
 	uniform = /obj/item/clothing/under/color/random
 	shoes = /obj/item/clothing/shoes/sneakers/black
 	id = /obj/item/card/id/advanced/chameleon/ghost_cafe
 	back = /obj/item/storage/backpack/chameleon
 	backpack_contents = list(/obj/item/storage/box/syndie_kit/chameleon/ghostcafe = 1)
+
+/datum/outfit/ghostcafe/pre_equip(mob/living/carbon/human/visitor, visuals_only = FALSE)
+	..()
+	if (isplasmaman(visitor))
+		backpack_contents += list(/obj/item/tank/internals/plasmaman/belt/full = 2)
+	if(isvox(visitor) || isvoxprimalis(visitor))
+		backpack_contents += list(/obj/item/tank/internals/nitrogen/belt/full = 2)
 
 /datum/action/toggle_dead_chat_mob
 	button_icon = 'icons/mob/simple/mob.dmi'
@@ -106,12 +112,12 @@
 	name = "cafe costuming kit"
 	desc = "Look just the way you did in life - or better!"
 	icon_state = "ghostcostuming"
+	storage_type = /datum/storage/chameleon_cafe
 
-/obj/item/storage/box/syndie_kit/chameleon/ghostcafe/Initialize(mapload)
-	. = ..()
-	atom_storage.max_specific_storage = WEIGHT_CLASS_HUGE // This is ghost cafe only, balance is not given a shit about.
-	atom_storage.max_slots = 14 // Holds all the starting stuff, plus a bit of change.
-	atom_storage.max_total_storage = 50 // To actually acommodate the stuff being added.
+/datum/storage/chameleon_cafe
+	max_specific_storage = WEIGHT_CLASS_HUGE // This is ghost cafe only, balance is not given a shit about.
+	max_slots = 14 // Holds all the starting stuff, plus a bit of change.
+	max_total_storage = 50 // To actually acommodate the stuff being added.
 
 /obj/item/storage/box/syndie_kit/chameleon/ghostcafe/PopulateContents() // Doesn't contain a PDA, for isolation reasons.
 	new /obj/item/clothing/under/chameleon(src)

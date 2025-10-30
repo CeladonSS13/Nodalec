@@ -36,7 +36,7 @@
 
 /datum/sprite_accessory/tails/lizard
 	icon = 'modular_nova/master_files/icons/mob/sprite_accessory/tails.dmi'
-	recommended_species = list(SPECIES_LIZARD, SPECIES_LIZARD_ASH, SPECIES_MAMMAL, SPECIES_UNATHI, SPECIES_LIZARD_SILVER)
+	recommended_species = list(SPECIES_LIZARD, SPECIES_LIZARD_ASH, SPECIES_MAMMAL, SPECIES_UNATHI, SPECIES_LIZARD_SILVER, SPECIES_KOBOLD, SPECIES_LIZARD)
 	organ_type = /obj/item/organ/tail/lizard
 
 /datum/sprite_accessory/tails/lizard/short/twotone
@@ -214,6 +214,12 @@
 	name = "Queen Insect"
 	icon_state = "queeninsect"
 
+/datum/sprite_accessory/tails/mammal/insectoid
+	name = "Insectoid"
+	icon_state = "insectoid"
+	color_src = USE_ONE_COLOR
+	default_color = DEFAULT_PRIMARY
+
 /datum/sprite_accessory/tails/mammal/wagging/kangaroo
 	name = "Kangaroo"
 	icon_state = "kangaroo"
@@ -273,6 +279,10 @@
 	name = "Otusian"
 	icon_state = "otie"
 
+/datum/sprite_accessory/tails/mammal/wagging/otter
+	name = "Otter"
+	icon_state = "otter"
+
 /datum/sprite_accessory/tails/mammal/plug
 	name = "Plug"
 	icon_state = "plugtail"
@@ -327,6 +337,11 @@
 /datum/sprite_accessory/tails/mammal/wagging/big/shade/striped
 	name = "Shade (Striped)"
 	icon_state = "shadekinlongstriped_large"
+
+/datum/sprite_accessory/tails/mammal/wagging/big/shade/fluffy
+	name = "Shade (Fluffy)"
+	icon_state = "bigandfluffy"
+	color_src = USE_MATRIXED_COLORS
 
 /datum/sprite_accessory/tails/mammal/wagging/big/ringtail
 	name = "Ring Tail (Long)"
@@ -484,3 +499,36 @@
 /datum/sprite_accessory/tails/mammal/wagging/gecko
 	name = "Gecko"
 	icon_state = "gecko"
+
+// TG Fish infusion tails
+/datum/sprite_accessory/tails/fish
+	recommended_species = list(SPECIES_AKULA, SPECIES_AQUATIC)
+	color_src = USE_ONE_COLOR
+	feature_key_override = "fish_tail"
+
+/datum/sprite_accessory/tails/fish/simple
+	name = "Simple (Fish Infusion)"
+
+/datum/sprite_accessory/tails/fish/crescent
+	name = "Crescent (Fish Infusion)"
+
+/datum/sprite_accessory/tails/fish/long
+	name = "Long (Fish Infusion)"
+
+/datum/sprite_accessory/tails/fish/shark
+	name = "Shark (Fish Infusion)"
+
+/datum/sprite_accessory/tails/fish/chonky
+	name = "Chonky (Fish Infusion)"
+
+/datum/sprite_accessory/tails/mammal/wagging/chemlight
+	name = "Striped Tail"
+	icon_state = "chemlight"
+
+/datum/sprite_accessory/tails/mammal/wagging/chemlight_alt
+	name = "Striped Tail (Alt)"
+	icon_state = "chemlight_alt"
+
+/datum/sprite_accessory/tails/mammal/insectunder
+	name = "Insect (Underbelly)"
+	icon_state = "insectunder"

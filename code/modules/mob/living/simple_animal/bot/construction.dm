@@ -6,23 +6,17 @@
 	force = 3
 	throw_speed = 2
 	throw_range = 5
+	obj_flags = UNIQUE_RENAME | RENAME_NO_DESC
 	var/created_name
 	var/build_step = ASSEMBLY_FIRST_STEP
 	var/robot_arm = /obj/item/bodypart/arm/right/robot
 
-/obj/item/bot_assembly/attackby(obj/item/I, mob/user, params)
-	..()
-	if(IS_WRITING_UTENSIL(I))
-		rename_bot()
-		return
+/obj/item/bot_assembly/nameformat(input, user)
+	created_name = input
+	return input
 
-/obj/item/bot_assembly/proc/rename_bot()
-	var/t = sanitize_name(tgui_input_text(usr, "Enter a new robot name", "Robot Rename", created_name, MAX_NAME_LEN), allow_numbers = TRUE)
-	if(!t)
-		return
-	if(!in_range(src, usr) && loc != usr)
-		return
-	created_name = t
+/obj/item/bot_assembly/rename_reset()
+	created_name = initial(created_name)
 
 /**
  * Checks if the user can finish constructing a bot with a given item.
@@ -73,7 +67,7 @@
 	return ..()
 
 
-/obj/item/bot_assembly/cleanbot/attackby(obj/item/item_attached, mob/user, params)
+/obj/item/bot_assembly/cleanbot/attackby(obj/item/item_attached, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	if(!istype(item_attached, /obj/item/bodypart/arm/left/robot) && !istype(item_attached, /obj/item/bodypart/arm/right/robot))
 		return
@@ -98,7 +92,7 @@
 	var/lasercolor = ""
 	var/vest_type = /obj/item/clothing/suit/armor/vest
 
-/obj/item/bot_assembly/ed209/attackby(obj/item/W, mob/user, params)
+/obj/item/bot_assembly/ed209/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP, ASSEMBLY_SECOND_STEP)
@@ -192,9 +186,9 @@
 
 //Repairbot assemblies
 /obj/item/bot_assembly/repairbot
-	desc = "It's a toolbox with tiles sticking out the top."
 	name = "Repairbot Chasis"
-	icon_state = "repairbot_base"
+	desc = "It's a toolbox with tiles sticking out the top."
+	icon_state = "repairbot_box"
 	throwforce = 10
 	created_name = "Repairbot"
 	///the toolbox our repairbot is made of
@@ -221,11 +215,11 @@
 /obj/item/bot_assembly/repairbot/update_overlays()
 	. = ..()
 	if(build_step >= ASSEMBLY_FIRST_STEP)
-		. += mutable_appearance(icon, "repairbot_base_sensor", appearance_flags = RESET_COLOR)
+		. += mutable_appearance(icon, "repairbot_base_sensor", appearance_flags = RESET_COLOR|KEEP_APART)
 	if(build_step >= ASSEMBLY_SECOND_STEP)
-		. += mutable_appearance(icon, "repairbot_base_arms", appearance_flags = RESET_COLOR)
+		. += mutable_appearance(icon, "repairbot_base_arms", appearance_flags = RESET_COLOR|KEEP_APART)
 
-/obj/item/bot_assembly/repairbot/attackby(obj/item/item, mob/user, params)
+/obj/item/bot_assembly/repairbot/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP)
@@ -248,8 +242,7 @@
 			repair.set_color(toolbox_color)
 			to_chat(user, span_notice("You add [item] to [src]. Boop beep!"))
 			var/obj/item/stack/crafting_stack = item
-			var/atom/used_belt = crafting_stack.split_stack(user, 1)
-			qdel(used_belt)
+			crafting_stack.use(1)
 			qdel(src)
 
 
@@ -257,7 +250,8 @@
 /obj/item/bot_assembly/medbot
 	name = "incomplete medibot assembly"
 	desc = "A first aid kit with a robot arm permanently grafted to it."
-	icon_state = "firstaid_arm"
+	icon_state = "medbot_assembly_generic"
+	base_icon_state = "medbot_assembly"
 	created_name = "Medibot" //To preserve the name if it's a unique medbot I guess
 	var/skin = null //Same as medbot, set to tox or ointment for the respective kits.
 	var/healthanalyzer = /obj/item/healthanalyzer
@@ -266,9 +260,9 @@
 /obj/item/bot_assembly/medbot/proc/set_skin(skin)
 	src.skin = skin
 	if(skin)
-		add_overlay("kit_skin_[skin]")
+		icon_state = "[base_icon_state]_[skin]"
 
-/obj/item/bot_assembly/medbot/attackby(obj/item/W, mob/user, params)
+/obj/item/bot_assembly/medbot/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP)
@@ -283,7 +277,7 @@
 				to_chat(user, span_notice("You add [W] to [src]."))
 				qdel(W)
 				name = "first aid/robot arm/health analyzer assembly"
-				add_overlay("na_scanner")
+				add_overlay("[base_icon_state]_analyzer")
 				build_step++
 
 		if(ASSEMBLY_SECOND_STEP)
@@ -309,7 +303,7 @@
 	icon_state = "honkbot_arm"
 	created_name = "Honkbot"
 
-/obj/item/bot_assembly/honkbot/attackby(obj/item/attacking_item, mob/user, params)
+/obj/item/bot_assembly/honkbot/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP)
@@ -346,7 +340,7 @@
 	var/swordamt = 0 //If you're converting it into a grievousbot, how many swords have you attached
 	var/toyswordamt = 0 //honk
 
-/obj/item/bot_assembly/secbot/attackby(obj/item/I, mob/user, params)
+/obj/item/bot_assembly/secbot/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	var/atom/Tsec = drop_location()
 	switch(build_step)
@@ -480,7 +474,7 @@
 	icon_state = "firebot_arm"
 	created_name = "Firebot"
 
-/obj/item/bot_assembly/firebot/attackby(obj/item/I, mob/user, params)
+/obj/item/bot_assembly/firebot/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP)
@@ -510,7 +504,7 @@
 	icon_state = "hygienebot"
 	created_name = "Hygienebot"
 
-/obj/item/bot_assembly/hygienebot/attackby(obj/item/I, mob/user, params)
+/obj/item/bot_assembly/hygienebot/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	var/atom/Tsec = drop_location()
 	switch(build_step)
@@ -565,7 +559,7 @@
 	icon_state = "vim_0"
 	created_name = "\improper Vim"
 
-/obj/item/bot_assembly/vim/attackby(obj/item/part, mob/user, params)
+/obj/item/bot_assembly/vim/attackby(obj/item/part, mob/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(.)
 		return

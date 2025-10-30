@@ -56,6 +56,7 @@
 	paddles = new paddle_type(src)
 	update_power()
 	RegisterSignal(paddles, COMSIG_DEFIBRILLATOR_SUCCESS, PROC_REF(on_defib_success))
+	AddElement(/datum/element/drag_pickup)
 
 /obj/item/defibrillator/loaded/Initialize(mapload) //starts with hicap
 	. = ..()
@@ -109,8 +110,8 @@
 	if(!safety && emagged_state)
 		. += emagged_state
 
-/obj/item/defibrillator/CheckParts(list/parts_list)
-	..()
+/obj/item/defibrillator/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	. = ..()
 	cell = locate(/obj/item/stock_parts/power_store) in contents
 	update_power()
 
@@ -135,14 +136,6 @@
 	else if(istype(loc, /obj/machinery/defibrillator_mount))
 		ui_action_click() //checks for this are handled in defibrillator.mount.dm
 	return ..()
-
-/obj/item/defibrillator/mouse_drop_dragged(atom/over_object, mob/user, src_location, over_location, params)
-	if(!ismob(loc))
-		return
-	var/mob/living_mob = loc
-	if(!living_mob.incapacitated && istype(over_object, /atom/movable/screen/inventory/hand))
-		var/atom/movable/screen/inventory/hand/hand = over_object
-		living_mob.putItemFromInventoryInHandIfPossible(src, hand.held_index)
 
 /obj/item/defibrillator/screwdriver_act(mob/living/user, obj/item/tool)
 	if(!cell || !cell_removable)
@@ -222,10 +215,6 @@
 		remove_paddles(user)
 		update_power()
 
-/obj/item/defibrillator/item_action_slot_check(slot, mob/user)
-	if(slot_flags & slot)
-		return TRUE
-
 /obj/item/defibrillator/proc/remove_paddles(mob/user) //this fox the bug with the paddles when other player stole you the defib when you have the paddles equiped
 	if(ismob(paddles.loc))
 		var/mob/M = paddles.loc
@@ -286,10 +275,6 @@
 	nocell_state = "defibcompact-nocell"
 	emagged_state = "defibcompact-emagged"
 
-/obj/item/defibrillator/compact/item_action_slot_check(slot, mob/user)
-	if(slot & user.getBeltSlot())
-		return TRUE
-
 /obj/item/defibrillator/compact/loaded/Initialize(mapload)
 	. = ..()
 	cell = new(src)
@@ -336,6 +321,7 @@
 	inhand_icon_state = "defibpaddles0"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
+	spawn_blacklisted = TRUE
 
 	force = 0
 	throwforce = 6
@@ -429,14 +415,14 @@
 	return ..()
 
 /obj/item/shockpaddles/dropped(mob/user)
-	. = ..()
+	if(!req_defib)
+		return ..()
 	UnregisterSignal(defib, COMSIG_MOVABLE_MOVED)
 	if(user)
 		UnregisterSignal(user, COMSIG_MOVABLE_MOVED)
-	if(req_defib)
-		if(user)
-			to_chat(user, span_notice("The paddles snap back into the main unit."))
-		snap_back()
+		to_chat(user, span_notice("The paddles snap back into the main unit."))
+	snap_back()
+	return ..()
 
 /obj/item/shockpaddles/proc/snap_back()
 	if(!defib)
@@ -445,7 +431,7 @@
 	forceMove(defib)
 	defib.update_power()
 
-/obj/item/shockpaddles/attack(mob/M, mob/living/user, params)
+/obj/item/shockpaddles/attack(mob/M, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(busy)
 		return
 	defib?.update_power()
@@ -466,7 +452,6 @@
 			to_chat(user, span_warning("[src] are recharging!"))
 		return
 
-	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		do_disarm(M, user)
 		return
@@ -695,10 +680,15 @@
 				playsound(src, 'sound/machines/defib/defib_zap.ogg', 50, TRUE, -1)
 				if(!(heart.organ_flags & ORGAN_FAILING))
 					H.set_heartattack(FALSE)
+					do_success()
 					user.visible_message(span_notice("[req_defib ? "[defib]" : "[src]"] pings: Patient's heart is now beating again."))
 				else
 					user.visible_message(span_warning("[req_defib ? "[defib]" : "[src]"] buzzes: Resuscitation failed, heart damage detected."))
-
+			else if(H.has_status_effect(/datum/status_effect/heart_attack))
+				user.visible_message(span_notice("[req_defib ? "[defib]" : "[src]"] pings: Patient's heart has stabilized, further applications may be necessary."))
+				SEND_SIGNAL(H, COMSIG_HEARTATTACK_DEFIB)
+				playsound(src, 'sound/machines/defib/defib_zap.ogg', 50, TRUE, -1)
+				do_success()
 			else
 				user.visible_message(span_warning("[req_defib ? "[defib]" : "[src]"] buzzes: Patient is not in a valid state. Operation aborted."))
 				playsound(src, 'sound/machines/defib/defib_failed.ogg', 50, FALSE)

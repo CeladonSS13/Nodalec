@@ -494,6 +494,12 @@
 /obj/structure/marker_beacon/lime,
 /turf/open/floor/plating/lavaland_atmos,
 /area/ruin/interdyne_planetary_base)
+"eo" = (
+/obj/machinery/status_display/department_balance{
+	credits_account = "IP"
+	},
+/turf/closed/wall/mineral/titanium/nodiagonal,
+/area/ruin/interdyne_planetary_base)
 "es" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/wood,
@@ -1070,9 +1076,9 @@
 	},
 /area/ruin/interdyne_planetary_base/med/morgue)
 "jo" = (
-/obj/structure/ore_box,
 /obj/effect/turf_decal/delivery,
 /obj/machinery/light/cold/directional/south,
+/obj/effect/mob_spawn/ghost_role/robot/interdyne,
 /turf/open/floor/iron/dark/textured_large,
 /area/ruin/interdyne_planetary_base/cargo)
 "jp" = (
@@ -1258,7 +1264,7 @@
 /obj/effect/turf_decal/tile/dark_green/half{
 	dir = 8
 	},
-/obj/machinery/computer/cryopod/interdyne/directional/west,
+/obj/machinery/computer/cryopod/directional/west,
 /turf/open/floor/iron/dark/smooth_edge{
 	dir = 8
 	},
@@ -1905,6 +1911,7 @@
 /obj/effect/turf_decal/siding/thinplating{
 	dir = 1
 	},
+/obj/structure/ore_box,
 /turf/open/floor/iron/herringbone,
 /area/ruin/interdyne_planetary_base/cargo)
 "pT" = (
@@ -1913,11 +1920,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/ruin/interdyne_planetary_base/eng)
-"pX" = (
-/obj/effect/turf_decal/delivery,
-/obj/structure/ore_box,
-/turf/open/floor/iron/dark/textured_large,
-/area/ruin/interdyne_planetary_base/cargo)
 "pZ" = (
 /obj/structure/table/reinforced,
 /obj/item/construction/rtd{
@@ -1934,6 +1936,12 @@
 	},
 /turf/open/floor/iron/diagonal,
 /area/ruin/interdyne_planetary_base/eng)
+"qj" = (
+/obj/machinery/status_display/department_balance{
+	credits_account = "IP"
+	},
+/turf/closed/wall/mineral/titanium/nodiagonal,
+/area/ruin/interdyne_planetary_base/serv/bar)
 "ql" = (
 /obj/effect/turf_decal/trimline/dark_green/warning{
 	dir = 1
@@ -2962,13 +2970,19 @@
 	dir = 1
 	},
 /obj/structure/table/reinforced,
-/obj/item/reagent_containers/cup/rag,
+/obj/item/rag,
 /turf/open/floor/wood/tile,
 /area/ruin/interdyne_planetary_base/serv/bar)
 "zB" = (
 /obj/structure/railing,
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/iron/dark/textured_large,
+/area/ruin/interdyne_planetary_base/cargo)
+"zE" = (
+/obj/machinery/status_display/department_balance{
+	credits_account = "IP"
+	},
+/turf/closed/wall/mineral/titanium/nodiagonal,
 /area/ruin/interdyne_planetary_base/cargo)
 "zI" = (
 /obj/effect/turf_decal/siding/dark{
@@ -3403,7 +3417,7 @@
 /area/ruin/interdyne_planetary_base/cargo)
 "CH" = (
 /obj/structure/window/reinforced/survival_pod/spawner/directional/south,
-/obj/machinery/computer/scan_consolenew{
+/obj/machinery/computer/dna_console{
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/dark_green/half,
@@ -3484,7 +3498,6 @@
 	dir = 4;
 	pixel_z = 8
 	},
-/obj/machinery/duct,
 /turf/open/floor/iron/freezer,
 /area/ruin/interdyne_planetary_base/serv/rstrm)
 "Dn" = (
@@ -3806,7 +3819,7 @@
 /area/ruin/interdyne_planetary_base)
 "Fh" = (
 /obj/structure/cable,
-/obj/machinery/power/micro_reactor,
+/obj/machinery/power/micro_reactor/bapgm,
 /turf/open/floor/engine,
 /area/ruin/interdyne_planetary_base/eng)
 "Fj" = (
@@ -4531,11 +4544,7 @@
 "LH" = (
 /obj/structure/cable,
 /obj/structure/table,
-/obj/machinery/fax{
-	fax_name = "Interdyne S&R Ship Fax";
-	name = "Interdyne Fax Machine";
-	syndicate_network = 1
-	},
+/obj/machinery/fax/interdyne,
 /turf/open/floor/iron/dark,
 /area/ruin/interdyne_planetary_base/cargo/obs)
 "LJ" = (
@@ -4576,6 +4585,7 @@
 	name = "Interdyne Vault Camera";
 	c_tag = "Interdyne Vault Camera"
 	},
+/obj/machinery/announcement_system,
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/ruin/interdyne_planetary_base/main/vault)
 "Ma" = (
@@ -4641,6 +4651,12 @@
 /obj/machinery/duct,
 /turf/open/floor/iron/white,
 /area/ruin/interdyne_planetary_base/med)
+"MK" = (
+/obj/machinery/status_display/department_balance{
+	credits_account = "IP"
+	},
+/turf/closed/wall/mineral/titanium/nodiagonal,
+/area/ruin/interdyne_planetary_base/cargo/deck)
 "MM" = (
 /obj/effect/turf_decal/tile/dark_green/half{
 	dir = 4
@@ -4817,8 +4833,8 @@
 /turf/open/floor/engine/bz,
 /area/ruin/interdyne_planetary_base/science/xeno)
 "On" = (
-/obj/structure/ore_box,
 /obj/effect/turf_decal/delivery,
+/obj/effect/mob_spawn/ghost_role/robot/interdyne,
 /turf/open/floor/iron/dark/textured_large,
 /area/ruin/interdyne_planetary_base/cargo)
 "Oo" = (
@@ -5159,6 +5175,7 @@
 /obj/effect/turf_decal/siding/thinplating{
 	dir = 1
 	},
+/obj/structure/ore_box,
 /turf/open/floor/iron/herringbone,
 /area/ruin/interdyne_planetary_base/cargo)
 "Rw" = (
@@ -5367,6 +5384,7 @@
 /obj/effect/turf_decal/siding/thinplating{
 	dir = 1
 	},
+/obj/structure/ore_box,
 /turf/open/floor/iron/herringbone,
 /area/ruin/interdyne_planetary_base/cargo)
 "SR" = (
@@ -5691,6 +5709,18 @@
 "UE" = (
 /obj/structure/table/reinforced,
 /obj/item/folder/syndicate/red/secretformula,
+/obj/item/circuitboard/computer/ghostpad/interdyne{
+	pixel_x = 2;
+	pixel_y = 2
+	},
+/obj/item/circuitboard/machine/ghostpad/interdyne{
+	pixel_x = 4;
+	pixel_y = 4
+	},
+/obj/item/circuitboard/computer/cargo/express/ghost/interdyne{
+	pixel_x = 6;
+	pixel_y = 6
+	},
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/ruin/interdyne_planetary_base/main/vault)
 "UN" = (
@@ -5910,6 +5940,9 @@
 /area/ruin/interdyne_planetary_base/cargo)
 "Wf" = (
 /obj/structure/rack/gunrack,
+/obj/item/circuitboard/machine/powerator/interdyne,
+/obj/item/circuitboard/computer/bountypad,
+/obj/item/circuitboard/machine/bountypad,
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/ruin/interdyne_planetary_base/main/vault)
 "Wk" = (
@@ -6590,7 +6623,7 @@ By
 By
 By
 By
-By
+MK
 LH
 ko
 RD
@@ -7696,7 +7729,7 @@ UE
 Qd
 jw
 Av
-pX
+On
 Ih
 uF
 ql
@@ -7738,7 +7771,7 @@ rj
 sN
 pn
 jo
-Ih
+zE
 xB
 ql
 oa
@@ -7771,7 +7804,7 @@ fm
 fm
 kk
 Iu
-vu
+eo
 ta
 LY
 Wf
@@ -7826,7 +7859,7 @@ KE
 ZV
 OU
 TV
-RY
+qj
 EA
 XG
 Zk

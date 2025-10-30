@@ -95,10 +95,6 @@
 	name = "Halfbang ALT"
 	icon_state = "hair_halfbangalt"
 
-/datum/sprite_accessory/hair/nova/emolong
-	name = "Emo Long"
-	icon_state = "hair_emolong"
-
 /datum/sprite_accessory/hair/nova/sleaze
 	name = "Sleaze"
 	icon_state = "hair_sleaze"
@@ -202,6 +198,10 @@
 /datum/sprite_accessory/hair/nova/long4
 	name = "Long 4"
 	icon_state = "hair_long4"
+
+/datum/sprite_accessory/hair/nova/fluffball
+	name = "Fluffball"
+	icon_state = "hair_fluffball"
 
 /datum/sprite_accessory/hair/nova/fluffy_short
 	name = "Fluffy Short"
@@ -679,6 +679,18 @@
 	name = "Mirrored Half Bob"
 	icon_state = "hair_bob_half_mirrored"
 
+/datum/sprite_accessory/hair/nova/flowerchild
+	name = "Flowerchild"
+	icon_state = "hair_flowerchild"
+
+/datum/sprite_accessory/hair/nova/flowerchild_ponyless
+	name = "Flowerchild (No Ponytail)"
+	icon_state = "hair_flowerchild_ponyless"
+
+/datum/sprite_accessory/hair/nova/flowerchild_ponyful
+	name = "Flowerchild (Ponytail Only)"
+	icon_state = "hair_flowerchild_ponyful"
+
 // Facial hair
 
 /datum/sprite_accessory/facial_hair/nova
@@ -719,3 +731,19 @@
 /datum/sprite_accessory/facial_hair/nova/selleckreceeded
 	name = "Moustache (Selleck - Alt)"
 	icon_state = "facial_selleckreceeded"
+
+/datum/sprite_accessory/facial_hair/nova/faciallizardlick
+	name = "Lizard Tongue Flick"
+	icon_state = "facial_lizardlick_s"
+
+/datum/sprite_accessory/facial_hair/nova/faciallizardlickslow
+	name = "Lizard Tongue Flick Slow"
+	icon_state = "facial_lizardlickslow_s"
+
+/datum/sprite_accessory/facial_hair/nova/faciallizardlickfast
+	name = "Lizard Tongue Flick Fast"
+	icon_state = "facial_lizardlickfast_s"
+
+/datum/sprite_accessory/facial_hair/nova/noselick
+	name = "Nose Lick"
+	icon_state = "noselick"

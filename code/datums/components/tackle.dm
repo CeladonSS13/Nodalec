@@ -31,7 +31,7 @@
 	///A wearkef to the throwdatum we're currently dealing with, if we need it
 	var/datum/weakref/tackle_ref
 
-/datum/component/tackler/Initialize(stamina_cost = 25, base_knockdown = 1 SECONDS, range = 4, speed = 1, skill_mod = 0, min_distance = min_distance)
+/datum/component/tackler/Initialize(stamina_cost = 25, base_knockdown = 1 SECONDS, range = 4, speed = 1, skill_mod = 0, min_distance = min_distance, silent_gain = FALSE)
 	if(!iscarbon(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -42,8 +42,9 @@
 	src.skill_mod = skill_mod
 	src.min_distance = min_distance
 
-	var/mob/P = parent
-	to_chat(P, span_notice("You are now able to launch tackles! You can do so by activating throw mode, and ") + span_boldnotice("RIGHT-CLICKING on your target with an empty hand."))
+	if(!silent_gain)
+		var/mob/P = parent
+		to_chat(P, span_notice("You are now able to launch tackles! You can do so by activating throw mode, and ") + span_boldnotice("RIGHT-CLICKING on your target with an empty hand."))
 
 	addtimer(CALLBACK(src, PROC_REF(resetTackle)), base_knockdown, TIMER_STOPPABLE)
 
@@ -106,7 +107,7 @@
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(checkObstacle))
 	playsound(user, 'sound/items/weapons/thudswoosh.ogg', 40, TRUE, -1)
 
-	var/leap_word = isfeline(user) ? "pounce" : "leap" //If cat, "pounce" instead of "leap". // NOVA EDIT - FELINE TRAITS. Was: isfelinid(user)
+	var/leap_word = isfeline(user) || HAS_TRAIT(user, TRAIT_TACKLING_TAILED_POUNCE) ? "pounce" : "leap" //If cat, "pounce" instead of "leap". // NOVA EDIT CHANGE- FELINE TRAITS. Was: isfelinid(user)
 	if(can_see(user, clicked_atom, 7))
 		user.visible_message(span_warning("[user] [leap_word]s at [clicked_atom]!"), span_danger("You [leap_word] at [clicked_atom]!"))
 	else
@@ -152,7 +153,7 @@
 		return
 
 	var/mob/living/carbon/target = hit
-	var/tackle_word = isfeline(user) ? "pounce" : "tackle" //If cat, "pounce" instead of "tackle". // NOVA EDIT - FELINE TRAITS - ORIGINAL : var/tackle_word = isfelinid(user) ? "pounce" : "tackle" 
+	var/tackle_word = isfeline(user) ? "pounce" : "tackle" //If cat, "pounce" instead of "tackle". // NOVA EDIT - FELINE TRAITS - ORIGINAL : var/tackle_word = isfelinid(user) ? "pounce" : "tackle"
 
 	var/roll = rollTackle(target)
 	tackling = FALSE
@@ -390,7 +391,7 @@
 	if(ishuman(target))
 		var/mob/living/carbon/human/tackle_target = target
 
-		if(tackle_target.get_mob_height() <= HUMAN_HEIGHT_SHORTEST) //WHO ARE YOU CALLING SHORT?
+		if(tackle_target.mob_height <= HUMAN_HEIGHT_SHORTEST) //WHO ARE YOU CALLING SHORT?
 			defense_mod -= 2
 
 		if(isnull(tackle_target.wear_suit) && isnull(tackle_target.w_uniform)) // who honestly puts all of their effort into tackling a naked guy?
@@ -409,6 +410,13 @@
 		var/obj/item/organ/cyberimp/chest/spine/potential_spine = tackle_target.get_organ_slot(ORGAN_SLOT_SPINE)
 		if(istype(potential_spine))
 			defense_mod += potential_spine.strength_bonus
+
+		if(istype(tackle_target.wear_suit, /obj/item/clothing/suit/hooded/cultrobes/eldritch/blade))
+			defense_mod += 8
+		if(istype(tackle_target.wear_suit, /obj/item/clothing/suit/hooded/cultrobes/eldritch/rust))
+			var/obj/item/clothing/suit/hooded/cultrobes/eldritch/rust/rust_robes = tackle_target.wear_suit
+			if(rust_robes.rusted)
+				defense_mod += 10
 
 	// OF-FENSE
 	var/mob/living/carbon/sacker = parent
@@ -434,6 +442,10 @@
 	if(HAS_TRAIT(sacker, TRAIT_NOGUNS)) //Those dedicated to martial combat are particularly skilled tacklers
 		attack_mod += 2
 
+	if(HAS_TRAIT(sacker, TRAIT_TACKLING_TAILED_POUNCE))
+		var/obj/item/organ/tail/lizard/sacker_tail = sacker.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
+		attack_mod += sacker_tail ? 2 : -2
+
 	if(HAS_TRAIT(sacker, TRAIT_TACKLING_WINGED_ATTACKER))
 		var/obj/item/organ/wings/moth/sacker_moth_wing = sacker.get_organ_slot(ORGAN_SLOT_EXTERNAL_WINGS)
 		if(!sacker_moth_wing || sacker_moth_wing.burnt)
@@ -449,7 +461,7 @@
 	if(ishuman(sacker))
 		var/mob/living/carbon/human/human_sacker = sacker
 
-		if(human_sacker.get_mob_height() <= HUMAN_HEIGHT_SHORTEST) //JUST YOU WAIT TILL I FIND A CHAIR, BUDDY, THEN YOU'LL BE SORRY
+		if(human_sacker.mob_height <= HUMAN_HEIGHT_SHORTEST) //JUST YOU WAIT TILL I FIND A CHAIR, BUDDY, THEN YOU'LL BE SORRY
 			attack_mod -= 2
 
 		if(human_sacker.mob_mood.sanity_level == SANITY_LEVEL_INSANE) //I've gone COMPLETELY INSANE
@@ -601,9 +613,14 @@
 	if(windscreen_casualty.type in list(/obj/structure/window, /obj/structure/window/fulltile, /obj/structure/window/unanchored, /obj/structure/window/fulltile/unanchored)) // boring unreinforced windows
 		for(var/i in 1 to speed)
 			var/obj/item/shard/shard = new /obj/item/shard(get_turf(user))
-			shard.set_embed(/datum/embedding/glass_candy)
+			var/datum/embedding/embed = shard.get_embed()
+			embed.embed_chance = 100
+			embed.ignore_throwspeed_threshold = TRUE
+			embed.impact_pain_mult = 1
 			user.hitby(shard, skipcatch = TRUE, hitpush = FALSE)
-			shard.set_embed(initial(shard.embed_type))
+			embed.embed_chance = initial(embed.embed_chance)
+			embed.ignore_throwspeed_threshold = initial(embed.ignore_throwspeed_threshold)
+			embed.impact_pain_mult = initial(embed.impact_pain_mult)
 		windscreen_casualty.atom_destruction()
 		user.adjustStaminaLoss(10 * speed)
 		user.Paralyze(3 SECONDS)

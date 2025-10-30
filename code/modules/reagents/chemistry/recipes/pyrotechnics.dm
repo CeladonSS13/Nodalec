@@ -30,7 +30,7 @@
 		if(purge_power >= 1)
 			var/has_purging_chemical = FALSE
 			// They need one of the purge reagents in them
-			for(var/purging_chem as anything in PURGING_REAGENTS)
+			for(var/purging_chem in PURGING_REAGENTS)
 				if(holder.has_reagent(purging_chem))
 					// We have a purging chemical
 					has_purging_chemical = TRUE
@@ -509,7 +509,7 @@
 	var/datum/reagent/cryostylane/cryostylane = holder.has_reagent(/datum/reagent/cryostylane)
 	var/turf/local_turf = get_turf(holder.my_atom)
 	playsound(local_turf, 'sound/effects/magic/ethereal_exit.ogg', 50, 1)
-	local_turf.visible_message("The reaction furiously freezes up as a snowman suddenly rises out of the [holder.my_atom.name]!")
+	local_turf.visible_message("The reaction furiously freezes up as a snowman suddenly rises out of \the [holder.my_atom]!")
 	freeze_radius(holder, equilibrium, holder.chem_temp, clamp(cryostylane.volume/15, 3, 10), 180 SECONDS, 5)
 	new /obj/structure/statue/snow/snowman(local_turf)
 	clear_reactants(holder)

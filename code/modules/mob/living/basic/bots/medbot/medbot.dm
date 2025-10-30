@@ -4,8 +4,8 @@
 	name = "\improper Medibot"
 	desc = "A little medical robot. He looks somewhat underwhelmed."
 	icon = 'icons/mob/silicon/aibots.dmi'
-	icon_state = "medibot0"
-	base_icon_state = "medibot"
+	icon_state = "medbot_generic_idle"
+	base_icon_state = "medbot"
 	health = 20
 	maxHealth = 20
 	speed = 2
@@ -19,11 +19,11 @@
 	radio_key = /obj/item/encryptionkey/headset_med
 	radio_channel = RADIO_CHANNEL_MEDICAL
 	bot_type = MED_BOT
-	data_hud_type = DATA_HUD_MEDICAL_ADVANCED
+	data_hud_type = TRAIT_MEDICAL_HUD
 	hackables = "health processor circuits"
 	possessed_message = "You are a medbot! Ensure good health among the crew to the best of your ability!"
 
-	additional_access = /datum/id_trim/job/paramedic
+	additional_access = /datum/id_trim/medibot
 	announcement_type = /datum/action/cooldown/bot_announcement/medbot
 	path_image_color = "#d9d9f4"
 
@@ -95,7 +95,7 @@
 	/// drop determining variable
 	var/medkit_type = /obj/item/storage/medkit
 	///based off medkit_X skins in aibots.dmi for your selection; X goes here IE medskin_tox means skin var should be "tox"
-	var/skin
+	var/skin = "generic"
 	/// How much healing do we do at a time?
 	var/heal_amount = 2.5
 	/// Start healing when they have this much damage in a category
@@ -128,7 +128,7 @@
 
 	if(!isnull(new_skin))
 		skin = new_skin
-	update_appearance()
+		update_appearance()
 	AddComponent(/datum/component/tippable, \
 		tip_time = 3 SECONDS, \
 		untip_time = 3 SECONDS, \
@@ -150,8 +150,8 @@
 	if(!HAS_TRAIT(SSstation, STATION_TRAIT_MEDBOT_MANIA) || !mapload || !is_station_level(z))
 		return INITIALIZE_HINT_LATELOAD
 
-	skin = "advanced"
-	update_appearance(UPDATE_OVERLAYS)
+	skin = "adv"
+	update_appearance()
 	damage_type_healer = HEAL_ALL_DAMAGE
 	if(prob(50))
 		name += ", PhD."
@@ -162,24 +162,34 @@
 	if(!CONFIG_GET(flag/no_default_techweb_link) && !linked_techweb)
 		CONNECT_TO_RND_SERVER_ROUNDSTART(linked_techweb, src)
 
+/mob/living/basic/bot/medbot/on_craft_completion(list/components, datum/crafting_recipe/current_recipe, atom/crafter)
+	. = ..()
+	var/obj/item/storage/medkit/medkit = locate() in contents
+	medkit_type = medkit
+	health_analyzer = locate(/obj/item/healthanalyzer) in contents
+	skin = medkit.get_medbot_skin()
+	damage_type_healer = initial(medkit.damagetype_healed) ? initial(medkit.damagetype_healed) : BRUTE
+	update_appearance()
+
 /mob/living/basic/bot/medbot/update_icon_state()
 	. = ..()
-	if(!(bot_mode_flags & BOT_MODE_ON))
-		icon_state = "[base_icon_state]0"
-		return
-	if(HAS_TRAIT(src, TRAIT_INCAPACITATED))
-		icon_state = "[base_icon_state]a"
-		return
-	var/stationary_mode = !!(medical_mode_flags & MEDBOT_STATIONARY_MODE)
-	if(mode == BOT_HEALING)
-		icon_state = "[base_icon_state]s[stationary_mode]"
-		return
-	icon_state = "[base_icon_state][stationary_mode ? 2 : 1]" //Bot has yellow light to indicate stationary mode.
+
+	var/mode_suffix = mode == BOT_HEALING ? "active" : "idle"
+	icon_state = "[base_icon_state]_[skin]_[mode_suffix]"
 
 /mob/living/basic/bot/medbot/update_overlays()
 	. = ..()
-	if(skin)
-		. += "medskin_[skin]"
+
+	if(!(medical_mode_flags & MEDBOT_STATIONARY_MODE))
+		. += mutable_appearance(icon, "[base_icon_state]_overlay_wheels")
+
+	if(HAS_TRAIT(src, TRAIT_INCAPACITATED))
+		. += mutable_appearance(icon, "[base_icon_state]_overlay_incapacitated")
+		. += emissive_appearance(icon, "[base_icon_state]_overlay_incapacitated", src, alpha = src.alpha)
+	else if(bot_mode_flags & BOT_MODE_ON)
+		var/mode_suffix = mode == BOT_HEALING ? "active" : "idle"
+		. += mutable_appearance(icon, "[base_icon_state]_overlay_on_[mode_suffix]")
+		. += emissive_appearance(icon, "[base_icon_state]_overlay_on_[mode_suffix]", src, alpha = src.alpha)
 
 //this is sin
 /mob/living/basic/bot/medbot/generate_speak_list()
@@ -248,7 +258,7 @@
 	medical_mode_flags &= ~MEDBOT_DECLARE_CRIT
 	balloon_alert(user, "reagent synthesis circuits shorted")
 	audible_message(span_danger("[src] buzzes oddly!"))
-	flick("medibot_spark", src)
+	flick_overlay_view(mutable_appearance(icon, "[base_icon_state]_spark"), 1 SECONDS)
 	playsound(src, SFX_SPARKS, 75, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	return TRUE
 
@@ -326,9 +336,10 @@
 	if(DOING_INTERACTION(src, TEND_DAMAGE_INTERACTION))
 		return
 
-	if((damage_type_healer == HEAL_ALL_DAMAGE && patient.get_total_damage() <= heal_threshold) || (!(damage_type_healer == HEAL_ALL_DAMAGE) && patient.get_current_damage_of_type(damage_type_healer) <= heal_threshold))
-		to_chat(src, "[patient] is healthy! Your programming prevents you from tending the wounds of anyone with less than [heal_threshold + 1] [damage_type_healer == HEAL_ALL_DAMAGE ? "total" : damage_type_healer] damage.")
-		return
+	if (!(bot_access_flags & BOT_COVER_EMAGGED))
+		if((damage_type_healer == HEAL_ALL_DAMAGE && patient.get_total_damage() <= heal_threshold) || (!(damage_type_healer == HEAL_ALL_DAMAGE) && patient.get_current_damage_of_type(damage_type_healer) <= heal_threshold))
+			to_chat(src, "[patient] is healthy! Your programming prevents you from tending the wounds of anyone with less than [heal_threshold + 1] [damage_type_healer == HEAL_ALL_DAMAGE ? "total" : damage_type_healer] damage.")
+			return
 
 	update_bot_mode(new_mode = BOT_HEALING, update_hud = FALSE)
 	patient.visible_message("[src] is trying to tend the wounds of [patient]", span_userdanger("[src] is trying to tend your wounds!"))
@@ -356,14 +367,41 @@
 	patient.visible_message(span_notice("[src] tends the wounds of [patient]!"), "[span_infoplain(span_green("[src] tends your wounds!"))]")
 
 	if(done_healing)
-		visible_message(span_infoplain("[src] places its tools back into itself."))
+		visible_message(span_infoplain("[src] places [p_their()] tools back into [p_themselves()]."))
 		to_chat(src, "[patient] is now healthy!")
 		update_bot_mode(new_mode = BOT_IDLE)
 		return
 
-	if(CanReach(patient))
+	if(patient.IsReachableBy(src))
 		melee_attack(patient)
 
+/datum/id_trim/medibot
+	assignment = JOB_MEDIBOT
+	trim_state = "trim_paramedic"
+	department_color = COLOR_MEDICAL_BLUE
+	subdepartment_color = COLOR_MEDICAL_BLUE
+	sechud_icon_state = SECHUD_PARAMEDIC
+	access = list(
+		ACCESS_BIT_DEN,
+		ACCESS_CARGO,
+		ACCESS_CONSTRUCTION,
+		ACCESS_HYDROPONICS,
+		ACCESS_MAINT_TUNNELS,
+		ACCESS_MECH_MEDICAL,
+		ACCESS_MEDICAL,
+		ACCESS_MINERAL_STOREROOM,
+		ACCESS_MINING,
+		ACCESS_MINING_STATION,
+		ACCESS_MORGUE,
+		ACCESS_SCIENCE,
+		ACCESS_SERVICE,
+		ACCESS_SURGERY,
+		ACCESS_VIROLOGY,
+		ACCESS_PHARMACY,
+		ACCESS_PARAMEDIC,
+		)
+	honorifics = list("Medical Robot")
+	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL | HONORIFIC_POSITION_NONE
 
 /mob/living/basic/bot/medbot/autopatrol
 	bot_mode_flags = BOT_MODE_ON | BOT_MODE_AUTOPATROL | BOT_MODE_REMOTE_ENABLED | BOT_MODE_CAN_BE_SAPIENT | BOT_MODE_ROUNDSTART_POSSESSION
@@ -390,9 +428,9 @@
 /mob/living/basic/bot/medbot/nukie
 	name = "Oppenheimer"
 	desc = "A medibot stolen from a Nanotrasen station and upgraded by the Syndicate. Despite their best efforts at reprogramming, it still appears visibly upset near nuclear explosives."
-	skin = "bezerk"
 	health = 40
 	maxHealth = 40
+	skin = "bezerk"
 	req_one_access = list(ACCESS_SYNDICATE)
 	bot_mode_flags = parent_type::bot_mode_flags & ~BOT_MODE_REMOTE_ENABLED
 	radio_key = /obj/item/encryptionkey/syndicate

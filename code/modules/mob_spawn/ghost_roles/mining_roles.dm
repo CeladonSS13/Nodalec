@@ -103,7 +103,7 @@
 	. = ..()
 	if(visuals_only)
 		return
-	bum.dna.add_mutation(/datum/mutation/human/stoner)
+	bum.dna.add_mutation(/datum/mutation/stoner, MUTATION_SOURCE_GHOST_ROLE)
 
 /datum/outfit/beachbum/lifeguard
 	name = "Beach Lifeguard"
@@ -233,7 +233,7 @@
 		to_chat(user, span_warning("You have exhausted your usefulness to the Necropolis."))
 	return FALSE
 
-/obj/effect/mob_spawn/ghost_role/human/ash_walker/special(mob/living/carbon/human/spawned_human)
+/obj/effect/mob_spawn/ghost_role/human/ash_walker/special(mob/living/carbon/human/spawned_human, mob/mob_possessor)
 	. = ..()
 	spawned_human.fully_replace_character_name(null, spawned_human.generate_random_mob_name(TRUE))
 	to_chat(spawned_human, "<b>Drag the corpses of men and beasts to your nest. It will absorb them to create more of your kind. Invade the strange structure of the outsiders if you must. Do not cause unnecessary destruction, as littering the wastes with ugly wreckage is certain to not gain you favor. Glory to the Necropolis!</b>")
@@ -285,7 +285,7 @@
 	spawner_job_path = /datum/job/lavaland_syndicate
 	deletes_on_zero_uses_left = FALSE
 
-/obj/effect/mob_spawn/ghost_role/human/lavaland_syndicate/special(mob/living/new_spawn)
+/obj/effect/mob_spawn/ghost_role/human/lavaland_syndicate/special(mob/living/new_spawn, mob/mob_possessor)
 	. = ..()
 	new_spawn.grant_language(/datum/language/codespeak, source = LANGUAGE_MIND)
 
@@ -309,6 +309,8 @@
 	shoes = /obj/item/clothing/shoes/combat
 	r_pocket = /obj/item/gun/ballistic/automatic/pistol
 	r_hand = /obj/item/gun/ballistic/rifle/sniper_rifle
+	belt = /obj/item/storage/belt/utility/full
+	glasses = /obj/item/clothing/glasses/welding/up
 
 	implants = list(/obj/item/implant/weapons_auth)
 
@@ -320,6 +322,8 @@
 	suit = /obj/item/clothing/suit/armor/vest
 	mask = /obj/item/clothing/mask/chameleon/gps
 	r_hand = /obj/item/melee/energy/sword/saber
+	belt = /obj/item/storage/belt/utility/full
+	glasses = /obj/item/clothing/glasses/welding/up
 
 /datum/outfit/lavaland_syndicate/comms/icemoon
 	name = "Icemoon Syndicate Comms Agent"

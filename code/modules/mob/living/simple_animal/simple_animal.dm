@@ -2,6 +2,7 @@
 /mob/living/simple_animal
 	name = "animal"
 	icon = 'icons/mob/simple/animal.dmi'
+	abstract_type = /mob/living/simple_animal
 	health = 20
 	maxHealth = 20
 	gender = PLURAL //placeholder
@@ -147,7 +148,7 @@
 	///How much wounding power it has
 	var/wound_bonus = CANT_WOUND
 	///How much bare wounding power it has
-	var/bare_wound_bonus = 0
+	var/exposed_wound_bonus = 0
 	///If the attacks from this are sharp
 	var/sharpness = NONE
 	///Generic flags
@@ -360,15 +361,18 @@
 	. += "Health: [round((health / maxHealth) * 100)]%"
 	. += "Combat Mode: [combat_mode ? "On" : "Off"]"
 
-/mob/living/simple_animal/proc/drop_loot()
-	if(loot.len)
-		for(var/i in loot)
-			new i(loc)
+/mob/living/simple_animal/proc/drop_loot(drop_loc)
+	if (!length(loot))
+		return
+	for(var/i in loot)
+		new i(drop_loc)
+	loot.Cut()
 
 /mob/living/simple_animal/death(gibbed)
-	drop_loot()
+	var/drop_loc = drop_location()
 	if(del_on_death)
 		..()
+		drop_loot(drop_loc)
 		//Prevent infinite loops if the mob Destroy() is overridden in such
 		//a manner as to cause a call to death() again //Pain
 		del_on_death = FALSE
@@ -380,7 +384,8 @@
 	if(flip_on_death)
 		transform = transform.Turn(180)
 	ADD_TRAIT(src, TRAIT_UNDENSE, BASIC_MOB_DEATH_TRAIT)
-	return ..()
+	. = ..()
+	drop_loot(drop_loc)
 
 /mob/living/simple_animal/proc/CanAttack(atom/the_target)
 	if(!isatom(the_target)) // no
@@ -516,7 +521,7 @@
 		else
 			stack_trace("Something attempted to set simple animals AI to an invalid state: [togglestatus]")
 
-///This proc is used for adding the swabbale element to mobs so that they are able to be biopsied and making sure holograpic and butter-based creatures don't yield viable cells samples.
+///This proc is used for adding the swabbale element to mobs so that they are able to be biopsied and making sure holographic and butter-based creatures don't yield viable cells samples.
 /mob/living/simple_animal/proc/add_cell_sample()
 	return
 
@@ -549,7 +554,7 @@
 	stop_automated_movement = FALSE
 	if(!isturf(src.loc)) // Are we on a proper turf?
 		return
-	if(stat || resting || buckled) // Are we concious, upright, and not buckled?
+	if(stat || resting || buckled) // Are we conscious, upright, and not buckled?
 		return
 	if(!COOLDOWN_FINISHED(src, emote_cooldown)) // Has the cooldown on this ended?
 		return

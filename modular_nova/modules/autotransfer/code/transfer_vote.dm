@@ -7,8 +7,8 @@
 // 		CHOICE_TRANSFER,
 // 		CHOICE_CONTINUE,
 // 	)
-// 	default_message = "Vote to initiate a transfer, forcing a shuttle call \
-// 		that cannot be recalled. Don't touch it unless it's not working \
+// 	default_message = "Vote to initiate a transfer, forcing a shuttle call
+// 		that cannot be recalled. Don't touch it unless it's not working
 // 		automatically."
 
 // /datum/vote/transfer_vote/toggle_votable()

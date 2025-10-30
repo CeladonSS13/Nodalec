@@ -73,9 +73,11 @@ GLOBAL_LIST_EMPTY(elevator_music)
 
 	if (entered in tracked_mobs)
 		return
-
-	if (entered.client?.prefs.read_preference(/datum/preference/toggle/sound_elevator))
-		tracked_mobs[entered] = new soundloop_type(_parent = entered, _direct = TRUE, start_immediately = enabled)
+	var/pref_volume = entered.client?.prefs.read_preference(/datum/preference/numeric/volume/sound_ambience_volume)
+	if (pref_volume > 0)
+		var/datum/looping_sound/soundloop = new soundloop_type(_parent = entered, _direct = TRUE, start_immediately = enabled)
+		soundloop.volume *= pref_volume/100
+		tracked_mobs[entered] = soundloop
 	else
 		tracked_mobs[entered] = null // Still add it to the list so we don't keep making this check
 	RegisterSignal(entered, COMSIG_QDELETING, PROC_REF(mob_destroyed))
@@ -99,13 +101,13 @@ GLOBAL_LIST_EMPTY(elevator_music)
 /// Start sound loops playing
 /datum/proximity_monitor/advanced/elevator_music_area/proc/turn_on()
 	enabled = TRUE
-	for (var/mob as anything in tracked_mobs)
+	for (var/mob in tracked_mobs)
 		var/datum/looping_sound/loop = tracked_mobs[mob]
 		loop.start()
 
 /// Stop active sound loops
 /datum/proximity_monitor/advanced/elevator_music_area/proc/turn_off()
 	enabled = FALSE
-	for (var/mob as anything in tracked_mobs)
+	for (var/mob in tracked_mobs)
 		var/datum/looping_sound/loop = tracked_mobs[mob]
 		loop.stop()
