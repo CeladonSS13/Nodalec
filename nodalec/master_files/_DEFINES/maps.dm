@@ -32,4 +32,4 @@
 
 // #define DEFAULT_ALLOC_JUMP 5	// Дубликат
 
-// #define MAP_EDGE_PAD 5	// Дубликат
+#define MAP_EDGE_PAD 5

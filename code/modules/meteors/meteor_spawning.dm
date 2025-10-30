@@ -1,4 +1,4 @@
-#define MAP_EDGE_PAD 5
+// #define MAP_EDGE_PAD 5	// Дубликат
 
 /proc/spawn_meteors(number = 10, list/meteor_types, direction)
 	for(var/i in 1 to number)
