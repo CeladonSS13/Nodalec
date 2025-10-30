@@ -20,12 +20,17 @@
 	. = ..()
 	if(istype(parent, /obj/machinery/computer/cargo))
 		console_state = CARGO_CONSOLE
+		RegisterSignal(parent, COMSIG_ATOM_EMAG_ACT, PROC_REF(on_emag))
 	else if(istype(parent, /obj/item/modular_computer))
 		console_state = IRN_CONSOLE
 
 /datum/component/armament/company_imports/Destroy(force)
+	UnregisterSignal(parent, COMSIG_ATOM_EMAG_ACT)
 	parent_prog = null
 	. = ..()
+
+/datum/component/armament/company_imports/proc/on_emag(mob/user, obj/item/card/emag/emag_card)
+	update_static_data_for_all_viewers()
 
 /datum/component/armament/company_imports/on_attack_hand(datum/source, mob/living/user)
 	return
@@ -39,10 +44,9 @@
 	var/mob/living/carbon/human/the_person = user
 	var/obj/item/card/id/id_card
 	var/datum/bank_account/buyer = SSeconomy.get_dep_account(ACCOUNT_CAR)
-	var/cost_multiplier = COST_MULTIPLIER
 
 	if(console_state == IRN_CONSOLE)
-		id_card = parent_prog.computer.computer_id_slot?.GetID()
+		id_card = parent_prog.computer.stored_id?.GetID()
 	else
 		if(istype(the_person))
 			id_card = the_person.get_idcard(TRUE)
@@ -70,30 +74,34 @@
 	if(id_card?.registered_account && (ACCESS_WEAPONS in id_card.access))
 		cant_buy_restricted = FALSE
 
+	if(id_card?.registered_account)
+		if((buyer == SSeconomy.get_dep_account(id_card.registered_account.account_job.paycheck_department)) && !self_paid)
+			cant_buy_restricted = TRUE
+
+	if(console_state == CARGO_CONSOLE)
+		var/obj/machinery/computer/cargo/console = parent
+		if(console.obj_flags & EMAGGED)
+			cant_buy_restricted = FALSE
+
+	data["cant_buy_restricted"] = !!cant_buy_restricted
+	data["budget_points"] = self_paid ? id_card?.registered_account?.account_balance : buyer?.account_balance
+	data["self_paid"] = !!self_paid
+	return data
+
+/datum/component/armament/company_imports/ui_static_data(mob/user)
+	var/list/data = list()
+	data["armaments_list"] = list()
+
+	var/cost_multiplier = COST_MULTIPLIER
 	if(console_state == CARGO_CONSOLE)
 		var/obj/machinery/computer/cargo/console = parent
 		if(console.obj_flags & EMAGGED)
 			cost_multiplier *= EMAGGED_DISCOUNT
-		if(!console.requestonly || console.contraband)
-			cant_buy_restricted = FALSE
-
-	else if((console_state == IRN_CONSOLE) && id_card?.registered_account)
-		if((ACCESS_COMMAND in id_card.access) || (ACCESS_QM in id_card.access))
-			if((buyer == SSeconomy.get_dep_account(id_card.registered_account.account_job.paycheck_department)) && !self_paid)
-				cant_buy_restricted = FALSE
-
-	data["cant_buy_restricted"] = !!cant_buy_restricted
-	data["cost_multiplier"] = cost_multiplier
-	data["budget_points"] = self_paid ? id_card?.registered_account?.account_balance : buyer?.account_balance
-	data["ammo_amount"] = ammo_purchase_num
-	data["self_paid"] = !!self_paid
-	data["armaments_list"] = list()
-
-	for(var/armament_category as anything in SSarmaments.entries)
+	for(var/armament_category in SSarmaments.entries)
 
 		var/list/armament_subcategories = list()
 
-		for(var/subcategory as anything in SSarmaments.entries[armament_category][CATEGORY_ENTRY])
+		for(var/subcategory in SSarmaments.entries[armament_category][CATEGORY_ENTRY])
 			var/list/subcategory_items = list()
 			for(var/datum/armament_entry/armament_entry as anything in SSarmaments.entries[armament_category][CATEGORY_ENTRY][subcategory])
 				if(products && !(armament_entry.type in products))
@@ -147,6 +155,9 @@
 		ui = new(user, src, "CargoImportConsole")
 		ui.open()
 
+/datum/component/armament/company_imports/ui_status(mob/user, datum/ui_state/state)
+	return parent.ui_status(user, state)
+
 /datum/component/armament/company_imports/select_armament(mob/user, datum/armament_entry/company_import/armament_entry)
 	var/datum/bank_account/buyer = SSeconomy.get_dep_account(ACCOUNT_CAR)
 	var/obj/item/modular_computer/possible_downloader
@@ -172,7 +183,7 @@
 		var/obj/item/card/id/id_card
 
 		if(console_state == IRN_CONSOLE)
-			id_card = parent_prog.computer.computer_id_slot?.GetID()
+			id_card = parent_prog.computer.stored_id?.GetID()
 		else
 			id_card = the_person.get_idcard(TRUE)
 
@@ -224,7 +235,7 @@
 	if(issilicon(user))
 		name = user.real_name
 	else
-		the_person.get_authentification_name()
+		name = the_person.get_authentification_name()
 
 	var/reason = ""
 
@@ -236,7 +247,7 @@
 
 	else if(possible_downloader)
 		var/datum/computer_file/program/budgetorders/parent_file = parent_prog
-		if((parent_file.requestonly && !self_paid) || !(possible_downloader.computer_id_slot?.GetID()))
+		if((parent_file.requestonly && !self_paid) || !(possible_downloader.stored_id?.GetID()))
 			reason = tgui_input_text(user, "Reason", name, max_length = MAX_MESSAGE_LEN)
 			if(isnull(reason))
 				return
@@ -301,7 +312,7 @@
 				return
 
 			if(console_state == IRN_CONSOLE)
-				id_card = parent_prog.computer.computer_id_slot?.GetID()
+				id_card = parent_prog.computer.stored_id?.GetID()
 			else
 				id_card = the_person.get_idcard(TRUE)
 

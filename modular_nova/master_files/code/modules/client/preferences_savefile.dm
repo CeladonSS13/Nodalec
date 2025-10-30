@@ -3,7 +3,7 @@
  * You can't really use the non-modular version, least you eventually want asinine merge
  * conflicts and/or potentially disastrous issues to arise, so here's your own.
  */
-#define MODULAR_SAVEFILE_VERSION_MAX 8
+#define MODULAR_SAVEFILE_VERSION_MAX 15
 
 #define MODULAR_SAVEFILE_UP_TO_DATE -1
 
@@ -15,6 +15,12 @@
 #define VERSION_TG_LOADOUT 6
 #define VERSION_INTERNAL_EXTERNAL_ORGANS 7
 #define VERSION_SKRELL_HAIR_NAME_UPDATE 8
+#define VERSION_TG_EMOTE_SOUNDS 9
+#define VERSION_CAT_EARS_DUPES 10
+#define VERSION_LOADOUT_PRESETS 12
+#define VERSION_EMO_LONG_REMOVAL 13
+#define VERSION_TOOLKIT_IMPLANTS 14
+#define VERSION_VOCAL_BARKS 15
 
 #define INDEX_UNDERWEAR 1
 #define INDEX_BRA 2
@@ -26,7 +32,7 @@
 /datum/preferences/proc/savefile_needs_update_nova(list/save_data)
 	var/savefile_version = save_data["modular_version"]
 
-	if(savefile_version < MODULAR_SAVEFILE_VERSION_MAX)
+	if(save_data.len && savefile_version < MODULAR_SAVEFILE_VERSION_MAX)
 		return savefile_version
 
 	return MODULAR_SAVEFILE_UP_TO_DATE
@@ -69,15 +75,13 @@
 	languages = save_languages
 
 	tgui_prefs_migration = save_data["tgui_prefs_migration"]
-	if(!tgui_prefs_migration)
-		to_chat(parent, boxed_message(span_redtext("PREFERENCE MIGRATION BEGINNING FOR.\
+	if(!tgui_prefs_migration && save_data.len) // If save_data is empty, this is definitely a new character
+		to_chat(parent, boxed_message(span_redtext("PREFERENCE MIGRATION BEGINNING.\
 		\nDO NOT INTERACT WITH YOUR PREFERENCES UNTIL THIS PROCESS HAS BEEN COMPLETED.\
 		\nDO NOT DISCONNECT UNTIL THIS PROCESS HAS BEEN COMPLETED.\
 		")))
 		migrate_nova(save_data)
 		addtimer(CALLBACK(src, PROC_REF(check_migration)), 10 SECONDS)
-
-	headshot = save_data["headshot"]
 
 
 	food_preferences = SANITIZE_LIST(save_data["food_preferences"])
@@ -278,6 +282,38 @@
 			else if(current_skrell_hair == "Female")
 				write_preference(GLOB.preference_entries[/datum/preference/choiced/mutant_choice/skrell_hair], "Long")
 
+		// Sets old insect laugh to the merged moth/insect in case character uses it.
+	if (current_version < VERSION_TG_EMOTE_SOUNDS)
+		var/current_laugh = save_data["character_laugh"]
+		var/current_scream = save_data["character_scream"]
+		if(current_laugh == "Moth Laugh" || current_laugh == "Insect Laugh")
+			write_preference(GLOB.preference_entries[/datum/preference/choiced/laugh], "Insect Laugh (Moth)")
+		if(current_scream == "Moth Scream 2")
+			write_preference(GLOB.preference_entries[/datum/preference/choiced/scream], "Lizard Scream")
+
+	if (current_version < VERSION_CAT_EARS_DUPES)
+		var/current_ears = save_data["feature_ears"]
+		if(current_ears == "Cat, Big")
+			write_preference(GLOB.preference_entries[/datum/preference/choiced/mutant_choice/ears], "Cat (Colorable Inner, Behind Hair)")
+		else if(current_ears == "Cat, normal")
+			write_preference(GLOB.preference_entries[/datum/preference/choiced/mutant_choice/ears], "Cat, Alert")
+		else if(current_ears == "Cat, Big (Alt)")
+			write_preference(GLOB.preference_entries[/datum/preference/choiced/mutant_choice/ears], "Cat (Colorable Inner)")
+
+	if(current_version < VERSION_LOADOUT_PRESETS)
+		write_preference(GLOB.preference_entries[/datum/preference/loadout], list("Default" = save_data["loadout_list"]))
+
+	if(current_version < VERSION_EMO_LONG_REMOVAL)
+		var/current_hair = save_data["hairstyle_name"]
+		if(current_hair == "Emo Long")
+			write_preference(GLOB.preference_entries[/datum/preference/choiced/hairstyle], "Long Emo")
+	if(current_version < VERSION_TOOLKIT_IMPLANTS)
+		migrate_toolset_implants(save_data)
+
+	if(current_version < VERSION_VOCAL_BARKS)
+		var/current_tts_voice = save_data["tts_voice"]
+		if(current_tts_voice != TTS_VOICE_NONE && current_tts_voice != "invalid") // make sure we don't turn off TTS for people who have it on
+			write_preference(GLOB.preference_entries[/datum/preference/choiced/vocals/voice_type], "Text-to-speech")
 
 /datum/preferences/proc/check_migration()
 	if(!tgui_prefs_migration)
@@ -296,7 +332,6 @@
 	save_data["allow_advanced_colors"] = allow_advanced_colors
 	save_data["alt_job_titles"] = alt_job_titles
 	save_data["languages"] = languages
-	save_data["headshot"] = headshot
 	save_data["modular_version"] = MODULAR_SAVEFILE_VERSION_MAX
 	save_data["food_preferences"] = food_preferences
 
@@ -349,7 +384,26 @@
 			augments_sanitized[aug_slot] = aug_entry
 	augments = augments_sanitized
 
+/// Migration for loadout augments, replaces augments with /toolkit versions if the original doesn't exist
+/datum/preferences/proc/migrate_toolset_implants(list/save_data)
+	var/list/save_augments = SANITIZE_LIST(save_data["augments"])
+	if(!length(save_augments))
+		return
+	for(var/augment_name in save_augments)
+		var/augment_path_string = save_augments[augment_name]
+		var/augment_path = GLOB.augment_items[_text2path(augment_path_string)]
+		if(augment_path) // The augment already exists, neat!
+			continue
+		// Saved augment doesn't exist, try the toolkit version
+		augment_path_string = replacetext(augment_path_string, "/cyberimp/arm/", "/cyberimp/arm/toolkit/")
+		augment_path = GLOB.augment_items[_text2path(augment_path_string)]
+		if(augment_path) // Toolkit version exists, save that instead
+			save_augments[augment_name] = augment_path_string
+			continue
+		stack_trace("Attempt to migrate augment item [save_augments[augment_name]] failed!")
+		save_augments -= augment_name
 
+	load_augments(save_augments)
 
 #undef MODULAR_SAVEFILE_VERSION_MAX
 #undef MODULAR_SAVEFILE_UP_TO_DATE
@@ -362,3 +416,9 @@
 #undef VERSION_TG_LOADOUT
 #undef VERSION_INTERNAL_EXTERNAL_ORGANS
 #undef VERSION_SKRELL_HAIR_NAME_UPDATE
+#undef VERSION_TG_EMOTE_SOUNDS
+#undef VERSION_CAT_EARS_DUPES
+#undef VERSION_LOADOUT_PRESETS
+#undef VERSION_EMO_LONG_REMOVAL
+#undef VERSION_TOOLKIT_IMPLANTS
+#undef VERSION_VOCAL_BARKS

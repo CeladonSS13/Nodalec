@@ -299,23 +299,6 @@
 		)
 	squeak_override = list('modular_nova/modules/emotes/sound/emotes/twobeep.ogg' = 1)
 
-/obj/item/toy/plush/nova/donator/tree_ferret
-	name = "tree ferret plushy"
-	desc = "This plush will always put on a smile to make your day as bright as the sun. \
-			Hugging him makes you feel warm and fuzzy. Comes with plush chemical vials to fix your non emotional traumas too!"
-	icon_state = "plushie_sels"
-	attack_verb_continuous = list(
-		"hugs",
-		"cackles at",
-		"health analyzes",
-		)
-	attack_verb_simple = list(
-		"hug",
-		"cackle at",
-		"health analyze",
-		)
-	squeak_override = list('sound/effects/bush/crunchybushwhack1.ogg' = 1)
-
 /obj/item/toy/plush/nova/donator/zapp
 	name = "Lil' Zapp"
 	desc = "An authentic piece of primo Pwr Game merchandise! \
@@ -357,11 +340,11 @@
 		"Cut it out, or I'm telling chat!",
 	)
 
-/obj/item/toy/plush/nova/donator/zapp/attackby(obj/item/attacking_item, mob/living/user, params)
+/obj/item/toy/plush/nova/donator/zapp/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	say(pick(hit_response))
 
-/obj/item/toy/plush/nova/donator/zapp/attack(mob/living/target, mob/living/user, params)
+/obj/item/toy/plush/nova/donator/zapp/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	say(pick(hit_response))
 
@@ -447,7 +430,7 @@
 		"flap",
 		"squeak",
 		)
-	squeak_override = list('modular_nova/modules/emotes/sound/emotes/mothsqueak.ogg'= 1)
+	squeak_override = list('sound/mobs/humanoids/moth/moth_chitter.ogg' = 1)
 	gender = MALE
 
 /obj/item/toy/plush/nova/donator/leaplush
@@ -723,7 +706,7 @@
 		"detain",
 		"taze",
 		)
-	squeak_override = list('modular_nova/modules/emotes/sound/emotes/female/female_sneeze.ogg' = 1)
+	squeak_override = list('sound/mobs/humanoids/human/sneeze/female_sneeze1.ogg' = 1)
 
 /obj/item/toy/plush/nova/donator/xixi
 	name = "familiar looking harpy plushie"
@@ -820,7 +803,7 @@
 	)
 	COOLDOWN_DECLARE(chunko_cooldown)
 
-/obj/item/toy/plush/nova/donator/chunko/attackby()
+/obj/item/toy/plush/nova/donator/chunko/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(!COOLDOWN_FINISHED(src, chunko_cooldown))
 		return
@@ -925,9 +908,9 @@
 		"smoke",
 		)
 	squeak_override = list(
-		'modular_nova/modules/emotes/sound/emotes/female/female_cough_3.ogg' = 1,
-		'modular_nova/modules/emotes/sound/emotes/female/female_cough_2.ogg' = 1,
-		'modular_nova/modules/emotes/sound/emotes/female/female_cough_1.ogg' = 1,
+		'sound/mobs/humanoids/human/cough/female_cough1.ogg' = 1,
+		'sound/mobs/humanoids/human/cough/female_cough2.ogg' = 1,
+		'sound/mobs/humanoids/human/cough/female_cough3.ogg' = 1,
 		)
 	responses = list(
 		"The human body can survive three weeks without skiiiiiiiiiiin.",

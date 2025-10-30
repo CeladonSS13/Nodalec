@@ -21,9 +21,9 @@
 		delete_extract(holder)
 
 /datum/chemical_reaction/slime/proc/delete_extract(datum/reagents/holder)
-	var/obj/item/slime_extract/M = holder.my_atom
-	if(M.extract_uses <= 0 && !results.len) //if the slime doesn't output chemicals
-		qdel(M)
+	var/obj/item/slime_extract/extract = holder.my_atom
+	if(!isnull(extract) && extract.extract_uses <= 0 && !length(results)) //if the slime doesn't output chemicals
+		qdel(extract)
 
 //Grey
 /datum/chemical_reaction/slime/slimespawn
@@ -63,6 +63,16 @@
 /datum/chemical_reaction/slime/slimelizard
 	results = list(/datum/reagent/mutationtoxin/lizard = 1)
 	required_reagents = list(/datum/reagent/uranium/radium = 1)
+	required_container = /obj/item/slime_extract/green
+
+/datum/chemical_reaction/slime/slimefelinid
+	results = list(/datum/reagent/mutationtoxin/felinid = 1)
+	required_reagents = list(/datum/reagent/consumable/milk = 1)
+	required_container = /obj/item/slime_extract/green
+
+/datum/chemical_reaction/slime/slimemoth
+	results = list(/datum/reagent/mutationtoxin/moth = 1)
+	required_reagents = list(/datum/reagent/cellulose = 1)
 	required_container = /obj/item/slime_extract/green
 
 //Metal
@@ -431,7 +441,7 @@
 
 /datum/chemical_reaction/slime/slimecrystal/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/obj/item/stack/ore/bluespace_crystal/BC = new (get_turf(holder.my_atom))
-	BC.visible_message(span_notice("The [BC.name] appears out of thin air!"))
+	BC.visible_message(span_notice("\The [BC] appears out of thin air!"))
 	..()
 
 /datum/chemical_reaction/slime/slimeradio

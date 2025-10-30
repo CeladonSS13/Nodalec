@@ -32,6 +32,7 @@
 	greyscale_config_belt = null
 	greyscale_config_inhand_left = null
 	greyscale_config_inhand_right = null
+	post_init_icon_state = null
 	/// Used on Initialize, how much time to cut cable restraints and zipties.
 	var/snap_time_weak_handcuffs = 0 SECONDS
 	/// Used on Initialize, how much time to cut real handcuffs. Null means it can't.
@@ -103,6 +104,7 @@
 	icon_state = "prybar"
 	toolspeed = 1.3
 	force_opens = TRUE
+	custom_premium_price = PAYCHECK_COMMAND * 5
 	custom_materials = list(
 		/datum/material/iron = SHEET_MATERIAL_AMOUNT * 1.75,
 		/datum/material/titanium = HALF_SHEET_MATERIAL_AMOUNT,

@@ -37,11 +37,14 @@
 		"thirteen",
 		"snake",
 	)
+	/// Whether the lighter starts with fuel
+	var/spawns_with_reagent = TRUE
 
 /obj/item/lighter/Initialize(mapload)
 	. = ..()
 	create_reagents(maximum_fuel, REFILLABLE | DRAINABLE)
-	reagents.add_reagent(/datum/reagent/fuel, maximum_fuel)
+	if(spawns_with_reagent)
+		reagents.add_reagent(/datum/reagent/fuel, maximum_fuel)
 	if(!overlay_state)
 		overlay_state = pick(overlay_list)
 	AddComponent(\
@@ -63,7 +66,7 @@
 /obj/item/lighter/proc/on_intercepted_bullet(mob/living/victim, obj/projectile/bullet)
 	victim.visible_message(span_warning("\The [bullet] shatters on [victim]'s lighter!"))
 	playsound(victim, SFX_RICOCHET, 100, TRUE)
-	new /obj/effect/decal/cleanable/oil(get_turf(src))
+	new /obj/effect/decal/cleanable/blood/oil(get_turf(src))
 	do_sparks(1, TRUE, src)
 	victim.dropItemToGround(src, force = TRUE, silent = TRUE)
 	qdel(src)
@@ -192,7 +195,7 @@
 	)
 	user.add_mood_event("burnt_thumb", /datum/mood_event/burnt_thumb)
 
-/obj/item/lighter/attack(mob/living/target_mob, mob/living/user, params)
+/obj/item/lighter/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(lit)
 		use(0.5)
 		if(target_mob.ignite_mob())
@@ -203,15 +206,15 @@
 		return ..()
 
 	if(cig.lit)
-		to_chat(user, span_warning("The [cig.name] is already lit!"))
+		to_chat(user, span_warning("\The [cig] is already lit!"))
 	if(target_mob == user)
 		cig.attackby(src, user)
 		return
 
 	if(fancy)
-		cig.light(span_rose("[user] whips the [name] out and holds it for [target_mob]. [user.p_Their()] arm is as steady as the unflickering flame [user.p_they()] light[user.p_s()] \the [cig] with."))
+		cig.light(span_rose("[user] whips \the [src] out and holds it for [target_mob]. [user.p_Their()] arm is as steady as the unflickering flame [user.p_they()] light[user.p_s()] \the [cig] with."))
 	else
-		cig.light(span_notice("[user] holds the [name] out for [target_mob], and lights [target_mob.p_their()] [cig.name]."))
+		cig.light(span_notice("[user] holds \the [src] out for [target_mob], and lights [target_mob.p_their()] [cig.name]."))
 
 ///Checks if the lighter is able to perform a welding task.
 /obj/item/lighter/tool_use_check(mob/living/user, amount, heat_required)
@@ -227,11 +230,10 @@
 
 /obj/item/lighter/process(seconds_per_tick)
 	if(lit)
+		open_flame(heat)
 		burned_fuel_for += seconds_per_tick
 		if(burned_fuel_for >= TOOL_FUEL_BURN_INTERVAL)
 			use(used = 0.25)
-
-	open_flame(heat)
 
 /obj/item/lighter/get_temperature()
 	return lit * heat
@@ -325,7 +327,7 @@
 	desc = "In lieu of fuel, performative spirit can be used to light cigarettes."
 	icon_state = "mlighter" //These ones don't show a flame.
 	light_color = LIGHT_COLOR_HALOGEN
-	heat_while_on = 0 //I swear it's a real lighter dude you just can't see the flame dude I promise
+	heat_while_on = TCMB //I swear it's a real lighter dude you just can't see the flame dude I promise
 	overlay_state = "mime"
 	grind_results = list(/datum/reagent/iron = 1, /datum/reagent/toxin/mutetoxin = 5, /datum/reagent/consumable/nothing = 10)
 	light_range = 0
@@ -333,7 +335,7 @@
 	fancy = FALSE
 
 /obj/item/lighter/mime/ignition_effect(atom/A, mob/user)
-	. = span_infoplain("[user] lifts the [name] to the [A], which miraculously lights!")
+	. = span_infoplain("[user] lifts \the [src] to the [A], which miraculously lights!")
 
 /obj/item/lighter/bright
 	name = "illuminative zippo"
@@ -367,3 +369,9 @@
 		/obj/item/lighter/mime,
 		/obj/item/lighter/bright,
 	)
+
+/obj/item/lighter/empty
+	spawns_with_reagent = FALSE
+
+/obj/item/lighter/greyscale/empty
+	spawns_with_reagent = FALSE

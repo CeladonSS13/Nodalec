@@ -12,7 +12,7 @@
 	incompatible_modules = list(/obj/item/mod/module/bikehorn)
 	cooldown_time = 1 SECONDS
 
-/obj/item/mod/module/bikehorn/on_use()
+/obj/item/mod/module/bikehorn/on_use(mob/activator)
 	playsound(src, 'sound/items/bikehorn.ogg', 100, FALSE)
 	drain_power(use_energy_cost)
 
@@ -95,7 +95,7 @@
 // recharging cleaner spray module
 /obj/item/mod/module/mister/cleaner
 	name = "MOD janitorial mister module"
-	desc = "An space cleaner mister, able to clean up messes quickly. Synthesizes its own supply over time (if active)."
+	desc = "A space cleaner mister, able to clean up messes quickly. Synthesizes its own supply over time (if active)."
 	device = /obj/item/reagent_containers/spray/mister/janitor
 	volume = 100
 	active_power_cost = DEFAULT_CHARGE_DRAIN

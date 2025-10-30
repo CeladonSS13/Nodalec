@@ -19,7 +19,9 @@
 	name = "supply utility uniform"
 	desc = "A utility uniform worn by employees of the Supply department."
 	icon_state = "util_cargo"
-	can_adjust = FALSE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
+	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
+	alt_covers_chest = TRUE
 
 /obj/item/clothing/under/rank/cargo/tech/nova/utility/syndicate
 	armor_type = /datum/armor/clothing_under/utility_syndicate
@@ -39,14 +41,16 @@
 
 /obj/item/clothing/under/rank/cargo/tech/nova/turtleneck
 	name = "supply turtleneck"
-	desc = "A snug turtleneck sweater worn by the Supply department.."
+	desc = "A snug turtleneck sweater worn by the Supply department."
 	icon_state = "turtleneck_cargo"
+	alt_covers_chest = TRUE
 
 /obj/item/clothing/under/rank/cargo/tech/nova/turtleneck/skirt
 	name = "supply skirtleneck"
 	desc = "A snug turtleneck sweater worn by Supply, this time with a skirt attached!"
 	icon_state = "skirtleneck"
 	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
+	alt_covers_chest = TRUE
 
 /obj/item/clothing/under/rank/cargo/tech/nova/evil
 	name = "black cargo uniform"

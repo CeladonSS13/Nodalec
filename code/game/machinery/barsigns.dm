@@ -30,7 +30,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 	//Roundstart/map specific barsigns "belong" in their area and should be renaming it, signs created from wallmounts will not.
 	change_area_name = mapload
 	set_sign(new /datum/barsign/hiddensigns/signoff)
-	find_and_hang_on_wall()
+	if(mapload)
+		find_and_hang_on_wall()
 
 /obj/machinery/barsign/proc/set_sign(datum/barsign/sign)
 	if(!istype(sign))
@@ -305,7 +306,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 /datum/barsign/slipperyshots
 	name = "Slippery Shots"
 	icon_state = "slipperyshots"
-	desc = "Slippery slope to drunkeness with our shots!"
+	desc = "Slippery slope to drunkenness with our shots!"
 	neon_color = "#70DF00"
 
 /datum/barsign/thegreytide

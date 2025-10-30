@@ -11,6 +11,7 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	name = "Sprite Accessories"
 	flags = SS_NO_FIRE | SS_NO_INIT
 
+	// HOLY SHIT COMPACT THIS INTO ASSOCIATED LISTS SO WE STOP ADDING VARIABLES
 	//Hairstyles
 	var/list/hairstyles_list //! stores /datum/sprite_accessory/hair indexed by name
 	var/list/hairstyles_male_list //! stores only hair names
@@ -20,6 +21,7 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	var/list/facial_hairstyles_female_list //! stores only hair names
 	var/list/hair_gradients_list //! stores /datum/sprite_accessory/hair_gradient indexed by name
 	var/list/facial_hair_gradients_list //! stores /datum/sprite_accessory/facial_hair_gradient indexed by name
+	var/list/hair_masks_list //! stores /datum/hair_mask indexed by type
 
 	//Underwear
 	var/list/underwear_list //! stores /datum/sprite_accessory/underwear indexed by name
@@ -30,7 +32,6 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	var/list/undershirt_list //! stores /datum/sprite_accessory/undershirt indexed by name
 	var/list/undershirt_m //! stores only undershirt name
 	var/list/undershirt_f //! stores only undershirt name
-
 	// NOVA EDIT ADDITION START - Underwear/bra split
 	var/list/bra_list
 	var/list/bra_m
@@ -53,6 +54,7 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	var/list/tails_list_felinid
 	var/list/tails_list_lizard
 	var/list/tails_list_monkey
+	var/list/tails_list_xeno
 	var/list/tails_list_fish
 	var/list/ears_list
 	var/list/wings_list
@@ -61,13 +63,13 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	var/list/moth_antennae_list
 	*/ //NOVA EDIT REMOVAL END
 	var/list/moth_markings_list
+	var/list/caps_list
 	var/list/pod_hair_list
-
 	// NOVA EDIT ADDITION START - Customization
 	var/list/lizard_markings_list
 	var/list/tails_list_monkey
+	var/list/tails_list_xeno
 	var/list/tails_list_fish
-	var/list/caps_list
 	var/list/moth_wings_list
 
 	var/list/sprite_accessories = list()
@@ -85,6 +87,7 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 /datum/controller/subsystem/accessories/PreInit() // this stuff NEEDS to be set up before GLOB for preferences and stuff to work so this must go here. sorry
 	setup_lists()
 	init_hair_gradients()
+	init_hair_masks()
 	make_sprite_accessory_references() // NOVA EDIT ADDITION - Customization
 
 /// Sets up all of the lists for later utilization in the round and building sprites.
@@ -111,7 +114,6 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	undershirt_list = undershirt_lists[DEFAULT_SPRITE_LIST]
 	undershirt_m = undershirt_lists[MALE_SPRITE_LIST]
 	undershirt_f = undershirt_lists[FEMALE_SPRITE_LIST]
-
 	// NOVA EDIT ADDITION START - Underwear/bra split
 	var/bra_lists = init_sprite_accessory_subtypes(/datum/sprite_accessory/bra)
 	bra_list = bra_lists[DEFAULT_SPRITE_LIST]
@@ -127,6 +129,7 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	tails_list_lizard = init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/lizard)[DEFAULT_SPRITE_LIST]
 	*/ // NOVA EDIT REMOVAL END
 	tails_list_monkey = init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/monkey)[DEFAULT_SPRITE_LIST]
+	tails_list_xeno = init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/xeno)[DEFAULT_SPRITE_LIST]
 	//tails fo fish organ infusions, not for prefs.
 	tails_list_fish = init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/fish)[DEFAULT_SPRITE_LIST]
 	/* // NOVA EDIT REMOVAL START - Customization
@@ -167,6 +170,12 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 			hair_gradients_list[gradient.name] = gradient
 		if(gradient.gradient_category & GRADIENT_APPLIES_TO_FACIAL_HAIR)
 			facial_hair_gradients_list[gradient.name] = gradient
+
+/datum/controller/subsystem/accessories/proc/init_hair_masks()
+	hair_masks_list = list()
+	for(var/path in subtypesof(/datum/hair_mask))
+		var/datum/hair_mask/mask = new path
+		hair_masks_list[path] = mask
 
 /// This reads the applicable sprite accessory datum's subtypes and adds it to the subsystem's list of sprite accessories.
 /// The boolean `add_blank` argument just adds a "None" option to the list of sprite accessories, like if a felinid doesn't want a tail or something, typically good for gated-off things.

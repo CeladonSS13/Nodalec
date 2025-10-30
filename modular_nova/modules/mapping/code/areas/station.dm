@@ -37,6 +37,11 @@
 	icon = 'modular_nova/modules/mapping/icons/areas/areas_station.dmi'
 	icon_state = "blueshield"
 
+//Bridge Officer area
+/area/station/command/heads_quarters/bridge_officer
+	name = "Bridge Officer Quarters"
+	icon = 'modular_nova/modules/mapping/icons/areas/areas_station.dmi'
+	icon_state = "nt_rep"
 /*
  * Department areas
  */
@@ -677,9 +682,13 @@
 	name = "Theater Greenroom"
 	icon_state = "theatre"
 
-/area/station/service/newsroom
-	name = "News Room"
+/area/station/service/quietroom
+	name = "Quiet Room"
 	icon_state = "theatre"
+
+/area/station/common/shipyardlobby
+	name = "Shipyard Lobby"
+	icon_state = "mining"
 
 /area/station/cargo/miningstairs
 	name = "Mining Stairwell"

@@ -67,8 +67,10 @@
 	id_trim = /datum/id_trim/job/chief_engineer
 	uniform = /obj/item/clothing/under/rank/engineering/chief_engineer
 	backpack_contents = list(
-		/obj/item/melee/baton/telescopic = 1,
+		/obj/item/melee/baton/telescopic/silver = 1,
 		/obj/item/construction/rcd/ce = 1,
+		/obj/item/extinguisher/mini = 1,
+		/obj/item/analyzer = 1,
 	)
 	belt = /obj/item/storage/belt/utility/chief/full
 	ears = /obj/item/radio/headset/heads/ce

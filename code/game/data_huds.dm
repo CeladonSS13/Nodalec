@@ -20,34 +20,23 @@
 /datum/atom_hud/data/human/medical
 	hud_icons = list(STATUS_HUD, HEALTH_HUD, DNR_HUD) // NOVA EDIT ADDITION - DNR_HUD
 
+/// Sees health (0-100) status (alive, dead), but relies on suit sensors being on
 /datum/atom_hud/data/human/medical/basic
 
-/datum/atom_hud/data/human/medical/basic/proc/check_sensors(mob/living/carbon/human/H)
-	if(!istype(H))
-		return FALSE
-	var/obj/item/clothing/under/U = H.w_uniform
-	if(!istype(U))
-		return FALSE
-	if(U.has_sensor < HAS_SENSORS)
-		return FALSE
-	if(U.sensor_mode <= SENSOR_VITALS)
-		return FALSE
-	return TRUE
+/datum/atom_hud/data/human/medical/basic/add_atom_to_single_mob_hud(mob/requesting_mob, atom/hud_atom)
+	if(HAS_TRAIT(hud_atom, TRAIT_BASIC_HEALTH_HUD_VISIBLE))
+		return ..()
 
-/datum/atom_hud/data/human/medical/basic/add_atom_to_single_mob_hud(mob/M, mob/living/carbon/H)
-	if(check_sensors(H))
-		..()
-
-/datum/atom_hud/data/human/medical/basic/proc/update_suit_sensors(mob/living/carbon/H)
-	check_sensors(H) ? add_atom_to_hud(H) : remove_atom_from_hud(H)
-
+/// Sees health (0-100) status (alive, dead), always
 /datum/atom_hud/data/human/medical/advanced
 
 /datum/atom_hud/data/human/security
 
+/// Only sees ID card job
 /datum/atom_hud/data/human/security/basic
 	hud_icons = list(ID_HUD)
 
+/// Sees ID card job, implants, and wanted status
 /datum/atom_hud/data/human/security/advanced
 	hud_icons = list(ID_HUD, IMPSEC_FIRST_HUD, IMPLOYAL_HUD, IMPSEC_SECOND_HUD, WANTED_HUD, PERMIT_HUD, DNR_HUD) //NOVA EDIT ADDITION - PERMIT_HUD, DNR_HUD
 
@@ -97,6 +86,10 @@ Medical HUD! Basic mode needs suit sensors on.
 	var/severity
 	if(HAS_TRAIT(src, TRAIT_DISEASELIKE_SEVERITY_MEDIUM))
 		severity = DISEASE_SEVERITY_MEDIUM
+		threat = get_disease_severity_value(severity)
+
+	if(HAS_TRAIT(src, TRAIT_DISEASELIKE_SEVERITY_HIGH))
+		severity = DISEASE_SEVERITY_DANGEROUS
 		threat = get_disease_severity_value(severity)
 
 	for(var/thing in diseases)
@@ -159,11 +152,6 @@ Medical HUD! Basic mode needs suit sensors on.
 
 //HOOKS
 
-//called when a human changes suit sensors
-/mob/living/carbon/proc/update_suit_sensors()
-	var/datum/atom_hud/data/human/medical/basic/B = GLOB.huds[DATA_HUD_MEDICAL_BASIC]
-	B.update_suit_sensors(src)
-
 //called when a living mob changes health
 /mob/living/proc/med_hud_set_health()
 	set_hud_image_state(HEALTH_HUD, "hud[RoundHealth(src)]")
@@ -179,7 +167,7 @@ Medical HUD! Basic mode needs suit sensors on.
 	return TRUE
 
 /mob/living/carbon/med_hud_set_status()
-	if(HAS_TRAIT(src, TRAIT_XENO_HOST))
+	if(HAS_TRAIT(src, TRAIT_XENO_HOST) || HAS_TRAIT(src, TRAIT_SPIDER_HOST)) // NOVA EDIT CHANGE - ORIGINAL: if(HAS_TRAIT(src, TRAIT_XENO_HOST))
 		set_hud_image_state(STATUS_HUD, "hudxeno")
 		return FALSE
 
@@ -256,18 +244,21 @@ Security HUDs! Basic mode shows only the job.
 
 //HOOKS
 
-/mob/living/carbon/human/proc/sec_hud_set_ID()
+/mob/living/carbon/human/proc/update_ID_card()
+	SIGNAL_HANDLER
+
 	var/sechud_icon_state = wear_id?.get_sechud_job_icon_state()
-	if(!sechud_icon_state || HAS_TRAIT(src, TRAIT_UNKNOWN))
+	if(!sechud_icon_state || HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
 		sechud_icon_state = "hudno_id"
 	set_hud_image_state(ID_HUD, sechud_icon_state)
 	sec_hud_set_security_status()
-	//NOVA EDIT START
+	//NOVA EDIT ADDITION START
 	var/permit_icon_state = wear_id?.get_gun_permit_iconstate()
 	if(!permit_icon_state)
 		permit_icon_state = "hudfan_no"
 	set_hud_image_state(PERMIT_HUD, permit_icon_state)
-	//NOVA EDIT END
+	//NOVA EDIT ADDITION END
+	update_visible_name()
 
 /mob/living/proc/sec_hud_set_implants()
 	for(var/hud_type in (list(IMPSEC_FIRST_HUD, IMPLOYAL_HUD, IMPSEC_SECOND_HUD) & hud_list))
@@ -553,10 +544,10 @@ Diagnostic HUDs!
 
 /atom/proc/adjust_hud_position(image/holder, animate_time = null)
 	if (animate_time)
-		animate(holder, pixel_x = -(get_cached_width() - ICON_SIZE_X) / 2, pixel_y = get_cached_height() - ICON_SIZE_Y, time = animate_time)
+		animate(holder, pixel_w = -(get_cached_width() - ICON_SIZE_X) / 2, pixel_z = get_cached_height() - ICON_SIZE_Y, time = animate_time)
 		return
-	holder.pixel_x = -(get_cached_width() - ICON_SIZE_X) / 2
-	holder.pixel_y = get_cached_height() - ICON_SIZE_Y
+	holder.pixel_w = -(get_cached_width() - ICON_SIZE_X) / 2
+	holder.pixel_z = get_cached_height() - ICON_SIZE_Y
 
 /atom/proc/set_hud_image_state(hud_type, hud_state, x_offset = 0, y_offset = 0)
 	if (!hud_list) // Still initializing
@@ -569,5 +560,5 @@ Diagnostic HUDs!
 	holder.icon_state = hud_state
 	adjust_hud_position(holder)
 	if (x_offset || y_offset)
-		holder.pixel_x += x_offset
-		holder.pixel_y += y_offset
+		holder.pixel_w += x_offset
+		holder.pixel_z += y_offset

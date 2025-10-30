@@ -118,7 +118,7 @@
 
 /obj/structure/mob_spawner/attacked_by(obj/item/I, mob/living/user)
 	. = ..()
-	do_jiggle()
+	do_jiggle_nova()
 	if(!retaliated)
 		visible_message(span_danger("[src] grubbles angrily!"))
 		var/chosen_mob_type = pick(monster_types)
@@ -231,7 +231,7 @@
 			for(var/i in 1 to number)
 				new path (loc)
 	playsound(src, 'sound/effects/blob/blobattack.ogg', 100)
-	new /mob/living/simple_animal/hostile/vatbeast(loc)
+	new /mob/living/basic/vatbeast(loc)
 	return ..()
 
 

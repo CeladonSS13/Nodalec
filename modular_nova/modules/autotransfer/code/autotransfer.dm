@@ -1,9 +1,19 @@
 // #define NO_MAXVOTES_CAP -1	// NODALEC_SET_TURN_OFF - влияет на всю эко систему билда
 
+<<<<<<< HEAD
 // SUBSYSTEM_DEF(autotransfer)
 // 	name = "Autotransfer Vote"
 // 	flags = SS_KEEP_TIMING | SS_BACKGROUND
 // 	wait = 1 MINUTES
+=======
+SUBSYSTEM_DEF(autotransfer)
+	name = "Autotransfer Vote"
+	flags = SS_KEEP_TIMING | SS_BACKGROUND
+	wait = 1 MINUTES
+	dependencies = list(
+		/datum/controller/subsystem/shuttle,
+	)
+>>>>>>> NovaSector/master
 
 // 	var/starttime
 // 	var/targettime

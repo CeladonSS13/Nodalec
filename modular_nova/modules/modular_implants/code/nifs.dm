@@ -265,11 +265,11 @@
 	if(!blood_drain)
 		power_usage += (blood_drain_rate * blood_conversion_rate)
 
-		balloon_alert(linked_mob, "Blood draining disabled")
+		balloon_alert(linked_mob, "blood draining disabled")
 		return
 
 	power_usage -= (blood_drain_rate * blood_conversion_rate)
-	balloon_alert(linked_mob, "Blood draining enabled")
+	balloon_alert(linked_mob, "blood draining enabled")
 
 ///Checks if the NIF is able to draw blood as a power source?
 /obj/item/organ/cyberimp/brain/nif/proc/blood_check()
@@ -371,7 +371,7 @@
 
 ///Sends a message to the owner of the NIF. Typically used for messages from the NIF itself or from NIFSofts.
 /obj/item/organ/cyberimp/brain/nif/proc/send_message(message_to_send, alert = FALSE)
-	var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet/chat)
+	var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet_batched/chat)
 	var/tag = sheet.icon_tag("nif-[chat_icon]")
 	var/nif_icon = ""
 
@@ -488,10 +488,10 @@
 
 	return FALSE
 
-/datum/asset/spritesheet/chat/create_spritesheets()
+/datum/asset/spritesheet_batched/chat/create_spritesheets()
 	. = ..()
 
-	InsertAll("nif", 'modular_nova/modules/modular_implants/icons/chat.dmi')
+	insert_all_icons("nif", 'modular_nova/modules/modular_implants/icons/chat.dmi')
 
 /obj/item/autosurgeon/organ/nif
 	starting_organ = /obj/item/organ/cyberimp/brain/nif/standard
@@ -516,7 +516,7 @@
 	new /obj/item/disk/nifsoft_uploader/dorms(src)
 	new /obj/item/disk/nifsoft_uploader/dorms/hypnosis(src)
 	new /obj/item/disk/nifsoft_uploader/soulcatcher(src)
-	new /obj/item/disk/nifsoft_uploader/money_sense(src)
+	new /obj/item/disk/nifsoft_uploader/job/money_sense(src)
 
 /obj/item/storage/box/nif_ghost_box/ghost_role/PopulateContents()
 	. = ..()

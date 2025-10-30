@@ -147,7 +147,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	SEND_SIGNAL(src, COMSIG_CIRCUIT_SET_LOCKED, new_value)
 	locked = new_value
 
-/obj/item/integrated_circuit/attackby(obj/item/I, mob/living/user, params)
+/obj/item/integrated_circuit/attackby(obj/item/I, mob/living/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(istype(I, /obj/item/circuit_component))
 		add_component_manually(I, user)
@@ -231,14 +231,14 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
  * * to_check - The component to check.
  **/
 /obj/item/integrated_circuit/proc/is_duplicate(obj/item/circuit_component/to_check)
-	for(var/component as anything in attached_components)
+	for(var/component in attached_components)
 		if(component == to_check)
 			continue
 		if(istype(component, to_check.type))
 			return TRUE
 		if(istype(component, /obj/item/circuit_component/module))
 			var/obj/item/circuit_component/module/module = component
-			for(var/module_component as anything in module.internal_circuit.attached_components)
+			for(var/module_component in module.internal_circuit.attached_components)
 				if(module_component == to_check)
 					continue
 				if(istype(module_component, to_check.type))
@@ -380,6 +380,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 		component_data["y"] = component.rel_y
 		component_data["removable"] = component.removable
 		component_data["color"] = component.ui_color
+		component_data["category"] = component.category
+		component_data["ui_alerts"] = component.ui_alerts
 		component_data["ui_buttons"] = component.ui_buttons
 		.["components"] += list(component_data)
 
@@ -675,7 +677,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 				if(!printer)
 					balloon_alert(ui.user, "linked printer not found!")
 					return
-				component = printer.print_component(component_path)
+				component = printer.print_component(component_path, user_data = ID_DATA(usr))
 				if(!component)
 					balloon_alert(ui.user, "failed to make the component!")
 					return
@@ -711,7 +713,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 
 /// Sets the display name that appears on the shell.
 /obj/item/integrated_circuit/proc/set_display_name(new_name)
-	display_name = copytext(new_name, 1, label_max_length)
+	display_name = copytext_char(new_name, 1, label_max_length)
 	if(!shell)
 		return
 

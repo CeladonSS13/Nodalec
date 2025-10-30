@@ -1,4 +1,5 @@
 /mob/living/carbon
+	abstract_type = /mob/living/carbon
 	blood_volume = BLOOD_VOLUME_NORMAL
 	gender = MALE
 	pressure_resistance = 15
@@ -12,7 +13,8 @@
 	mobility_flags = MOBILITY_FLAGS_CARBON_DEFAULT
 	blocks_emissive = EMISSIVE_BLOCK_NONE
 	mouse_drop_zone = TRUE
-	living_flags = ALWAYS_DEATHGASP
+	// STOP_OVERLAY_UPDATE_BODY_PARTS is removed after we call update_body_parts() during init.
+	living_flags = ALWAYS_DEATHGASP|STOP_OVERLAY_UPDATE_BODY_PARTS
 	///List of [/obj/item/organ]s in the mob. They don't go in the contents for some reason I don't want to know.
 	var/list/obj/item/organ/organs = list()
 	///Same as [above][/mob/living/carbon/var/organs], but stores "slot ID" - "organ" pairs for easy access.
@@ -62,8 +64,6 @@
 
 	var/obj/item/food/meat/slab/type_of_meat = /obj/item/food/meat/slab
 
-	var/gib_type = /obj/effect/decal/cleanable/blood/gibs
-
 	rotate_on_lying = TRUE
 
 	/// Gets filled up in [/datum/species/proc/replace_body].
@@ -107,7 +107,7 @@
 	/// Assoc list of BODY_ZONE -> wounding_type. Set when a limb is dismembered, unset when one is attached. Used for determining what scar to add when it comes time to generate them.
 	var/list/body_zone_dismembered_by
 
-	/// Simple modifier for whether this mob can handle greater or lesser skillchip complexity. See /datum/mutation/human/biotechcompat/ for example.
+	/// Simple modifier for whether this mob can handle greater or lesser skillchip complexity. See /datum/mutation/biotechcompat/ for example.
 	var/skillchip_complexity_modifier = 0
 
 	/// Can other carbons be shoved into this one to make it fall?
@@ -126,3 +126,8 @@
 	var/bodyshape = BODYSHAPE_HUMANOID
 
 	COOLDOWN_DECLARE(bleeding_message_cd)
+
+	/// Obscured hide flags (hideflags that can't be seen AND can't be interacted with)
+	var/obscured_slots = NONE
+	/// Covered hide flags (hideflags that can be seen, BUT can't be interacted with)
+	var/covered_slots = NONE

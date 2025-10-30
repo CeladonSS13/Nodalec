@@ -41,16 +41,6 @@
 	SSeconomy.mail_blocked = !SSeconomy.mail_blocked
 	return ..()
 
-///A negative trait that reduces the amount of products available from vending machines throughout the station.
-/datum/station_trait/vending_shortage
-	name = "Vending products shortage"
-	trait_type = STATION_TRAIT_NEGATIVE
-	weight = 3
-	show_in_report = TRUE
-	can_revert = FALSE //Because it touches every maploaded vending machine on the station.
-	report_message = "We haven't had the time to take care of the station's vending machines. Some may be tilted, and some products may be unavailable."
-	trait_to_give = STATION_TRAIT_VENDING_SHORTAGE
-
 /datum/station_trait/late_arrivals
 	name = "Late Arrivals"
 	trait_type = STATION_TRAIT_NEGATIVE
@@ -574,7 +564,6 @@
 	trait_to_give = STATION_TRAIT_RADIOACTIVE_NEBULA
 
 	blacklist = list(/datum/station_trait/random_event_weight_modifier/rad_storms)
-	threat_reduction = 30
 	dynamic_threat_id = "Radioactive Nebula"
 
 	intensity_increment_time = 10 MINUTES // NOVA EDIT longer shield duration - ORIGINAL: intensity_increment_time = 5 MINUTES /

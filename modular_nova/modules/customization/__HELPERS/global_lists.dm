@@ -7,6 +7,7 @@
 	populate_total_ui_len_by_block()
 	populate_total_uf_len_by_block()
 	make_augment_references()
+	build_erp_item_list()
 
 /proc/init_prefs_emotes()
 	//Scream types
@@ -20,6 +21,13 @@
 		var/datum/laugh_type/L = new spath()
 		GLOB.laugh_types[L.name] = spath
 	sort_list(GLOB.laugh_types, GLOBAL_PROC_REF(cmp_typepaths_asc))
+
+	//Voice_Bark
+	for(var/sound_blooper_path in subtypesof(/datum/blooper))
+		var/datum/blooper/blooper = new sound_blooper_path()
+		GLOB.blooper_list[blooper.id] = sound_blooper_path
+		if(blooper.allow_random)
+			GLOB.blooper_random_list[blooper.id] = sound_blooper_path
 
 /proc/make_default_mutant_bodypart_references()
 	// Build the global list for default species' mutant_bodyparts
@@ -75,7 +83,9 @@
 		/obj/item/stack/sheet/cardboard = list(GLOB.nova_cardboard_recipes),
 		/obj/item/stack/sheet/cloth = list(GLOB.nova_cloth_recipes),
 		/obj/item/stack/ore/glass = list(GLOB.nova_sand_recipes),
+		/obj/item/stack/sheet/mineral/sandstone = list(GLOB.nova_sandstone_recipes),
 		/obj/item/stack/rods = list(GLOB.nova_rod_recipes),
+		/obj/item/stack/sheet/plastic = list(GLOB.nova_plastic_recipes),
 		/obj/item/stack/sheet/mineral/stone = list(GLOB.stone_recipes),
 		/obj/item/stack/sheet/mineral/clay = list(GLOB.clay_recipes),
 		/obj/item/stack/sheet/plastic_wall_panel = list(GLOB.plastic_wall_panel_recipes),
@@ -200,3 +210,9 @@
 			continue
 
 		SSaccessories.bra_m -= sprite_name
+
+/proc/build_erp_item_list()
+	for(var/obj/item/fun_item as anything in subtypesof(/obj/item))
+		if(initial(fun_item.obj_flags_nova) & ERP_ITEM)
+			GLOB.erp_items += fun_item
+

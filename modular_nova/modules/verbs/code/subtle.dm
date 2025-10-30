@@ -1,6 +1,6 @@
-#define SUBTLE_DEFAULT_DISTANCE 1
+#define SUBTLE_DEFAULT_DISTANCE world.view
+#define SUBTLE_ONE_TILE 1
 #define SUBTLE_SAME_TILE_DISTANCE 0
-#define SUBTLER_TELEKINESIS_DISTANCE 7
 
 #define SUBTLE_ONE_TILE_TEXT "1-Tile Range"
 #define SUBTLE_SAME_TILE_TEXT "Same Tile"
@@ -10,6 +10,15 @@
 	key_third_person = "subtle"
 	message = null
 	mob_type_blacklist_typecache = list(/mob/living/brain)
+
+/datum/config_entry/flag/play_subtler_sound
+	default = TRUE
+
+/datum/preference/toggle/subtler_sound
+	savefile_key = "subtler_sound"
+	savefile_identifier = PREFERENCE_PLAYER
+	category = PREFERENCE_CATEGORY_GAME_PREFERENCES
+	default_value = TRUE
 
 /datum/emote/living/subtle/run_emote(mob/user, params, type_override = null)
 	if(!can_run_emote(user))
@@ -41,13 +50,13 @@
 
 	var/space = should_have_space_before_emote(html_decode(subtle_emote)[1]) ? " " : ""
 
-	subtle_message = span_emote("<b>[user]</b>[space]<i>[user.say_emphasis(subtle_message)]</i>")
+	subtle_message = span_emote("<b>[user]</b>[space]<i>[user.apply_message_emphasis(subtle_message)]</i>")
 
-	var/list/viewers = get_hearers_in_view(SUBTLE_DEFAULT_DISTANCE, user)
+	var/list/viewers = get_hearers_in_view(SUBTLE_ONE_TILE, user)
 
 	var/obj/effect/overlay/holo_pad_hologram/hologram = GLOB.hologram_impersonators[user]
 	if(hologram)
-		viewers |= get_hearers_in_view(SUBTLE_DEFAULT_DISTANCE, hologram)
+		viewers |= get_hearers_in_view(SUBTLE_ONE_TILE, hologram)
 
 	for(var/obj/effect/overlay/holo_pad_hologram/iterating_hologram in viewers)
 		if(iterating_hologram?.Impersonation?.client)
@@ -81,10 +90,6 @@
 	var/target
 	var/subtler_range = SUBTLE_DEFAULT_DISTANCE
 
-	var/datum/dna/dna = user.has_dna()
-	if(dna && dna?.check_mutation(/datum/mutation/human/telekinesis))
-		subtler_range = SUBTLER_TELEKINESIS_DISTANCE
-
 	if(SSdbcore.IsConnected() && is_banned_from(user, "emote"))
 		to_chat(user, span_warning("You cannot send subtle emotes (banned)."))
 		return FALSE
@@ -100,13 +105,17 @@
 
 		var/obj/effect/overlay/holo_pad_hologram/hologram = GLOB.hologram_impersonators[user]
 		if(hologram)
-			in_view |= get_hearers_in_view(1, hologram)
+			in_view |= get_hearers_in_view(subtler_range, hologram)
 
 		in_view -= GLOB.dead_mob_list
 		in_view.Remove(user)
 
-		for(var/mob/eye/camera/ai/ai_eye in in_view)
-			in_view.Remove(ai_eye)
+		for(var/mob/mob in in_view) // Filters out the AI eye and clientless mobs.
+			if(!istype(mob, /mob/eye/camera/ai))
+				continue
+			if(mob.client)
+				continue
+			in_view.Remove(mob)
 
 		var/list/targets = list(SUBTLE_ONE_TILE_TEXT, SUBTLE_SAME_TILE_TEXT) + in_view
 		target = tgui_input_list(user, "Pick a target", "Target Selection", targets)
@@ -115,12 +124,12 @@
 
 		switch(target)
 			if(SUBTLE_ONE_TILE_TEXT)
-				target = SUBTLE_DEFAULT_DISTANCE
+				target = SUBTLE_ONE_TILE
 			if(SUBTLE_SAME_TILE_TEXT)
 				target = SUBTLE_SAME_TILE_DISTANCE
 		subtler_message = subtler_emote
 	else
-		target = SUBTLE_DEFAULT_DISTANCE
+		target = SUBTLE_ONE_TILE
 		subtler_message = subtler_emote
 		if(type_override)
 			emote_type = type_override
@@ -133,7 +142,7 @@
 
 	var/space = should_have_space_before_emote(html_decode(subtler_emote)[1]) ? " " : ""
 
-	subtler_message = span_emote("<b>[user]</b>[space]<i>[user.say_emphasis(subtler_message)]</i>")
+	subtler_message = span_emote("<b>[user]</b>[space]<i>[user.apply_message_emphasis(subtler_message)]</i>")
 
 	if(istype(target, /mob))
 		var/mob/target_mob = target
@@ -141,12 +150,18 @@
 		var/obj/effect/overlay/holo_pad_hologram/hologram = GLOB.hologram_impersonators[user]
 		if((get_dist(user.loc, target_mob.loc) <= subtler_range) || (hologram && get_dist(hologram.loc, target_mob.loc) <= subtler_range))
 			target_mob.show_message(subtler_message, alt_msg = subtler_message)
+			var/datum/preferences/prefs = target_mob.client?.prefs
+			if(prefs && prefs.read_preference(/datum/preference/toggle/subtler_sound))
+				target_mob.playsound_local(get_turf(target_mob), 'sound/effects/achievement/glockenspiel_ping.ogg', 50)
 		else
 			to_chat(user, span_warning("Your emote was unable to be sent to your target: Too far away."))
 	else if(istype(target, /obj/effect/overlay/holo_pad_hologram))
 		var/obj/effect/overlay/holo_pad_hologram/hologram = target
 		if(hologram.Impersonation?.client)
 			hologram.Impersonation.show_message(subtler_message, alt_msg = subtler_message)
+			var/datum/preferences/prefs = hologram.Impersonation.client?.prefs
+			if(prefs && prefs.read_preference(/datum/preference/toggle/subtler_sound))
+				hologram.Impersonation.playsound_local(get_turf(hologram.Impersonation), 'sound/effects/achievement/glockenspiel_ping.ogg', 50)
 	else
 		var/ghostless = get_hearers_in_view(target, user) - GLOB.dead_mob_list
 
@@ -160,6 +175,9 @@
 
 		for(var/mob/receiver in ghostless)
 			receiver.show_message(subtler_message, alt_msg = subtler_message)
+			var/datum/preferences/prefs = receiver.client?.prefs
+			if(prefs && prefs.read_preference(/datum/preference/toggle/subtler_sound))
+				receiver.playsound_local(get_turf(receiver), 'sound/effects/achievement/glockenspiel_ping.ogg', 50)
 
 	return TRUE
 
@@ -194,8 +212,8 @@
 	usr.emote("subtler")
 
 #undef SUBTLE_DEFAULT_DISTANCE
+#undef SUBTLE_ONE_TILE
 #undef SUBTLE_SAME_TILE_DISTANCE
-#undef SUBTLER_TELEKINESIS_DISTANCE
 
 #undef SUBTLE_ONE_TILE_TEXT
 #undef SUBTLE_SAME_TILE_TEXT

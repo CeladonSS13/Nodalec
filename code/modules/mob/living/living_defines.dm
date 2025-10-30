@@ -1,6 +1,7 @@
 /mob/living
 	see_invisible = SEE_INVISIBLE_LIVING
-	hud_possible = list(HEALTH_HUD,STATUS_HUD,ANTAG_HUD, DNR_HUD) // NOVA EDIT ADDITION - DNR_HUD
+	abstract_type = /mob/living
+	hud_possible = list(HEALTH_HUD,STATUS_HUD,ANTAG_HUD,DNR_HUD) // NOVA EDIT ADDITION - ORIGINAL hud_possible = list(HEALTH_HUD,STATUS_HUD,ANTAG_HUD)
 	pressure_resistance = 10
 	hud_type = /datum/hud/living
 	interaction_flags_click = ALLOW_RESTING
@@ -88,7 +89,11 @@
 	  */
 	var/incorporeal_move = FALSE
 
-	var/list/quirks = list()
+	/// Lazylist of all quirks the mob has. These are not singletons
+	var/list/quirks
+	/// Lazylist of all typepaths of personalities the mob has.
+	var/list/personalities
+
 	///a list of surgery datums. generally empty, they're added when the player wants them.
 	var/list/surgeries = list()
 	///Mob specific surgery speed modifier
@@ -136,6 +141,8 @@
 	/// Cell tracker datum we use to manage the pipes around us, for faster ventcrawling
 	/// Should only exist if you're in a pipe
 	var/datum/cell_tracker/pipetracker
+	/// Cooldown for welded vent movement messages to prevent spam
+	COOLDOWN_DECLARE(welded_vent_message_cd)
 
 	var/smoke_delay = 0 ///used to prevent spam with smoke reagent reaction on mob.
 
@@ -204,10 +211,6 @@
 	/// Is this mob allowed to be buckled/unbuckled to/from things?
 	var/can_buckle_to = TRUE
 
-	///The x amount a mob's sprite should be offset due to the current position they're in
-	var/body_position_pixel_x_offset = 0
-	///The y amount a mob's sprite should be offset due to the current position they're in or size (e.g. lying down moves your sprite down)
-	var/body_position_pixel_y_offset = 0
 	///The height offset of a mob's maptext due to their current size.
 	var/body_maptext_height_offset = 0
 
@@ -218,8 +221,10 @@
 	///what multiplicative slowdown we get from turfs currently.
 	var/current_turf_slowdown = 0
 
-	/// Is the mob looking vertically
-	var/looking_vertically = FALSE
+	/// Direction that this mob is looking at, used for the look_up and look_down procs
+	var/looking_vertically = NONE
+	///looking holder we use for look_up and look_down. we use this over resetting to the turf because we want to glide
+	var/atom/movable/looking_holder/looking_holder
 
 	/// Living mob's mood datum
 	var/datum/mood/mob_mood
@@ -233,3 +238,16 @@
 
 	/// How long it takes to return to 0 stam
 	var/stamina_regen_time = 10 SECONDS
+
+	/// Lazylists of pixel offsets this mob is currently using
+	/// Modify this via add_offsets and remove_offsets,
+	/// NOT directly (and definitely avoid modifying offsets directly)
+	VAR_PRIVATE/list/offsets
+
+	/// Lazylist of martial arts this mob knows
+	/// First element is the current martial art - any other elements are "saved" for if they unlearn the first one
+	/// Reference handling is done by the martial arts themselves
+	var/list/datum/martial_art/martial_arts
+
+	/// how many tiles can this mob reach with their hands? 1 tile is adjacent.
+	var/reach_length = 1

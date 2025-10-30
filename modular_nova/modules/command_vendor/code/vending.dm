@@ -12,6 +12,7 @@
 	refill_canister = /obj/item/vending_refill/wardrobe/comm_wardrobe
 	payment_department = ACCOUNT_CMD
 	light_color = COLOR_COMMAND_BLUE
+	allow_custom = TRUE
 
 /obj/item/vending_refill/wardrobe/comm_wardrobe
 	machine_name = "CommDrobe"
@@ -44,6 +45,7 @@
 		// BLUESHIELD
 		/obj/item/clothing/head/beret/blueshield = 1,
 		/obj/item/clothing/head/beret/blueshield/navy = 1,
+		/obj/item/clothing/head/soft/blueshield = 1,
 		/obj/item/clothing/under/rank/blueshield = 1,
 		/obj/item/clothing/under/rank/blueshield/skirt = 1,
 		/obj/item/clothing/under/rank/blueshield/turtleneck = 1,
@@ -115,20 +117,34 @@
 		/obj/item/clothing/shoes/sneakers/brown = 1,
 	)
 	access_lists["[ACCESS_HOS]"] = list(
-		/obj/item/clothing/head/hats/hos/cap = 1,
-		/obj/item/clothing/head/hats/hos/beret/navyhos = 1,
-		/obj/item/clothing/head/hats/imperial/hos = 1,
-		/obj/item/clothing/under/rank/security/head_of_security/peacekeeper = 1,
+		/obj/item/clothing/under/rank/security/head_of_security/skirt = 1,
 		/obj/item/clothing/under/rank/security/head_of_security/alt = 1,
 		/obj/item/clothing/under/rank/security/head_of_security/alt/skirt = 1,
-		/obj/item/clothing/under/rank/security/head_of_security/nova/imperial = 1,
-		/obj/item/clothing/suit/jacket/hos/blue = 1,
+		/obj/item/clothing/under/rank/security/head_of_security/grey = 1,
 		/obj/item/clothing/under/rank/security/head_of_security/parade = 1,
+		/obj/item/clothing/under/rank/security/head_of_security/parade/female = 1,
+		/obj/item/clothing/gloves/tackler/combat = 1,
+		/obj/item/clothing/suit/armor/hos = 1,
 		/obj/item/clothing/suit/armor/hos/hos_formal = 1,
+		/obj/item/clothing/suit/armor/hos/trenchcoat/winter = 1,
+		/obj/item/clothing/suit/armor/vest/leather = 1,
+		/obj/item/clothing/glasses/hud/security/sunglasses/eyepatch = 1,
+		/obj/item/clothing/glasses/hud/security/sunglasses/gars/giga = 1,
+		/obj/item/clothing/head/hats/hos/beret = 1,
+		/obj/item/clothing/head/hats/hos/cap = 1,
+		/obj/item/clothing/mask/gas/sechailer/swat = 1,
 		/obj/item/clothing/neck/cloak/hos = 1,
-		/obj/item/clothing/neck/cloak/hos/redsec = 1,
-		/obj/item/clothing/neck/mantle/hosmantle = 1,
-		/obj/item/clothing/shoes/sneakers/brown = 1,
+		/obj/item/clothing/neck/cloak/hos/blue = 1,
+		/obj/item/clothing/suit/armor/hos/hos_formal/black = 1,
+		/obj/item/clothing/under/rank/security/head_of_security/nova = 1,
+		/obj/item/clothing/under/rank/security/head_of_security/nova/blue = 1,
+		/obj/item/clothing/under/rank/security/head_of_security/nova/formal = 1,
+		/obj/item/clothing/under/rank/security/head_of_security/nova/formal/blue = 1,
+		/obj/item/clothing/under/rank/security/head_of_security/nova/imperial = 1,
+		/obj/item/clothing/under/rank/security/head_of_security/nova/parade = 1,
+		/obj/item/clothing/under/rank/security/head_of_security/nova/parade/female = 1,
+		/obj/item/clothing/under/rank/security/head_of_security/nova/alt = 1,
+		/obj/item/clothing/under/rank/security/head_of_security/nova/alt/skirt = 1,
 	)
 	access_lists["[ACCESS_QM]"] = list(
 		/obj/item/clothing/head/beret/cargo/qm = 1,
@@ -142,7 +158,7 @@
 		/obj/item/clothing/under/rank/cargo/qm/nova/turtleneck/skirt = 1,
 		/obj/item/clothing/suit/brownfurrich = 1,
 		/obj/item/clothing/under/rank/cargo/qm/nova/casual = 1,
-		/obj/item/clothing/suit/toggle/jacket/supply/head = 1,
+		/obj/item/clothing/suit/toggle/jacket/nova/colorable_bomber/supply/head = 1,
 		/obj/item/clothing/under/rank/cargo/qm/nova/formal = 1,
 		/obj/item/clothing/under/rank/cargo/qm/nova/formal/skirt = 1,
 		/obj/item/clothing/shoes/sneakers/brown = 1,
@@ -157,6 +173,8 @@
 		/obj/item/clothing/head/hats/centhat = 1,
 		/obj/item/clothing/suit/armor/centcom_formal/nt_consultant = 1,
 		/obj/item/clothing/gloves/combat/naval/nanotrasen_consultant = 1,
+		/obj/item/clothing/under/rank/centcom/officer = 1,
+		/obj/item/clothing/under/rank/centcom/officer_skirt = 1,
 	)
 
 	access_lists["[ACCESS_COMMAND]"] = list(

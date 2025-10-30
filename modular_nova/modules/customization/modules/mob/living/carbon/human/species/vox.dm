@@ -12,7 +12,7 @@
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	mutanttongue = /obj/item/organ/tongue/vox
 	mutantlungs = /obj/item/organ/lungs/nitrogen/vox
-	mutantbrain = /obj/item/organ/brain/vox
+	mutantbrain = /obj/item/organ/brain/cybernetic/cortical/vox
 	breathid = "n2"
 	mutant_bodyparts = list()
 	payday_modifier = 1.0
@@ -46,6 +46,7 @@
 
 /datum/species/vox/get_default_mutant_bodyparts()
 	return list(
+		"ears" = list("None", FALSE),
 		"tail" = list("Vox Tail", FALSE),
 		"legs" = list(DIGITIGRADE_LEGS,FALSE),
 		"snout" = list("Vox Snout", FALSE),

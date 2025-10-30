@@ -26,7 +26,6 @@
 	else // in case a single trait is passed in
 		SSmapping.z_trait_levels[new_traits] += list(new_z)
 
-
 	set_linkage(new_traits[ZTRAIT_LINKAGE])
 
 // [NODALEC-ADD]

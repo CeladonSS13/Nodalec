@@ -138,9 +138,9 @@
 		audible_message(span_danger("[src] makes a series of sad beeps. Someone has corrupted its software!"))
 		return FALSE
 
-	if(world.time - SSticker.round_start_time > 30 MINUTES && trigger_reason != DIVINE_INTERVENTION)
+	if(world.time - SSticker.round_start_time > 60 MINUTES && trigger_reason != DIVINE_INTERVENTION)
 		playsound(src, 'sound/machines/compiler/compiler-failure.ogg', 100, FALSE, MACHINE_SOUND_RANGE, ignore_walls = TRUE, use_reverb = TRUE, falloff_distance = MACHINE_SOUND_FALLOFF_DISTANCE)
-		audible_message(span_danger("[src] makes a series of sad beeps. The internal charge only lasts about 30 minutes... what a feat of engineering!"))
+		audible_message(span_danger("[src] makes a series of sad beeps. The internal charge only lasts about 60 minutes... what a feat of engineering!"))
 		investigate_log("Delam SCRAM signal was received but failed precondition check. (Round time or trigger reason)", INVESTIGATE_ATMOS)
 		return FALSE
 
@@ -250,7 +250,7 @@
 	for(var/obj/machinery/power/energy_accumulator/tesla_coil/zappy_boi in range(3, src))
 		zappy_boi.stored_energy = MISTAKES_WERE_MADE
 
-/obj/machinery/atmospherics/components/unary/delam_scram/New()
+/obj/machinery/atmospherics/components/unary/delam_scram/Initialize(mapload)
 	. = ..()
 	var/datum/gas_mixture/delam_juice = new
 	delam_juice.add_gases(/datum/gas/freon)
@@ -328,9 +328,9 @@
 	COOLDOWN_START(src, scram_button, 15 SECONDS)
 
 	// For roundstart only, after that it's on you!
-	if(world.time - SSticker.round_start_time > 30 MINUTES)
+	if(world.time - SSticker.round_start_time > 60 MINUTES)
 		playsound(src.loc, 'sound/machines/compiler/compiler-failure.ogg', 50, FALSE, BUTTON_SOUND_RANGE, falloff_distance = BUTTON_SOUND_FALLOFF_DISTANCE)
-		audible_message(span_danger("[src] makes a series of sad beeps. The internal charge only lasts about 30 minutes... what a feat of engineering! Looks like it's all on you to save the day."))
+		audible_message(span_danger("[src] makes a series of sad beeps. The internal charge only lasts about 60 minutes... what a feat of engineering! Looks like it's all on you to save the day."))
 		burn_out()
 		return
 
@@ -412,11 +412,7 @@
 	. = ..()
 	ui_interact(user)
 
-/obj/item/paper/paperslip/corporate/fluff/delam_procedure/attackby(obj/item/attacking_item, mob/living/user, params)
-	if(burn_paper_product_attackby_check(attacking_item, user))
-		SStgui.close_uis(src)
-		return
-
+/obj/item/paper/paperslip/corporate/fluff/delam_procedure/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
 	// Enable picking paper up by clicking on it with the clipboard or folder
 	if(istype(attacking_item, /obj/item/clipboard) || istype(attacking_item, /obj/item/folder) || istype(attacking_item, /obj/item/paper_bin))
 		attacking_item.attackby(src, user)
