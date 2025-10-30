@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
 	"files.eol": "\n",
 	"editor.autoIndent": "keep",
 	"editor.insertSpaces": false,
@@ -13,19 +12,12 @@
 	"prettier.prettierPath": "./tgui/.yarn/sdks/prettier/index.js",
 	"typescript.tsdk": "./tgui/.yarn/sdks/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
-	"search.exclude": {
-		"**/.yarn": true,
-		"**/.pnp.*": true
-	},
-=======
->>>>>>> NovaSector/master
 	"editor.codeActionsOnSave": {
 		"source.fixAll.biome": "explicit"
 	},
 	"files.insertFinalNewline": true,
 	"gitlens.advanced.blame.customArguments": ["-w"],
 	"tgstationTestExplorer.project.resultsType": "json",
-<<<<<<< HEAD
 	"[python]": {
 		"gitlens.codeLens.symbolScopes": ["!Module"],
 		"editor.wordBasedSuggestions": "off",
@@ -47,14 +39,12 @@
 	},
 	"[javascript]": {
 		"editor.rulers": [80],
-=======
 	"[javascript][typescript][javascriptreact][typescriptreact][css][json][jsonc]": {
 		"editor.defaultFormatter": "biomejs.biome",
 		"editor.formatOnSave": true,
 		"editor.rulers": [80]
 	},
 	"[yaml][markdown][html][scss]": {
->>>>>>> NovaSector/master
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.formatOnSave": true,
 		"editor.rulers": [80]
@@ -64,7 +54,6 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.formatOnSave": true
 	},
-<<<<<<< HEAD
 	"[typescript]": {
 		"editor.rulers": [80],
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -80,11 +69,12 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.formatOnSave": true
 	},
-	"editor.guides.indentation": true
-=======
+	"editor.guides.indentation": true,
 	"search.exclude": {
-		"**/node_modules": true
+		"**/node_modules": true,
+		"**/.yarn": true,
+		"**/.pnp.*": true
+	},
 	},
 	"Lua.diagnostics.enable": false
->>>>>>> NovaSector/master
 }

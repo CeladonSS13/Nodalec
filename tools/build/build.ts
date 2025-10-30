@@ -189,13 +189,8 @@ export const DmTarget = new Juke.Target({
     'icons/**',
     'interface/**',
     'sound/**',
-<<<<<<< HEAD:tools/build/build.js
-    'modular_nova/**', ///NOVA EDIT ADDITION - Making the CBT work
-	  'nodalec/**', ///NODALECT EDIT ADDITION
-=======
     'tgui/public/tgui.html',
     "modular_nova/**", ///NOVA EDIT ADDITION - Making the CBT work
->>>>>>> NovaSector/master:tools/build/build.ts
     `${DME_NAME}.dme`,
     NamedVersionFile,
   ],

@@ -11,8 +11,6 @@
 		{
 			"type": "byond",
 			"request": "launch",
-<<<<<<< HEAD
-=======
 			"name": "Launch DreamSeeker (low memory mode)",
 			"preLaunchTask": "Build All (low memory mode)",
 			"dmb": "${workspaceFolder}/${command:CurrentDMB}"
@@ -48,15 +46,12 @@
 		{
 			"type": "byond",
 			"request": "launch",
->>>>>>> NovaSector/master
 			"name": "Launch DreamDaemon",
 			"preLaunchTask": "Build All",
 			"dmb": "${workspaceFolder}/${command:CurrentDMB}",
 			"dreamDaemon": true
 		},
 		{
-<<<<<<< HEAD
-=======
 			"type": "byond",
 			"request": "launch",
 			"name": "Launch DreamDaemon (low memory mode)",
@@ -89,7 +84,6 @@
 			"dreamDaemon": true
 		},
 		{
->>>>>>> NovaSector/master
 			"name": "Debug External Libraries",
 			"type": "cppvsdbg",
 			"request": "launch",
@@ -97,8 +91,6 @@
 			"cwd": "${workspaceRoot}",
 			"args": ["${command:dreammaker.getFilenameDmb}", "-trusted"],
 			"preLaunchTask": "Build All"
-<<<<<<< HEAD
-=======
 		},
 		{
 			"name": "Debug External Libraries (low memory mode)",
@@ -115,7 +107,6 @@
 			"name": "Launch OpenDream (requires extension, 64 bit rustg, and an SS14 account)",
 			"preLaunchTask": "OpenDream: compile ${command:CurrentDME}",
 			"json_path": "${workspaceFolder}/${command:CurrentJson}"
->>>>>>> NovaSector/master
 		}
 	]
 }

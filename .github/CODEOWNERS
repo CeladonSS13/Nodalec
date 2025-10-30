@@ -4,7 +4,6 @@
 # In the event that people are to be informed of changes
 # to the same file or dir, add them to the end of under Multiple Owners
 
-<<<<<<< HEAD
 # GoldenAlpharex
 # /.github/workflows/ @GoldenAlpharex
 # /SQL/ @GoldenAlpharex
@@ -24,32 +23,12 @@
 # /modular_nova/master_files/code/modules/mapfluff @Zergspower
 # /modular_nova/modules/ashwalkers @Zergspower
 # /modular_nova/modules/aesthetics/keyed_doors @Zergspower
-=======
-# MAINTAINERS
-
-# vinylspiders
-/.github/workflows/ @vinylspiders
-/SQL/ @vinylspiders
-/tools/ @vinylspiders
-/code/modules/tgui/ @vinylspiders
-
-# Zergspower
-
-/modular_nova/modules/borgs @Zergspower
-/modular_nova/modules/borg_buffs @Zergspower
-/modular_nova/modules/ghostcafe @Zergspower
-/modular_nova/modules/hotel_rooms @Zergspower
-/modular_nova/master_files/code/modules/mapfluff @Zergspower
-/modular_nova/modules/ashwalkers @Zergspower
-/modular_nova/modules/aesthetics/keyed_doors @Zergspower
->>>>>>> NovaSector/master
 
 # CONTRIBUTORS
 
 # MULTIPLE OWNERS
 
 # Maptainers
-<<<<<<< HEAD
 # /_maps/ @Jolly-66 @Zergspower @sqnztb
 # /modular_nova/modules/mapping @Jolly-66 @Zergspower @sqnztb
 
@@ -57,14 +36,3 @@
 ## Init times
 # **/*_EXPENSIVE.dm @GoldenAlpharex
 
-=======
-
-/tools/maplint/lints @sqnztb
-/tools/UpdatePaths @sqnztb
-/_maps/ @Zergspower @sqnztb
-/modular_nova/modules/mapping @Zergspower @sqnztb
-
-# Expensive files that touching basically always cause performance problems
-## Init times
-**/*_EXPENSIVE.dm @vinylspiders
->>>>>>> NovaSector/master

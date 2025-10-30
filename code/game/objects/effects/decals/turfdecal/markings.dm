@@ -589,7 +589,6 @@
 /obj/effect/turf_decal/board_letter/h
 	icon_state = "board_h"
 
-<<<<<<< HEAD
 /**
  * Returns a subtype of /obj/effect/turf_decal/number according to the arguments num and shift_mode.
  *
@@ -764,7 +763,5 @@
 
 /obj/effect/turf_decal/number/left_zero
 	icon_state = "0-"
-=======
 /obj/effect/turf_decal/recharge
 	icon_state = "recharge"
->>>>>>> NovaSector/master

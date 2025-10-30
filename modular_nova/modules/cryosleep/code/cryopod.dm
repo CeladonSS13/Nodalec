@@ -179,15 +179,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/cryopod, 32)
 	var/quiet = FALSE
 	/// Has the occupant been tucked in?
 	var/tucked = FALSE
-<<<<<<< HEAD
 	// Корабль которому принадлежит
 	var/obj/docking_port/mobile/voidcrew/linked_ship
-=======
 	/// If this cryopod should despawn the occupant to the ghost cafe
 	var/despawn_to_ghostcafe
 	/// The timerid of the cryo countdown, so we can stop it if the mob leaves the pod.
 	var/timerid
->>>>>>> NovaSector/master
 
 /obj/machinery/cryopod/quiet
 	quiet = TRUE

@@ -109,15 +109,11 @@
 
 /// Updates the list of designs this fabricator can print.
 /obj/machinery/rnd/production/proc/update_designs()
-<<<<<<< HEAD
 // [NODALEC-EDIT]
 //	PROTECTED_PROC(TRUE)
 // [/NODALEC-EDIT]
-=======
-	PROTECTED_PROC(TRUE)
 	techweb_updating = FALSE
 
->>>>>>> NovaSector/master
 	var/previous_design_count = cached_designs.len
 
 	cached_designs.Cut()

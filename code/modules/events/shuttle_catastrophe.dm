@@ -53,8 +53,6 @@
 		station_balance?.adjust_money(8000)
 		return
 	SSshuttle.shuttle_purchased = SHUTTLEPURCHASE_FORCED
-<<<<<<< HEAD
-=======
 	SSshuttle.unload_preview()
 	// We need to move our docking port back in case a crashlanding shuttle has been purchased previously
 	for(var/obj/docking_port/stationary/port as anything in SSshuttle.stationary_docking_ports)
@@ -63,7 +61,6 @@
 		var/turf/initial_loc = locate(port.initial_x, port.initial_y, port.initial_z)
 		port.forceMove(initial_loc)
 		break
->>>>>>> NovaSector/master
 	SSshuttle.existing_shuttle = SSshuttle.emergency
 	SSshuttle.action_load(new_shuttle)
 	log_shuttle("Shuttle Catastrophe set a new shuttle, [new_shuttle.name].")
