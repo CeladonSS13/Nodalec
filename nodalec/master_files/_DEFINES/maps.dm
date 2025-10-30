@@ -14,13 +14,13 @@
 #define BIOME_WARM_CAVE "warm_cave"
 #define BIOME_HOT_CAVE "hot_cave"
 
-#define ZTRAIT_JUNGLE_RUINS "Jungle Ruins"
+// #define ZTRAIT_JUNGLE_RUINS "Jungle Ruins"	// Дубликат
 #define ZTRAIT_BEACH_RUINS "Beach Ruins"
 #define ZTRAIT_WASTELAND_RUINS "Wasteland Ruins"
 #define ZTRAIT_REEBE_RUINS "Reebe Ruins"
 
-#define ALLOCATION_FREE 1
-#define ALLOCATION_QUADRANT 2
+// #define ALLOCATION_FREE 1	// Дубликат
+// #define ALLOCATION_QUADRANT 2	// Дубликат
 //Only used for unit testing at the moment, technically splits it into 16 but I didn't like the word for that
 #define ALLOCATION_OCTODRANT 3
 
@@ -30,6 +30,6 @@
 #define QUADRANT_SIZE_BORDER 3
 #define TRANSIT_SIZE_BORDER 3
 
-#define DEFAULT_ALLOC_JUMP 5
+// #define DEFAULT_ALLOC_JUMP 5	// Дубликат
 
-#define MAP_EDGE_PAD 5
+// #define MAP_EDGE_PAD 5	// Дубликат
