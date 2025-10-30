@@ -23,9 +23,9 @@
 		var/price = spawning_order.pack.get_cost()
 		if(spawning_order.applied_coupon)
 			price *= (1 - spawning_order.applied_coupon.discount_pct_off)
-
+		SSeconomy
 		if(spawning_order.paying_account)
-			SSeconomy.track_purchase(bank_account_holder.synced_bank_account, price, spawning_order.pack.name)
+			SSeconomy.add_audit_entry(bank_account_holder.synced_bank_account, price, spawning_order.pack.name) мммммм
 		value += spawning_order.pack.get_cost()
 		checkout_list -= spawning_order
 		QDEL_NULL(spawning_order.applied_coupon)
@@ -45,8 +45,8 @@
 /obj/machinery/computer/voidcrew_cargo/proc/sell()
 	var/presale_points = bank_account_holder.synced_bank_account.account_balance
 
-	if(!GLOB.exports_list.len) // No exports list? Generate it!
-		setupExports()
+	// if(!GLOB.exports_list.len) // No exports list? Generate it!
+	// 	setupExports()	// Выпилено офами ПР #93235
 
 	var/datum/export_report/ex = new
 

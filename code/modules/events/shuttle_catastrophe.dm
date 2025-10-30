@@ -53,7 +53,7 @@
 		station_balance?.adjust_money(8000)
 		return
 	SSshuttle.shuttle_purchased = SHUTTLEPURCHASE_FORCED
-	SSshuttle.unload_preview()
+	// SSshuttle.unload_preview()
 	// We need to move our docking port back in case a crashlanding shuttle has been purchased previously
 	for(var/obj/docking_port/stationary/port as anything in SSshuttle.stationary_docking_ports)
 		if(port.shuttle_id != "emergency_home")
