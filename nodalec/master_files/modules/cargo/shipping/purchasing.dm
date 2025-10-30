@@ -25,7 +25,7 @@
 			price *= (1 - spawning_order.applied_coupon.discount_pct_off)
 		SSeconomy
 		if(spawning_order.paying_account)
-			SSeconomy.add_audit_entry(bank_account_holder.synced_bank_account, price, spawning_order.pack.name) мммммм
+			SSeconomy.add_audit_entry(bank_account_holder.synced_bank_account, price, spawning_order.pack.name)
 		value += spawning_order.pack.get_cost()
 		checkout_list -= spawning_order
 		QDEL_NULL(spawning_order.applied_coupon)
