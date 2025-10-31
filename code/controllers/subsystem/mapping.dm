@@ -1002,7 +1002,7 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 /// Searches for a free allocation for the passed type and size, creates new physical levels if nessecary.
 /datum/controller/subsystem/mapping/proc/get_free_allocation(allocation_type, size_x, size_y, allocation_jump = DEFAULT_ALLOC_JUMP)
 	var/list/allocation_list
-	var/list/levels_to_check = z_list.Copy()
+	var/list/levels_to_check = z_list ? z_list.Copy() : list()
 	var/created_new_level = FALSE
 	while(TRUE)
 		for(var/datum/space_level/iterated_level as anything in levels_to_check)
