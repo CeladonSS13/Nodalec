@@ -75,9 +75,12 @@ SUBSYSTEM_DEF(overmap)
 	var/encounter_name = "Overmap"
 	var/datum/map_zone/mapzone = SSmapping.create_map_zone(encounter_name)
 	overmap_vlevel = SSmapping.create_virtual_level(encounter_name, list(), mapzone, size + MAP_EDGE_PAD * 2, size + MAP_EDGE_PAD * 2)
-	overmap_vlevel.reserve_margin(MAP_EDGE_PAD)
-	overmap_vlevel.fill_in(/turf/open/overmap, /area/overmap)
-	overmap_vlevel.selfloop()
+	if(overmap_vlevel)
+		overmap_vlevel.reserve_margin(MAP_EDGE_PAD)
+		overmap_vlevel.fill_in(/turf/open/overmap, /area/overmap)
+		overmap_vlevel.selfloop()
+	else
+		log_world("ERROR: Failed to create overmap virtual level")
 
 	if (!generator_type)
 		generator_type = OVERMAP_GENERATOR_RANDOM
@@ -439,6 +442,9 @@ SUBSYSTEM_DEF(overmap)
 	var/datum/map_zone/mapzone = SSmapping.create_map_zone(encounter_name)
 	var/datum/virtual_level/vlevel = SSmapping.create_virtual_level(encounter_name, list(ZTRAIT_MINING = TRUE), mapzone, width, height, ALLOCATION_QUADRANT, QUADRANT_MAP_SIZE)
 
+	if(!vlevel)
+		log_world("ERROR: Failed to create virtual level for dynamic encounter")
+		return
 	vlevel.reserve_margin(QUADRANT_SIZE_BORDER)
 
 	if(mapgen) /// If we have a map generator, don't ChangeTurf's in fill_in. Just to ChangeTurf them once again.
