@@ -57,8 +57,8 @@
 	if(!isturf(location))
 		return
 	if(!HAS_TRAIT(location, TRAIT_TURF_HAS_ELEVATED_OBJ(pixel_shift)))
-		RegisterSignal(location, COMSIG_TURF_RESET_ELEVATION, PROC_REF(check_elevation))
-		RegisterSignal(location, COMSIG_TURF_CHANGE, PROC_REF(pre_change_turf))
+		RegisterSignal(location, COMSIG_TURF_RESET_ELEVATION, PROC_REF(check_elevation), override = TRUE)	// NODALEC - Overide
+		RegisterSignal(location, COMSIG_TURF_CHANGE, PROC_REF(pre_change_turf), override = TRUE)	// NODALEC - Overide
 		reset_elevation(location)
 	ADD_TRAIT(location, TRAIT_TURF_HAS_ELEVATED_OBJ(pixel_shift), ref(source))
 
