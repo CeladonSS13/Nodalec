@@ -997,6 +997,8 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 	width--
 	height--
 	var/list/allocation_coords = SSmapping.get_free_allocation(allocation_type, width, height, allocation_jump)
+	if(!allocation_coords)
+		return null
 	return new /datum/virtual_level(new_name, traits, mapzone, allocation_coords[1], allocation_coords[2], allocation_coords[1] + width, allocation_coords[2] + height, allocation_coords[3])
 
 /// Searches for a free allocation for the passed type and size, creates new physical levels if nessecary.
@@ -1006,6 +1008,8 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 	var/created_new_level = FALSE
 	while(TRUE)
 		for(var/datum/space_level/iterated_level as anything in levels_to_check)
+			if(!iterated_level)
+				continue
 			if(iterated_level.allocation_type != allocation_type)
 				continue
 			allocation_list = find_allocation_in_level(iterated_level, size_x, size_y, allocation_jump)
@@ -1028,7 +1032,10 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 			else
 				allocation_name = "Unaccounted Allocation"
 
-		levels_to_check += add_new_zlevel("Generated [allocation_name] Level", allocation_type)
+		var/datum/space_level/new_level = add_new_zlevel("Generated [allocation_name] Level", list(ZTRAIT_RESERVED = TRUE))
+		if(new_level)
+			new_level.allocation_type = allocation_type
+			levels_to_check += new_level
 
 /// Finds a box allocation inside a Z level. Uses a methodical box boundary check method
 /datum/controller/subsystem/mapping/proc/find_allocation_in_level(datum/space_level/level, size_x, size_y, allocation_jump)

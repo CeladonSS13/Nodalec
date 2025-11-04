@@ -74,13 +74,17 @@ SUBSYSTEM_DEF(overmap)
 
 	var/encounter_name = "Overmap"
 	var/datum/map_zone/mapzone = SSmapping.create_map_zone(encounter_name)
+	log_world("Creating overmap virtual level with size [size + MAP_EDGE_PAD * 2]x[size + MAP_EDGE_PAD * 2]")
 	overmap_vlevel = SSmapping.create_virtual_level(encounter_name, list(), mapzone, size + MAP_EDGE_PAD * 2, size + MAP_EDGE_PAD * 2)
 	if(overmap_vlevel)
+		log_world("Overmap virtual level created: z=[overmap_vlevel.z_value], coords=([overmap_vlevel.low_x],[overmap_vlevel.low_y]) to ([overmap_vlevel.high_x],[overmap_vlevel.high_y])")
 		overmap_vlevel.reserve_margin(MAP_EDGE_PAD)
 		overmap_vlevel.fill_in(/turf/open/overmap, /area/overmap)
 		overmap_vlevel.selfloop()
+		log_world("Overmap virtual level filled and configured")
 	else
 		log_world("ERROR: Failed to create overmap virtual level")
+		return SS_INIT_FAILURE
 
 	if (!generator_type)
 		generator_type = OVERMAP_GENERATOR_RANDOM
@@ -147,26 +151,17 @@ SUBSYSTEM_DEF(overmap)
 	jump_timer = addtimer(VARSET_CALLBACK(src, jump_mode, BS_JUMP_COMPLETED), jump_completion_time)
 
 /datum/controller/subsystem/overmap/proc/create_map()
-	// creates the overmap area and sets it up
-	var/area/overmap/overmap_area = new
-	overmap_area.setup("Overmap")
-
-	// locates the area we want the overmap to be
-	var/turf/top_left = locate(OVERMAP_LEFT_SIDE_COORD, OVERMAP_NORTH_SIDE_COORD, OVERMAP_Z_LEVEL)
-	var/turf/bottom_right = locate(OVERMAP_RIGHT_SIDE_COORD, OVERMAP_SOUTH_SIDE_COORD, OVERMAP_Z_LEVEL)
-	var/list/overmap_turfs = block(top_left, bottom_right)
-	for (var/turf/overmap_turf as anything in overmap_turfs)
-		if (overmap_turf.x == OVERMAP_LEFT_SIDE_COORD || overmap_turf.x == OVERMAP_RIGHT_SIDE_COORD || overmap_turf.y == OVERMAP_NORTH_SIDE_COORD || overmap_turf.y == OVERMAP_SOUTH_SIDE_COORD)
-			overmap_turf.ChangeTurf(/turf/closed/overmap_edge)
-		else
-			overmap_turf.ChangeTurf(/turf/open/overmap)
-		var/area/old_area = get_area(overmap_turf)
-		old_area.turfs_to_uncontain_by_zlevel += overmap_turf
-		overmap_area.contents += overmap_turf
-		overmap_area.turfs_by_zlevel += overmap_turf
-	overmap_area.reg_in_areas_in_z()
-	// not actually the centre but close enough
-	overmap_centre = get_turf(locate((OVERMAP_LEFT_SIDE_COORD + ((OVERMAP_SIZE - 1) / 2)) - 1, (OVERMAP_SOUTH_SIDE_COORD + ((OVERMAP_SIZE - 1) / 2)) - 1, OVERMAP_Z_LEVEL))
+	if(!overmap_vlevel)
+		log_world("ERROR: overmap_vlevel is null in create_map()")
+		return
+	
+	// Calculate center using virtual level coordinates
+	var/center_x = round((overmap_vlevel.low_x + overmap_vlevel.high_x) / 2)
+	var/center_y = round((overmap_vlevel.low_y + overmap_vlevel.high_y) / 2)
+	overmap_centre = locate(center_x, center_y, overmap_vlevel.z_value)
+	if(!overmap_centre)
+		log_world("ERROR: Failed to locate overmap centre at ([center_x], [center_y], [overmap_vlevel.z_value])")
+		return
 
 	// MARK: ОЧЕНЬ ВАЖНО!
 	// if (generator_type == OVERMAP_GENERATOR_SOLAR)	// TODO: Доделать
@@ -181,17 +176,22 @@ SUBSYSTEM_DEF(overmap)
 
 // MARK: SUN
 /datum/controller/subsystem/overmap/proc/setup_sun()
-	var/turf/open/overmap/centre_tile = overmap_centre
-	if(!istype(centre_tile))
+	if(!overmap_centre)
 		can_fire = FALSE
-		message_admins("Overmap failed to generate the map, this is a critical error.")
+		message_admins("Overmap failed to generate the map, overmap_centre is null.")
+		CRASH("Overmap did not generate correctly!")
+	
+	var/turf/open/overmap/centre_tile = overmap_centre
+	if(!istype(centre_tile, /turf/open/overmap))
+		can_fire = FALSE
+		message_admins("Overmap failed to generate the map, centre tile is [centre_tile?.type] instead of /turf/open/overmap.")
 		CRASH("Overmap did not generate correctly!")
 
 	var/obj/structure/overmap/star/big/star_to_spawn = pick(/obj/structure/overmap/star/big, /obj/structure/overmap/star/big/binary)
 	star_to_spawn = new
 	star_to_spawn.forceMove(centre_tile)
 
-	var/list/unsorted_turfs = get_area_turfs(/area/overmap, target_z = OVERMAP_Z_LEVEL)
+	var/list/unsorted_turfs = get_area_turfs(/area/overmap, target_z = overmap_vlevel.z_value)
 	var/max_ring = 0
 	for (var/turf/turf as anything in unsorted_turfs)
 		if (istype(turf, /turf/closed/overmap_edge))
@@ -202,8 +202,8 @@ SUBSYSTEM_DEF(overmap)
 		// 2 1 X 1 2
 		// 2 1 1 1 2
 		// 2 2 2 2 2
-		var/ring_x = turf.x - (overmap_centre.x + 1)
-		var/ring_y = turf.y - (overmap_centre.y + 1)
+		var/ring_x = turf.x - overmap_centre.x
+		var/ring_y = turf.y - overmap_centre.y
 		var/ring = max(abs(ring_x), abs(ring_y))
 		if (!ring)
 			continue
@@ -211,12 +211,23 @@ SUBSYSTEM_DEF(overmap)
 			for (var/i in 1 to ring - max_ring)
 				radius_tiles += list(list())
 			max_ring = ring
-		LAZYADDASSOC(radius_tiles, ring, turf)
+		if(!radius_tiles[ring])
+			radius_tiles[ring] = list()
+		radius_tiles[ring] += turf
 
 /datum/controller/subsystem/overmap/proc/get_unused_overmap_square(thing_not_to_have = /obj/structure/overmap, tries = MAX_OVERMAP_PLACEMENT_ATTEMPTS, force = FALSE)
+	if(!overmap_vlevel)
+		log_world("ERROR: overmap_vlevel is null in get_unused_overmap_square")
+		return null
+	
+	var/list/available_turfs = block(locate(overmap_vlevel.low_x + 1, overmap_vlevel.low_y + 1, overmap_vlevel.z_value), locate(overmap_vlevel.high_x - 1, overmap_vlevel.high_y - 1, overmap_vlevel.z_value))
+	if(!length(available_turfs))
+		log_world("ERROR: No turfs available in overmap block ([overmap_vlevel.low_x], [overmap_vlevel.low_y], [overmap_vlevel.z_value]) to ([overmap_vlevel.high_x], [overmap_vlevel.high_y], [overmap_vlevel.z_value])")
+		return null
+	
 	var/turf/turf_to_return
 	for (var/_ in 1 to tries)
-		turf_to_return = pick(block(locate(OVERMAP_LEFT_SIDE_COORD + 1, OVERMAP_SOUTH_SIDE_COORD + 1, OVERMAP_Z_LEVEL), locate(OVERMAP_RIGHT_SIDE_COORD - 1, OVERMAP_NORTH_SIDE_COORD - 1, OVERMAP_Z_LEVEL))) // todo : see if this is expensive
+		turf_to_return = pick(available_turfs)
 		if (locate(thing_not_to_have) in turf_to_return)
 			continue
 		return turf_to_return
@@ -236,8 +247,8 @@ SUBSYSTEM_DEF(overmap)
 
 	var/turf/turf_to_return
 
-	// turf_to_return = null	// Заглушка. Сбоит на radius_tiles[radius]
-	// return turf_to_return
+	if (!radius_tiles || radius < 1 || radius > length(radius_tiles) || !length(radius_tiles[radius]))
+		return null
 
 	for (var/_ in 1 to tries)
 		turf_to_return = pick(radius_tiles[radius])
@@ -282,6 +293,9 @@ SUBSYSTEM_DEF(overmap)
 		if(initial(planet_type.spawn_rate) > 0)
 			planets += planet_type
 
+	if(!length(planets))
+		log_world("SSovermap: No valid planet types found to spawn.")
+		return
 
 	var/list/orbits = list()
 	for (var/i in 2 to LAZYLEN(radius_tiles))
@@ -335,10 +349,17 @@ SUBSYSTEM_DEF(overmap)
 			log_mapping("[src] failed to load ship [templates].")
 #else
 	if(!set_initial_ship())
+		log_world("WARNING: Failed to set initial ship template - no valid templates found")
 		return
+	if(!initial_ship_template)
+		log_world("WARNING: initial_ship_template is null after set_initial_ship()")
+		return
+	log_world("Spawning initial ship with template: [initial_ship_template]")
 	initial_ship = SSshuttle.create_ship(initial_ship_template)
 	if(!initial_ship)
-		CRASH("Failed to spawn initial ship.")
+		log_world("WARNING: SSshuttle.create_ship() returned null for template [initial_ship_template] - overmap may not have available turfs yet")
+		log_world("Initial ship spawn failed - this is non-critical, ship can be spawned manually by admins")
+		return
 
 	RegisterSignal(initial_ship, COMSIG_PARENT_QDELETING, PROC_REF(handle_initial_ship_deletion))
 #endif
@@ -524,6 +545,9 @@ SUBSYSTEM_DEF(overmap)
 		for(var/datum/overmap/outpost/outpost_type as anything in possible_types)
 			if(!initial(outpost_type.main_template))
 				possible_types -= outpost_type
+		if(!length(possible_types))
+			log_world("SSovermap: No valid outpost types found to spawn. Skipping outpost generation.")
+			return
 		found_type = pick(possible_types)
 
 	new found_type(location)

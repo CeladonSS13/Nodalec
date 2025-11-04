@@ -166,7 +166,7 @@ SUBSYSTEM_DEF(research)
 		TN.Initialize()
 	techweb_nodes = returned
 	if (!verify_techweb_nodes()) //Verify all nodes have ids and such.
-		stack_trace("Invalid techweb nodes detected")
+		log_world("WARNING: Some techweb nodes had validation issues - see previous warnings for details")
 	calculate_techweb_nodes()
 	calculate_techweb_item_unlocking_requirements()
 	if (!verify_techweb_nodes()) //Verify nodes and designs have been crosslinked properly.
