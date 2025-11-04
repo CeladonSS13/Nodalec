@@ -90,7 +90,11 @@
 		if(below_turf && istransparentturf(turf_source))
 			listeners += get_hearers_in_view(audible_distance, below_turf)
 
-	for(var/mob/listening_mob in listeners | SSmobs.dead_players_by_zlevel[source_z])//observers always hear through walls
+	var/list/all_listeners = listeners?.Copy() || list()
+	if(islist(SSmobs.dead_players_by_zlevel) && source_z > 0 && source_z <= length(SSmobs.dead_players_by_zlevel) && SSmobs.dead_players_by_zlevel[source_z])
+		all_listeners |= SSmobs.dead_players_by_zlevel[source_z]
+	
+	for(var/mob/listening_mob in all_listeners)//observers always hear through walls
 		if(get_dist(listening_mob, turf_source) <= audible_distance)
 			listening_mob.playsound_local(turf_source, soundin, vol, vary, frequency, falloff_exponent, channel, pressure_affected, S, maxdistance, falloff_distance, 1, use_reverb)
 			. += listening_mob
