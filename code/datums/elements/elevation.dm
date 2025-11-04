@@ -57,8 +57,8 @@
 	if(!isturf(location))
 		return
 	if(!HAS_TRAIT(location, TRAIT_TURF_HAS_ELEVATED_OBJ(pixel_shift)))
-		RegisterSignal(location, COMSIG_TURF_RESET_ELEVATION, PROC_REF(check_elevation))
-		RegisterSignal(location, COMSIG_TURF_CHANGE, PROC_REF(pre_change_turf))
+		RegisterSignal(location, COMSIG_TURF_RESET_ELEVATION, PROC_REF(check_elevation), override = TRUE)	// NODALEC - Overide
+		RegisterSignal(location, COMSIG_TURF_CHANGE, PROC_REF(pre_change_turf), override = TRUE)	// NODALEC - Overide
 		reset_elevation(location)
 	ADD_TRAIT(location, TRAIT_TURF_HAS_ELEVATED_OBJ(pixel_shift), ref(source))
 
@@ -109,7 +109,7 @@
 	RegisterSignal(target, COMSIG_ATOM_ABSTRACT_ENTERED, PROC_REF(on_entered))
 	RegisterSignal(target, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON, PROC_REF(on_initialized_on))
 	RegisterSignal(target, COMSIG_ATOM_ABSTRACT_EXITED, PROC_REF(on_exited))
-	RegisterSignal(target, COMSIG_TURF_RESET_ELEVATION, PROC_REF(on_reset_elevation))
+	RegisterSignal(target, COMSIG_TURF_RESET_ELEVATION, PROC_REF(on_reset_elevation), override = TRUE)	// NOCALEC - Оверайд
 
 	src.pixel_shift = pixel_shift
 

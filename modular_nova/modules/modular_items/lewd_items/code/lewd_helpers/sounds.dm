@@ -41,8 +41,8 @@
 	var/sound/sound_to_play = sound(get_sfx(soundin))
 	var/maxdistance = SOUND_RANGE + extrarange
 
-	var/turf/above_turf = GET_TURF_ABOVE(turf_source)
-	var/turf/below_turf = GET_TURF_BELOW(turf_source)
+	var/turf/above_turf = turf_source ? GET_TURF_ABOVE(turf_source) : null	// NODALEC - FIX_SOUNDS
+	var/turf/below_turf = turf_source ? GET_TURF_BELOW(turf_source) : null	// NODALEC - FIX_SOUNDS
 
 	var/list/listeners = get_hearers_in_view(maxdistance, turf_source)
 	. = list()//output everything that successfully heard the sound

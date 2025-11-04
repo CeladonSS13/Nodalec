@@ -73,10 +73,10 @@ SUBSYSTEM_DEF(statpanels)
 		)
 		// NOVA EDIT ADDITION END
 
-		if(SSshuttle.emergency)
-			var/ETA = SSshuttle.emergency.getModeStr()
-			if(ETA)
-				global_data += "[ETA] [SSshuttle.emergency.getTimerStr()]"
+		// if(SSshuttle.emergency)	// NODALEC - Отрубаем шатл
+		// 	var/ETA = SSshuttle.emergency.getModeStr()
+		// 	if(ETA)
+		// 		global_data += "[ETA] [SSshuttle.emergency.getTimerStr()]"
 
 		if(SSticker.reboot_timer)
 			var/reboot_time = timeleft(SSticker.reboot_timer)

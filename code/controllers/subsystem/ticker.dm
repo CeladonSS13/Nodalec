@@ -242,8 +242,8 @@ SUBSYSTEM_DEF(ticker)
 /datum/controller/subsystem/ticker/proc/check_finished()
 	if(!setup_done)
 		return FALSE
-	if(SSshuttle.emergency && (SSshuttle.emergency.mode == SHUTTLE_ENDGAME))
-		return TRUE
+	// if(SSshuttle.emergency && (SSshuttle.emergency.mode == SHUTTLE_ENDGAME))	// NODALEC - Отрубаем шатл
+		// return TRUE
 	if(GLOB.station_was_nuked)
 		return TRUE
 	if(GLOB.revolution_handler?.result == REVOLUTION_VICTORY)

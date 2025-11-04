@@ -211,9 +211,10 @@ SUBSYSTEM_DEF(overmap)
 			for (var/i in 1 to ring - max_ring)
 				radius_tiles += list(list())
 			max_ring = ring
-		if(!radius_tiles[ring])
+		if(!islist(radius_tiles[ring]))
 			radius_tiles[ring] = list()
-		radius_tiles[ring] += turf
+		if(istype(turf))
+			radius_tiles[ring] += turf
 
 /datum/controller/subsystem/overmap/proc/get_unused_overmap_square(thing_not_to_have = /obj/structure/overmap, tries = MAX_OVERMAP_PLACEMENT_ATTEMPTS, force = FALSE)
 	if(!overmap_vlevel)
