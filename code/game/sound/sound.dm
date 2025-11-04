@@ -65,9 +65,10 @@
 
 		if(below_turf && istransparentturf(turf_source))
 			listeners += get_hearers_in_view(audible_distance, below_turf, RECURSIVE_CONTENTS_CLIENT_MOBS)
-		for(var/mob/listening_ghost as anything in SSmobs.dead_players_by_zlevel[source_z])
-			if(get_dist(listening_ghost, turf_source) <= audible_distance)
-				listeners += listening_ghost
+		if(SSmobs.dead_players_by_zlevel.len >= source_z)
+			for(var/mob/listening_ghost as anything in SSmobs.dead_players_by_zlevel[source_z])
+				if(get_dist(listening_ghost, turf_source) <= audible_distance)
+					listeners += listening_ghost
 
 	for(var/mob/listening_mob in listeners)//had nulls sneak in here, hence the typecheck
 		listening_mob.playsound_local(turf_source, soundin, vol, vary, frequency, falloff_exponent, channel, pressure_affected, S, maxdistance, falloff_distance, 1, use_reverb, volume_preference)
