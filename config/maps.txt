@@ -17,43 +17,43 @@ endmap
 
 # Production-level maps.
 
-map deltastation
-	minplayers 50
-	votable
-endmap
+#map deltastation
+#	minplayers 50
+#	votable
+#endmap
 
-map icebox
-	minplayers 25
-	votable
-endmap
+#map icebox
+#	minplayers 25
+#	votable
+#endmap
 
-map catwalkstation
-	minplayers 25
-	votable
-endmap
+#map catwalkstation
+#	minplayers 25
+#	votable
+#endmap
 
-map metastation
-	minplayers 25
-	#voteweight 0.5
-	votable
-	#feedbacklink https://www.youtube.com/watch?v=XG8b7WhANNA
-	#webmap_url https://webmap.affectedarc07.co.uk/maps/tgstation/metastation
-endmap
+#map metastation
+#	minplayers 25
+#	#voteweight 0.5
+#	votable
+#	#feedbacklink https://www.youtube.com/watch?v=XG8b7WhANNA
+#	#webmap_url https://webmap.affectedarc07.co.uk/maps/tgstation/metastation
+#endmap
 
-map tramstation
-	minplayers 35
-	votable
-endmap
+#map tramstation
+#	minplayers 35
+#	votable
+#endmap
 
-map nebulastation
-	minplayers 35
-	votable
-endmap
+#map nebulastation
+#	minplayers 35
+#	votable
+#endmap
 
-map wawastation
-	votable
-	minplayers 40
-endmap
+#map wawastation
+#	votable
+#	minplayers 40
+#endmap
 
 # Debug-only maps.
 
@@ -68,25 +68,25 @@ endmap
 
 ##NOVA SECTOR MAPS##
 
-map voidraptor
-	maxplayers 100
-	votable
-endmap
+#map voidraptor
+#	maxplayers 100
+#	votable
+#endmap
 
-map blueshift
-	minplayers 70
-	votable
-endmap
+#map blueshift
+#	minplayers 70
+#	votable
+#endmap
 
-map ouroboros
-	maxplayers 80
-	votable
-endmap
+#map ouroboros
+#	maxplayers 80
+#	votable
+#endmap
 
-map serenitystation
-	votable
-endmap
+#map serenitystation
+#	votable
+#endmap
 
-map snowglobe
-	votable
-endmap
+#map snowglobe
+#	votable
+#endmap
