@@ -438,14 +438,18 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 	if(target_priority <= current_priority)
 		// Keep the shuttle timer updating if that's what we're showing
 		if(current_mode == SD_EMERGENCY)
-			return display_shuttle_status(SSshuttle.emergency)
+			// NODALEC-REMOVE-SSshuttle.emergency
+			// return display_shuttle_status(SSshuttle.emergency)
+			return PROCESS_KILL
 		return PROCESS_KILL
 
 	// Switch to whatever should have priority right now
 	switch(target_display["mode"])
 		if(SD_EMERGENCY)
 			set_display_with_priority(SD_EMERGENCY, target_priority)
-			return display_shuttle_status(SSshuttle.emergency)
+			// NODALEC-REMOVE-SSshuttle.emergency
+			// return display_shuttle_status(SSshuttle.emergency)
+			return PROCESS_KILL
 		if(SD_PICTURE)
 			set_display_with_priority(SD_PICTURE, target_priority, picture_state = target_display["picture"])
 			return PROCESS_KILL
@@ -456,11 +460,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 /// Returns a list with the mode, priority, and other details
 /obj/machinery/status_display/evac/proc/get_highest_priority_display()
 	// Shuttle stuff gets top priority - but only when it's actually doing something
-	if(SSshuttle?.emergency)
-		switch(SSshuttle.emergency.mode)
-			if(SHUTTLE_CALL, SHUTTLE_DOCKED, SHUTTLE_ESCAPE)
-				return list("mode" = SD_EMERGENCY, "priority" = DISPLAY_PRIORITY_SHUTTLE)
-			// Don't bother showing shuttle status when it's just sitting there
+	// NODALEC-REMOVE-SSshuttle.emergency
+	// if(SSshuttle?.emergency)
+	// 	switch(SSshuttle.emergency.mode)
+	// 		if(SHUTTLE_CALL, SHUTTLE_DOCKED, SHUTTLE_ESCAPE)
+	// 			return list("mode" = SD_EMERGENCY, "priority" = DISPLAY_PRIORITY_SHUTTLE)
+	// 		// Don't bother showing shuttle status when it's just sitting there
 
 	// Check if someone manually set something from the bridge
 	if(manual_display_state && manual_display_state["priority"] >= DISPLAY_PRIORITY_MESSAGE)
