@@ -8,6 +8,9 @@
 	z_level_to_lowest_plane_offset = list()
 	var/list/default_map_traits = DEFAULT_MAP_TRAITS
 
+	if (!default_map_traits)
+		default_map_traits = list()
+
 	if (default_map_traits.len != world.maxz)
 		log_mapping("More or less map attributes pre-defined ([default_map_traits.len]) than existent z-levels ([world.maxz]). Ignoring the larger.")
 		if (default_map_traits.len > world.maxz)
@@ -24,6 +27,10 @@
 /datum/controller/subsystem/mapping/proc/add_new_zlevel(name, traits = list(), z_type = /datum/space_level, contain_turfs = TRUE)
 	UNTIL(!adding_new_zlevel)
 	adding_new_zlevel = TRUE
+	if(!z_list)
+		z_list = list()
+	if(!islist(traits))
+		traits = list(traits)
 	var/new_z = z_list.len + 1
 	if (world.maxz < new_z)
 		world.incrementMaxZ()

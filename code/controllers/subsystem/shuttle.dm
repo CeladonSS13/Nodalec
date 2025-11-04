@@ -617,6 +617,9 @@ SUBSYSTEM_DEF(shuttle)
 			transit_requesters += M
 
 /datum/controller/subsystem/shuttle/proc/generate_transit_dock(obj/docking_port/mobile/M)
+	if(!M || !M.preferred_direction)
+		log_world("ERROR: generate_transit_dock called with invalid mobile port or null preferred_direction")
+		return FALSE
 	// First, determine the size of the needed zone
 	// Because of shuttle rotation, the "width" of the shuttle is not
 	// always x.
@@ -884,6 +887,9 @@ SUBSYSTEM_DEF(shuttle)
  */
 /datum/controller/subsystem/shuttle/proc/load_template(datum/map_template/shuttle/template)
 	. = FALSE
+	if(!template)
+		CRASH("load_template() called with null template")
+	
 	var/datum/map_zone/loading_mapzone = SSmapping.create_map_zone("Shuttle Loading Zone")
 	var/datum/virtual_level/loading_zone = SSmapping.create_virtual_level(
 		"[template.name] Loading Level", list(ZTRAIT_RESERVED = TRUE), loading_mapzone, template.width, template.height, ALLOCATION_FREE

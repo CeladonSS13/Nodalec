@@ -3,19 +3,30 @@
 
 	UNTIL(!shuttle_loading)
 	shuttle_loading = TRUE
-	var/obj/structure/overmap/ship/ship_to_spawn = new(SSovermap.get_unused_overmap_square(tries = INFINITY), new ship_template_to_spawn)
+	var/turf/spawn_location = SSovermap.get_unused_overmap_square(tries = INFINITY)
+	if(!spawn_location)
+		log_world("ERROR: Failed to get unused overmap square for ship spawn")
+		shuttle_loading = FALSE
+		return FALSE
+	var/obj/structure/overmap/ship/ship_to_spawn = new(spawn_location, new ship_template_to_spawn)
 	if(!ship_to_spawn)
 		stack_trace("Unable to properly load ship [ship_template_to_spawn].")
 		shuttle_loading = FALSE
 		return FALSE
+	
+	if(!ship_to_spawn.source_template)
+		log_world("ERROR: ship_to_spawn.source_template is null after creating ship")
+		qdel(ship_to_spawn)
+		shuttle_loading = FALSE
+		return FALSE
 
 	SSair.can_fire = FALSE // fuck you
-	var/obj/docking_port/mobile/voidcrew/loaded = action_load(ship_to_spawn.source_template)
+	var/obj/docking_port/mobile/voidcrew/loaded = action_load(ship_to_spawn.source_template, null)
 	SSair.can_fire = TRUE
 	shuttle_loading = FALSE
 
 	if(!loaded)
-		stack_trace("Unable to properly load ship template [ship_to_spawn.source_template].")
+		stack_trace("Unable to properly load ship template [ship_to_spawn.source_template?.name].")
 		qdel(ship_to_spawn)
 		return FALSE
 

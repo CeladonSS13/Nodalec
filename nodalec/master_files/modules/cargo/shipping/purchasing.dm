@@ -23,7 +23,6 @@
 		var/price = spawning_order.pack.get_cost()
 		if(spawning_order.applied_coupon)
 			price *= (1 - spawning_order.applied_coupon.discount_pct_off)
-		SSeconomy
 		if(spawning_order.paying_account)
 			SSeconomy.add_audit_entry(bank_account_holder.synced_bank_account, price, spawning_order.pack.name)
 		value += spawning_order.pack.get_cost()

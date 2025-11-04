@@ -1,5 +1,5 @@
-//#define LOWMEMORYMODE //uncomment this to load centcom and runtime station and thats it.
-//#define ABSOLUTE_MINIMUM //uncomment this to load a smaller centcomm and smaller runtime station, only works together with LOWMEMORYMODE
+#define LOWMEMORYMODE //uncomment this to load centcom and runtime station and thats it.
+#define ABSOLUTE_MINIMUM //uncomment this to load a smaller centcomm and smaller runtime station, only works together with LOWMEMORYMODE
 
 #ifdef ABSOLUTE_MINIMUM
 #define LOWMEMORYMODE
@@ -8,7 +8,8 @@
 #ifndef ABSOLUTE_MINIMUM
 #include "map_files\generic\CentCom.dmm"
 #else
-#include "map_files\generic\CentCom_minimal.dmm"
+// #include "map_files\generic\CentCom_minimal.dmm"
+#include "map_files\generic\CentCom.dmm"
 #endif
 
 #ifndef LOWMEMORYMODE
