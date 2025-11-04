@@ -65,7 +65,7 @@
 
 		if(below_turf && istransparentturf(turf_source))
 			listeners += get_hearers_in_view(audible_distance, below_turf, RECURSIVE_CONTENTS_CLIENT_MOBS)
-		if(SSmobs.dead_players_by_zlevel.len >= source_z)
+		if(source_z > 0 && source_z <= SSmobs.dead_players_by_zlevel.len)
 			for(var/mob/listening_ghost as anything in SSmobs.dead_players_by_zlevel[source_z])
 				if(get_dist(listening_ghost, turf_source) <= audible_distance)
 					listeners += listening_ghost
