@@ -2,6 +2,8 @@
 /////////////////         STAR SYSTEM DATUM         /////////////////
 /////////////////////////////////////////////////////////////////////
 
+#define MAX_OVERMAP_PLACEMENT_ATTEMPTS 5
+
 /datum/overmap_star_system
 	/// Name of the star system
 	var/name

@@ -10,6 +10,7 @@ voidcrew TODO:
 #define MAX_OVERMAP_EVENT_CLUSTERS 8
 #define MAX_OVERMAP_EVENTS 70
 #define MAX_OVERMAP_PLANETS_TO_SPAWN 5
+#define MAP_EDGE_PAD 15
 
 SUBSYSTEM_DEF(overmap)
 	name = "Overmap"
@@ -58,6 +59,8 @@ SUBSYSTEM_DEF(overmap)
 
 	/// Centre of the overmap
 	var/turf/overmap_centre
+	/// The virtual level that contains the overmap
+	var/datum/virtual_level/overmap_vlevel
 	/// Map of tiles at each radius around the sun
 	var/list/list/radius_tiles = list()
 	///Width/height of the overmap "zlevel"
@@ -185,7 +188,7 @@ SUBSYSTEM_DEF(overmap)
 	// Create a simple star object
 	new /obj/structure/overmap/star/big(overmap_centre)
 
-	var/list/unsorted_turfs = get_area_turfs(/area/overmap, target_z = overmap_vlevel.z_value)
+	var/list/unsorted_turfs = get_area_turfs(/area/overmap, target_z = OVERMAP_Z_LEVEL)
 	var/max_ring = 0
 	for (var/turf/turf as anything in unsorted_turfs)
 		if (istype(turf, /turf/closed/overmap_edge))
@@ -211,15 +214,6 @@ SUBSYSTEM_DEF(overmap)
 			radius_tiles[ring] += turf
 
 /datum/controller/subsystem/overmap/proc/get_unused_overmap_square(thing_not_to_have = /obj/structure/overmap, tries = MAX_OVERMAP_PLACEMENT_ATTEMPTS, force = FALSE)
-	if(!overmap_vlevel)
-		log_world("ERROR: overmap_vlevel is null in get_unused_overmap_square")
-		return null
-
-	var/list/available_turfs = block(locate(overmap_vlevel.low_x + 1, overmap_vlevel.low_y + 1, overmap_vlevel.z_value), locate(overmap_vlevel.high_x - 1, overmap_vlevel.high_y - 1, overmap_vlevel.z_value))
-	if(!length(available_turfs))
-		log_world("ERROR: No turfs available in overmap block ([overmap_vlevel.low_x], [overmap_vlevel.low_y], [overmap_vlevel.z_value]) to ([overmap_vlevel.high_x], [overmap_vlevel.high_y], [overmap_vlevel.z_value])")
-		return null
-
 	var/turf/turf_to_return
 	for (var/_ in 1 to tries)
 		turf_to_return = pick(block(locate(OVERMAP_LEFT_SIDE_COORD + 1, OVERMAP_SOUTH_SIDE_COORD + 1, OVERMAP_Z_LEVEL), locate(OVERMAP_RIGHT_SIDE_COORD - 1, OVERMAP_NORTH_SIDE_COORD - 1, OVERMAP_Z_LEVEL)))
