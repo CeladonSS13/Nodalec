@@ -90,7 +90,6 @@
 /obj/structure/table,
 /obj/machinery/cell_charger,
 /obj/item/stack/cable_coil,
-/obj/item/stock_parts/cell/high,
 /obj/effect/decal/cleanable/cobweb,
 /obj/effect/decal/cleanable/blood/old,
 /obj/effect/turf_decal/stripes,
@@ -354,7 +353,6 @@
 /turf/open/floor/plating,
 /area/shuttle/voidcrew/kilo/engineering)
 "ca" = (
-/obj/effect/decal/cleanable/oil,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
@@ -456,7 +454,6 @@
 /area/shuttle/voidcrew/kilo/bridge)
 "cB" = (
 /obj/effect/turf_decal/stripes/corner,
-/obj/effect/decal/cleanable/oil,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -528,7 +525,6 @@
 	dir = 1
 	},
 /obj/effect/decal/cleanable/greenglow,
-/obj/item/bedsheet/random,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/wood,
@@ -750,12 +746,6 @@
 	pixel_x = -3;
 	pixel_y = 8
 	},
-/obj/item/stock_parts/cell/high{
-	charge = 100;
-	maxcharge = 15000;
-	pixel_x = 3;
-	pixel_y = -1
-	},
 /obj/item/stack/sheet/iron/fifty,
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/voidcrew/kilo/cargo/mining_dock)
@@ -936,7 +926,6 @@
 /obj/effect/decal/cleanable/cobweb/cobweb2,
 /obj/effect/decal/cleanable/dirt,
 /obj/item/trash/syndi_cakes,
-/obj/item/organ/internal/stomach,
 /obj/machinery/light_switch{
 	dir = 1;
 	pixel_y = 23
@@ -1010,10 +999,6 @@
 /obj/structure/extinguisher_cabinet/directional/north,
 /turf/open/floor/mineral/titanium/yellow,
 /area/shuttle/voidcrew/kilo/cargo/mining_dock)
-"sD" = (
-/obj/machinery/vending/boozeomat/all_access,
-/turf/closed/wall/mineral/titanium/nodiagonal,
-/area/shuttle/voidcrew/kilo/cafe)
 "sG" = (
 /obj/structure/table/wood,
 /obj/effect/decal/cleanable/dirt,
@@ -2023,7 +2008,7 @@ bH
 bV
 cl
 cB
-sD
+fS
 dc
 sG
 XR
